@@ -1,0 +1,54 @@
+a, a:visited{
+	color: rgb(50, 110, 170);
+}
+
+.middle-blue, em{
+	color: rgb(50, 110, 170);
+}
+
+.nav-item:hover, .nav-item.active{
+	color: rgb(50, 110, 170);
+}
+
+.nav-active-indicator{
+	color: rgb(50, 110, 170);
+  background-color: rgb(50, 110, 170);
+}
+
+.portrait {
+    border: 2.5px solid rgb(50, 110, 170);
+}
+
+.portrait-name{
+	color: rgb(50, 110, 170);
+}
+
+.portrait-text{
+	color: rgb(50, 110, 170);
+}
+
+.portrait .popover {
+  border: 0.5px solid rgba(50, 110, 170, 0.15);
+}
+
+.portrait hr{
+	color: rgba(50, 110, 170, 0.25);
+	background-color: rgba(50, 110, 170, 0.25);
+}
+
+#submitbt {
+    background-color: rgb(50, 110, 170);
+}
+
+input[type=checkbox] {
+    background-color: rgb(50, 110, 170);
+}
+
+#nav-toggle span { position: absolute; left: 10px; top: 25px; }
+#nav-toggle span, #nav-toggle span:before, #nav-toggle span:after {
+	background: rgb(50, 110, 170);
+}
+
+#cytosplore-logo{
+  margin-bottom: -30px;
+}

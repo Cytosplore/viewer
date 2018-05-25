@@ -1,0 +1,79 @@
+<p>
+  {% for post in site.posts %}
+    {% if post.category == "faq" %}
+      {% assign iffaq = 'true' %}
+    {% elsif post.category == "prerun" %}
+      {% assign ifprerun = 'true' %}
+    {% elsif post.category == "startingup" %}
+      {% assign ifstartingup = 'true' %}
+    {% elsif post.category == "tsne" %}
+      {% assign iftsne = 'true' %}
+    {% elsif post.category == "hsne" %}
+      {% assign ifhsne = 'true' %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign sorted_posts = site.posts | sort: 'date' %}
+
+  {% if iffaq %}
+    <h2>General</h2>
+
+    <ul>
+      {% for post in sorted_posts %}
+        {% if post.category == "faq"d %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if ifprerun %}
+    <h2>System Requirements & Installation</h2>
+
+    <ul>
+      {% for post in sorted_posts %}
+        {% if post.category == "prerun" %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if ifstartingup %}
+    <h2>Getting Started</h2>
+
+    <ul>
+      {% for post in sorted_posts %}
+        {% if post.category == "startingup" %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if iftsne %}
+    <h2>A-tSNE</h2>
+
+    <ul>
+      {% for post in sorted_posts %}
+        {% if post.category == "tsne" %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if ifhsne %}
+    <h2>HSNE</h2>
+
+    <ul>
+      {% for post in sorted_posts %}
+        {% if post.category == "hsne" %}
+          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</p>
+
+<h2>to be extended ...</h2>
