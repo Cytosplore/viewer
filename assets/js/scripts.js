@@ -54,13 +54,13 @@ function resetResponsiveNav() {
 function sizeContent() {
 
 	var w = $('.main-wrapper').width() - 65;
-	if( $( window ).width() >= 725 ) w -= 35;
+	if( $( window ).width() >= 640 ) w -= 35;
 	$('#actionvideo').width(w);
 	$('#actionvideo').height(w*9/16);
 
     resetResponsiveNav();
 
-    if($( window ).width() < 725)
+    if($( window ).width() < 640)
     {
         var hamburger = ($( window ).width() * 0.95 - 45) + "px";
         $('#nav-hamburger').css("left", hamburger);

@@ -10,20 +10,20 @@
 	<div class="content-wrapper">
 		<h1>Cytosplore MTG Viewer</h1>
 		<div class="section">
-			<p><b>TODO: Check if you want to extend this</b>
+			<p>
 				Cytosplore MTG Viewer is an interactive visual analysis system for the exploration of single cell data gathered from nuclear sequencing of the human Medial Temporal Gyrus (MTG).
-				It allows to interactively explore the cellular hierarchy of the human MTG cell types data that was presented in the recent publication by the Allen Institute for Brain Science.
-				Cytosplore MTG Viewer is based on <a href="https://www.cytosplore.org" style="color:rgb(90,50,90);">Cytosplore</a> and provides many of the analysis tools presented in the <a href="https://www.cytosplore.org/#publications">previous Cytosplore publications</a>.
-				In addition, Cytosplore MTG Viewer allows differential analysis of selected cell groups.
-				<a href="#get">Try Cytosplore MTG Viewer</a> yourself!
+        The included dataset was published through the <a href="http://celltypes.brain-map.org/" target="new">Allen Cell Types Database</a> by the <a href="https://www.alleninstitute.org/what-we-do/brain-science" target="new">Allen Institute for Brain Science</a>.
+				Cytosplore MTG Viewer allows to interactively explore the cellular hierarchy of the human MTG cell types data, inspect transcriptome-wide gene expression in combination with metadata of individual cells,
+        perform differential analyses and statistics between manual selections of cells, or between pre-defined clusters throughout the cellular hierarchy and more.
+				Cytosplore MTG Viewer is based on <a href="https://www.cytosplore.org" style="color:rgb(90,50,90);">Cytosplore</a> and provides many of the analysis tools presented in the <a href="https://www.cytosplore.org/#publications" style="color:rgb(90,50,90);">previous Cytosplore publications</a>.
+				<a href="#get">Download</a> and try Cytosplore MTG Viewer yourself!
 			</p>
 			<p>
 					<a href="#get"><img src="/assets/images/to-download-mtg.png" alt="Download" id="download-top"></a>
 			</p>
 		</div>
-		<b>TODO: Change this to the intro video</b>
 		<div class="section">
-  		<iframe id="actionvideo" src="https://player.vimeo.com/video/205552113?byline=0&amp;portrait=0" width="80%" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+  		<iframe id="actionvideo" src="https://player.vimeo.com/video/273182940?byline=0&amp;portrait=0" width="80%" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
 		</div>
 	</div>
 </div>
@@ -59,6 +59,19 @@
 						</span><hr>
 						<span class="portrait-text">
 							LUMC <br/> Development
+						</span>
+						</span>
+					</div>
+				</a>
+        
+				<a href="http://nicola17.github.io" target="_blank">
+				<div class="portrait" id="portrait-np">
+						<span class="popover above">
+						<span class="portrait-name">
+							Nicola Pezzotti
+						</span><hr>
+						<span class="portrait-text">
+							TU Delft <br/> Algorithms Research
 						</span>
 						</span>
 					</div>
@@ -119,9 +132,20 @@
 				<span class="stretch"></span>
 			</div>
 			<p>
-				Cytosplore MTG Viewer is being developed in close collaboration between the Allen Institute for Brain Science,
-				the Division of Image Processing and the Computational Biology Center at Leiden University Medical Center, and the Computer Graphics and Visualization Group at the TU Delft, the Netherlands.
-				Data displayed in this viewer is available from the <a href="http://celltypes.brain-map.org/" target="_blank">Allen Cell Types Database</a> (© 2015 Allen Institute for Brain Science).
+    		Cytosplore MTG Viewer is being developed by a team consisting of members from the
+    		<a href="https://www.lcbc.nl" target="new">Leiden Computational Biology Center</a>, the
+    		<a href="https://www.lumc.nl/org/radiologie/research/LKEB/" target="new">Division of Image Processing</a>
+    		at the <a href="https://www.lumc.nl" target="new">Leiden University Medical Center</a>, and the
+    		<a href="https://graphics.tudelft.nl" target="new">Computer Graphics and Visualization Group</a>
+    		at the <a href="https://www.tudelft.nl" target="new">TU Delft</a>
+        in a research project, carried out in close collaboration with the 
+    		<a href="https://www.alleninstitute.org/what-we-do/brain-science" target="new">Allen Institute for Brain Science</a>.
+        The research has been made possible through the
+        <a href="https://www.nwo.nl" target="new">NWO-AES</a>
+        grants
+        <a href="http://imagene.nl/vampire-project" target="new">12720 (VanPIRE, PI Vilanova)</a>
+        and
+        <a href="http://imagene.nl/gs-project" target="new">12721 (Genes in Space, PI Lelieveldt)</a>.
 			</p>
 		</div>
 	</div>
@@ -133,27 +157,30 @@
 	<div class="content-wrapper">
 		<h1>Publications</h1>
 		<div class="section">
-<b>TODO: Change this to allen paper</b>
 		<div class="paper">
 			<div class="paper-image">
-				<a href="https://vimeo.com/205552113" class="lightbox" target="_blank"><img src="/assets/papers/cytosplorehsne.jpg" alt="Cytosplore+HSNE" class="paper-img left"></a>
+				<a href="https://vimeo.com/273183030" class="lightbox" target="_blank"><img src="/assets/papers/cytosploremtg.jpg" alt="Cytosplore MTG Viewer" class="paper-img left"></a>
 			</div>
-			<h3><span class="title">Visual Analysis of Mass Cytometry Data by Hierarchical Stochastic Neighbor Embedding Reveals Rare Cell Types.</span>
-		<span class="authors">V. van Unen, T, Höllt, N. Pezzotti, N. Li, M. Reinders, E. Eisemann, A. Vilanova, F. Koning, and B. Lelieveldt.</span>
-				Nature Communications, 2017.</h3>
-			<div class="section" class="abstract">
-				<p><b>Abstract:</b>
-        In this work, we present Cytosplore+HSNE. HSNE constructs a hierarchy of non-linear similarities that can be interactively explored with a stepwise increase in detail up to the single-cell level. We applied HSNE to several available mass cytometry datasets. We found that HSNE efficiently replicates previous observations and identifies rare cell populations that were previously missed due to downsampling in a fraction of the time.</p>
+			<h3>
+        <span class="title">Human Cortical Cell Type Census.</span>
+		    <span class="authors">Authors et al.</span>
+				bioRxiv, 2018.
+      </h3>
+			<div class="section abstract">
+				<p>
+          <b>Abstract:</b>
+          Lorem Ipsum
+        </p>
 			</div>
 			<div class="paper-links">
 				<div class="paper-link">
-					<a href="https://www.lcbc.nl/assets/papers/2017_hsne_preprint/2017_hsne.pdf" target="_blank">
-						<img src="/assets/images/pdf.png" alt="" class="paper-link-img">
+					<a href="" target="_blank">
+            <i class="fas fa-file-pdf"></i>
 					</a>
 				</div>
 				<div class="paper-link">
-					<a href="http://dx.doi.org/10.1038/s41467-017-01689-9" target="_blank">
-						<img src="/assets/images/ieee.png" alt="" class="paper-link-img">
+					<a href="http://dx.doi.org/" target="_blank">
+            <i class="fas fa-external-link-alt"></i>
 					</a>
 				</div>
 			</div>
@@ -170,13 +197,13 @@
 	<div class="content-wrapper">
 		<h1>Get Cytosplore MTG Viewer</h1>
 		<div class="section">
-			<p><b>TODO: Adapted from the Cytosplore site. Check if this is what we like for the MTG Viewer</b>
+			<p>
 				Disclaimer: Cytosplore MTG Viewer is a research project between TU Delft and Leiden University Medical Center. It is not a commercial software product and not licensed for clinical use. We do our best to provide support in our free time but cannot guarantee it.
 				If you have any suggestions, problems, want to share your success stories or papers published using Cytosplore MTG Viewer, we would love to get feedback! Please do not hesitate to <a href="mailto:viewer@cytosplore.org">get in touch</a>.
-  			<br/>
-				Cytosplore MTG Viewer is free for academic and non-commercial use, however, if you use Cytosplore MTG Viewer within the scope of a scientific article you must cite the original publications:
-				<br/><br/><b>TODO: Change this to allen paper</b>
-			  T. Höllt, N. Pezzotti, V. van Unen, F. Koning, E. Eisemann, B. Lelieveldt, and A. Vilanova. <span class="middle-blue">Cytosplore: Interactive Immune Cell Phenotyping for Large Single-Cell Datasets.</span> <em>Computer Graphics Forum (Proceedings of EuroVis),</em> 35(3): pp. 171—180, 2016.
+  		</p><p>
+				Cytosplore MTG Viewer is free to use, however, if you use Cytosplore MTG Viewer within the scope of a scientific article you must cite the original publications:
+				<br/><b>TODO: update to final version</b>
+			  Authors et al. <span class="middle-blue">Human Cortical Cell Type Census.</span> <em>bioRxiv,</em> 2018.
     </p>
 			<p>
 				<a href=""><img src="/assets/images/download-mtg.png" alt="Download" target="_blank" id="download-top"></a>

@@ -4,6 +4,8 @@ a, a:visited{
 
 .middle-blue, em{
 	color: rgb(50, 110, 170);
+	font-weight:400;
+	text-decoration: none;
 }
 
 .nav-item:hover, .nav-item.active{
@@ -51,4 +53,26 @@ input[type=checkbox] {
 
 #cytosplore-logo{
   margin-bottom: -30px;
+}
+
+.paper-link a{
+	color: #222;
+}
+
+.paper-link:hover, .paper-link a:hover{
+	color: rgb(50, 110, 170);
+}
+
+.nav-toggled {
+  height: 280px;
+}
+
+#portrait-bvl{
+  background: url(../images/team/bvl.png) no-repeat;
+  background-size: 80px 80px
+}
+
+#portrait-am{
+  background: url(../images/team/am.jpg) no-repeat;
+  background-size: 80px 80px
 }
