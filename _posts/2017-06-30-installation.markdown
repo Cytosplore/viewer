@@ -42,9 +42,13 @@ After a succesful installation the following dialog will show. You can decide wh
 
 ![Cytosplore MTG Viewer Installer Finished Dialog][installer_finished]{:width="376px"}<span class="caption">Figure 8: The final dialog. Click *__Finish__*, to finalize the installation and start Cytosplore MTG Viewer.</span>
 
-Cytosplore MTG Viewer includes an automatic updating system. The software will contact the update server on a regular basis to check for new versions and will prompt the user in case a newer version is available.
+Cytosplore MTG Viewer includes an automatic updating system. Upon launching, Cytosplore MTG Viewer has the option to automatically check for updates and new versions. You can also choose to manually
+check for updates through the Help menu.
 
-Continue at [First Run][first_run].
+The first time Cytosplore MTG Viewer starts it will automatically download the data file if it is not found in the program folder.
+![Cytosplore MTG Viewer Data Download Dialog][data_download]{:width="376px"}<span class="caption">Figure 9: Data download progressbar.</span>
+
+
 
 [main]: https://viewer.Cytosplore MTG Viewer.org/#get
 [vcredist]: https://www.microsoft.com/en-gb/download/details.aspx?id=40784
@@ -58,3 +62,5 @@ Continue at [First Run][first_run].
 [installer_desktopsc]: {{ site.baseurl }}/assets/documentation/installer_desktopsc.png "Cytosplore MTG Viewer Installer Desktop Shortcut Dialog"
 [installer_summary]: {{ site.baseurl }}/assets/documentation/installer_summary.png "Cytosplore MTG Viewer Installer Summary Dialog"
 [installer_finished]: {{ site.baseurl }}/assets/documentation/installer_finished.png "Cytosplore MTG Viewer Finished Installation Dialog"
+[data_download]: {{ site.baseurl }}/assets/documentation/data_download.png "Cytosplore MTG Viewer Data Download Dialog"
+
