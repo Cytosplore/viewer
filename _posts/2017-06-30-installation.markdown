@@ -6,7 +6,7 @@ category: prerun
 permalink: /documentation/installation
 ---
 We provide an easy to use installer including all dependencies for Windows. You can download the installer from the [main site][main].
-Clicking the download button will save the installer to your disk. Doubleclick the icon to start the installation. It looks like this in your download folder:
+Clicking the download button will save the installer to your disk. Double-click the icon to start the installation. It looks like this in your download folder:
 
 ![Cytosplore MTG Viewer Installer Icon][installer_icon]{:width="90px"}<span class="caption">Figure 1: The Cytosplore MTG Viewer Installer Icon after downloading.</span>
 
@@ -34,7 +34,7 @@ Now you will be asked if you want to create a desktop shortcut. If yes, just cli
 
 ![Cytosplore MTG Viewer Installer Desktop Shortcut Dialog][installer_desktopsc]{:width="376px"}<span class="caption">Figure 6: The dialog to create a desktop shortcut. Click *__Next >__*, to continue the installation with the default setting.</span>
 
-The last dialog befory putting the files in the appropriate locations shows a summary of the previous settings. Click *__Install__* to prepare the Cytosplore MTG Viewer installation.
+The last dialog before putting the files in the appropriate locations shows a summary of the previous settings. Click *__Install__* to prepare the Cytosplore MTG Viewer installation.
 
 ![Cytosplore MTG Viewer Installer Summary Dialog][installer_summary]{:width="376px"}<span class="caption">Figure 7: The summary dialog. Click *__Install__*, to carry out the installation.</span>
 
