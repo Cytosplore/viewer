@@ -28,3 +28,7 @@ and AMD Radeon Pro 460). It is highly recommended to update the drivers
 of the graphics card to the latest versions prior to installing
 Cytosplore MTG Viewer. Remote operation of Cytosplore MTG Viewer through
 Remote Desktop is not supported.
+
+If you have any problems just [send us a mail][mail], including your configuration.
+
+[mail]: mailto:viewer@cytosplore.org
