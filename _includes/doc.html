@@ -6,10 +6,8 @@
       {% assign ifprerun = 'true' %}
     {% elsif post.category == "startingup" %}
       {% assign ifstartingup = 'true' %}
-    {% elsif post.category == "tsne" %}
-      {% assign iftsne = 'true' %}
-    {% elsif post.category == "hsne" %}
-      {% assign ifhsne = 'true' %}
+    {% elsif post.category == "views" %}
+      {% assign ifviews = 'true' %}
     {% endif %}
   {% endfor %}
 
@@ -40,7 +38,7 @@
   {% endif %}
 
   {% if ifstartingup %}
-    <h2>Getting Started</h2>
+    <h2>Cytosplore MTG Viewer Introduction</h2>
 
     <ul>
       {% for post in sorted_posts %}
@@ -51,29 +49,16 @@
     </ul>
   {% endif %}
 
-  {% if iftsne %}
-    <h2>A-tSNE</h2>
+  {% if ifviews %}
+    <h2>The Main Views in Detail</h2>
 
     <ul>
       {% for post in sorted_posts %}
-        {% if post.category == "tsne" %}
+        {% if post.category == "views" %}
           <li><a href="{{ post.url }}">{{ post.title }}</a></li>
         {% endif %}
       {% endfor %}
     </ul>
   {% endif %}
 
-  {% if ifhsne %}
-    <h2>HSNE</h2>
-
-    <ul>
-      {% for post in sorted_posts %}
-        {% if post.category == "hsne" %}
-          <li><a href="{{ post.url }}">{{ post.title }}</a></li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  {% endif %}
 </p>
-
-<h2>to be extended ...</h2>

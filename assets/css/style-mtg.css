@@ -76,3 +76,25 @@ input[type=checkbox] {
   background: url(../images/team/am.jpg) no-repeat;
   background-size: 80px 80px
 }
+
+pre {
+	display: block;
+	word-break: break-all;
+	word-wrap: break-word;
+	width: 100%;
+	background-color: rgba(240, 240, 240, 0.5);
+	outline: 1px solid #ccc;
+	padding: 15px;
+	overflow: auto;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+pre, xmp, plaintext, listing {
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0px;
+}

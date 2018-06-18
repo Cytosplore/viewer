@@ -15,96 +15,11 @@
 
 <body>
 
-    <h1>Version 2.1.3</h1>
-
-    <h2>Bugfixes</h2>
-    <ul>
-        <li>Fixes a bug that would incrroectly represent the default value for 'Random Walks Threshold' in HSNE advanced parameters as 1.0 and limit its range to 0.0 .. 1.0 even though 1.5 is used as the default setting.</li>
-    </ul>
-    
-    <!------------------------------------------------------------------------------------->
-
-    <h1>Version 2.1.2</h1>
-
-    <h2>New Features</h2>
-    <ul>
-        <li>If one of the name fields in fcs is not set but the other is the name will be copied to the empty one.</li>
-        <li>Sets NaN values to zero on load (a warning will be printed in the console window).</li>
-    </ul>
-
-    <!------------------------------------------------------------------------------------->
-
-    <h1>Version 2.1.1</h1>
-
-    <h2>New Features</h2>
-    <ul>
-        <li>
-            Data Level HSNE Coordinates are now added to exported fcs files if available.
-            If not zoomed into the data level coordinates will be (0, 0) for the corresponding points.
-            There is no indication of the map the coordinates belong to within the files, make sure to aptly name your HSNE analyses and exported files to keep this information.
-        </li>
-        <li>
-            It is now possible to save clusters while maintaining the original sample structure.
-            I.e. assume you have two samples as separate fcs files and 3 resulting clusters
-            <ul>
-                <li>Using <em>Save Clusters ...</em> saves them as cluster1.fcs, cluster2.fcs and cluster3.fcs as before</li>
-                <li>Using <em>Save Clusters (per sample)...</em> saves them as cluster1-Sample1.fcs, cluster1-Sample2.fcs, cluster2-Sample1.fcs and and so on.</li>
-            </ul>
-        </li>
-        <li>Added a confirmation dialog on exit.</li>
-    </ul>
-
-    <!------------------------------------------------------------------------------------->
-
-    <h1>Version 2.1.0</h1>
-
-    <h2>Public Release of Cytosplore+HSNE</h2>
-    <ul>
-        <li>
-            This version of Cytosplore makes HSNE publicly available for the first time.
-            Please see the Nature Communications paper
-            <a href="http://dx.doi.org/10.1038/s41467-017-01689-9">
-              <em>
-                Interactive Visual Analysis of Mass Cytometry Data by Hierarchical Stochastic Neighbor Embedding Reveals Rare Cell Types
-              </em>
-            </a>
-            for full detail.
-        </li>
-    </ul>
-    <!------------------------------------------------------------------------------------->
-
-    <h1>Version 1.0.2</h1>
-
-    <h2>Bugfixes</h2>
-    <ul>
-        <li>
-            FCS writer now saves to FCS 3.1 to fix a problem with large files introduced in 1.0.1.
-            If you have saved fcs files with more than 500.000 cells in version 1.0.1 these might be broken.
-            Test them in another tool to make sure they are OK.
-        </li>
-    </ul>
-
-    <!------------------------------------------------------------------------------------->
-
-    <h1>Version 1.0.1</h1>
-
-    <h2>New Features</h2>
-    <ul>
-        <li>FCS Reader: Supports loading of some FCS 3.1 files.</li>
-    </ul>
-
-    <h2>Bugfixes</h2>
-    <ul>
-        <li>Fixes t-SNE/HSNE rendering on some low-end integrated graphics cards.</li>
-    </ul>
-
-    <!------------------------------------------------------------------------------------->
-
     <!------------------------------------------------------------------------------------->
 
     <h1>Version 1.0</h1>
     <ul>
-        <li>Initial Release of Cytosplore for research use.</li>
+        <li>Initial Release of Cytosplore MTG Viewer.</li>
     </ul>
 
     <!------------------------------------------------------------------------------------->
