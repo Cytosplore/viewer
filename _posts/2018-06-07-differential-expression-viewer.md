@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Differential Expression Viewer"
+title:  "The Differential Expression Viewer"
 date:   2018-06-07
-category: startingup
+category: views
 permalink: /documentation/diffexpressionviewer
 ---
 
@@ -15,10 +15,10 @@ There are three methods to select cells / nuclei:
 -   Manual drawing of cell selections in the Map Viewer (Left-click and
     drag).
 
--   Clicking on a colored ring segment in the hierarchy viewer selects
+-   Clicking on a colored ring segment in the Hierarchy Viewer selects
     the cells in that cluster / preset.
 
--   Using the metadata legend in the map viewer: clicking on a metadata
+-   Using the metadata legend in the Map Viewer: clicking on a metadata
     item in the legend selects the corresponding cells.
 
 Selections can be emptied by left-clicking in an empty space in the map
@@ -67,8 +67,5 @@ results can be explored as follows:
     right-clicking on the result table, or by pressing the “save”
     button.
 
-For an instructional video highlighting the user interface
-functionality, see: viewer.cytosplore.org
 
-
-[differentialexpressionviewer_image]: {{ site.baseurl }}/assets/images/Overview/differentialexpressionviewer.png "Differential Expression Viewer"
+[differentialexpressionviewer_image]: {{ site.baseurl }}/assets/documentation/overview_differentialexpressionviewer.png "Differential Expression Viewer"
