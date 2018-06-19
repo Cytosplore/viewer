@@ -77,6 +77,83 @@ input[type=checkbox] {
   background-size: 80px 80px
 }
 
+#portrait-el{
+  background: url(../images/team/el.png) no-repeat;
+  background-size: 80px 80px
+}
+
+#portrait-jm{
+  background: url(../images/team/jm.png) no-repeat;
+  background-size: 80px 80px
+}
+
+#portrait-tb{
+  background: url(../images/team/tb.png) no-repeat;
+  background-size: 80px 80px
+}
+
+#portrait-rh{
+  background: url(../images/team/rh.png) no-repeat;
+  background-size: 80px 80px
+}
+
+@media only screen and (max-width : 440px){
+  .portrait {
+    width: 60px;
+    height: 60px;
+    margin: 7px 7px;
+    background-size: 60px 60px;
+  }
+  #portrait-th{
+    background-size: 70px 70px;
+  }
+
+  #portrait-np{
+    background: url(../images/team/np.jpg) no-repeat;
+    background-size: 62px 62px;
+  }
+
+  #portrait-av{
+    background-size: 60px 60px;
+  }
+
+  #portrait-je{
+    background-size: 60px 60px;
+  }
+
+  #portrait-bl{
+    background-size: 60px 60px;
+  }
+
+  #portrait-am{
+    background-size: 60px 60px;
+  }
+
+  #portrait-bvl{
+    background-size: 60px 60px;
+  }
+}
+
+@media only screen and (min-width : 440px){
+  .portrait { margin: 5px 5px; }
+}
+
+@media only screen and (min-width : 550px){
+  .portrait { margin: 10px 15px; }
+}
+
+@media only screen and (min-width : 710px){
+  .portrait { margin: 10px 25px; }
+}
+
+@media only screen and (min-width : 860px){
+  .portrait { margin: 10px 40px; }
+}
+
+@media only screen and (min-width : 1024px){
+  .portrait { margin: 10px 10px; }
+}
+
 pre {
 	display: block;
 	word-break: break-all;
