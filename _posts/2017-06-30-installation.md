@@ -15,8 +15,7 @@ The installer will ask for administrator rights on the computer. This is due to 
 ![Cytosplore MTG Viewer Installer Admin Rights Dialog][installer_admin]{:width="340px"}<span class="caption">Figure 2: The dialog asking for administrator rights on Windows 10. Click *__Yes__*, to continue the installation.</span>
 
 The installer will show the license agreement, that your have to accept. Most importantly it states that the software can be used free of charge in an academic setting and if it is used in the scope of a scientific article the original Cytosplore MTG Viewer article needs to be cited:
-<b>TODO: change to allen paper</b>
-T. Hollt, N. Pezzotti, V. van Unen, F. Koning, E. Eisemann, B. Lelieveldt, and A. Vilanova. **Cytosplore MTG Viewer: Interactive Immune Cell Phenotyping for Large Single-Cell Datasets**. *Computer Graphics Forum*, 35(3): pp. 171-180, 2016.
+Hodge, Bakken, et al. **Conserved cell types with divergent features between human and mouse cortex**, bioRxiv, 2018.
 
 Click *__I accept the agreement__* and then *__Next >__*.
 
@@ -38,7 +37,7 @@ The last dialog before putting the files in the appropriate locations shows a su
 
 ![Cytosplore MTG Viewer Installer Summary Dialog][installer_summary]{:width="376px"}<span class="caption">Figure 7: The summary dialog. Click *__Install__*, to carry out the installation.</span>
 
-After a succesful installation the following dialog will show. You can decide whether to launch Cytosplore MTG Viewer now, and click *__Finish__* to complete the process.
+After a successful installation the following dialog will show. You can decide whether to launch Cytosplore MTG Viewer now, and click *__Finish__* to complete the process.
 
 ![Cytosplore MTG Viewer Installer Finished Dialog][installer_finished]{:width="376px"}<span class="caption">Figure 8: The final dialog. Click *__Finish__*, to finalize the installation and start Cytosplore MTG Viewer.</span>
 
@@ -58,5 +57,3 @@ check for updates through the Help menu.
 [installer_desktopsc]: {{ site.baseurl }}/assets/documentation/installer_desktopsc.png "Cytosplore MTG Viewer Installer Desktop Shortcut Dialog"
 [installer_summary]: {{ site.baseurl }}/assets/documentation/installer_summary.png "Cytosplore MTG Viewer Installer Summary Dialog"
 [installer_finished]: {{ site.baseurl }}/assets/documentation/installer_finished.png "Cytosplore MTG Viewer Finished Installation Dialog"
-
-
