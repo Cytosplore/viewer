@@ -32,11 +32,11 @@ Once the selections are set, clicking the Compute Differential
 Expression button will compute differential expression statistics over
 the full feature set and will fill the table.
 
+![Differential Expression Viewer image][differentialexpressionviewer_uptodate_image]
+
 The default behavior for the differential expression viewer is as
 follows:
 
--   If a selection 1 and a selection 2 exist, they are contrasted
-    against each other.
 -   Differential expression and Beta are only computed if a gene is
     expressed in at least 5 cells in each selection, and otherwise set
     to 0.
@@ -67,5 +67,11 @@ results can be explored as follows:
     right-clicking on the result table, or by pressing the “save”
     button.
 
+![Differential Expression Viewer image][differentialexpressionviewer_outofdate_image]
+	
+If either of the selections is changed, the results in the table will no longer be up-todate with the selections: this is indicated in the differential expression viewer by a darker background color for the statistics table and the button “Out-of-Date – Recalculate” will become visible. Note that the previously calculated differential expression results can still be interactively explored. 
+	
 
 [differentialexpressionviewer_image]: {{ site.baseurl }}/assets/documentation/overview_differentialexpressionviewer.png "Differential Expression Viewer"
+[differentialexpressionviewer_uptodate_image]: {{ site.baseurl }}/assets/documentation/overview_differentialexpressionviewer_uptodate.png "Differential Expression Viewer after computation"
+[differentialexpressionviewer_outofdate_image]: {{ site.baseurl }}/assets/documentation/overview_differentialexpressionviewer_outofdate.png "Differential Expression Viewer after computation"
