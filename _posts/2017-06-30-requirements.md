@@ -7,7 +7,7 @@ permalink: /documentation/system_requirements
 ---
 The data size and computational demands of interactive A-tSNE require
 sufficiently modern hardware to ensure the desired responsiveness in
-Cytosplore MTG Viewer. We recommend the following:
+Cytosplore Viewer. We recommend the following:
 
 -   Windows 7 or higher (64bits)
 
@@ -21,12 +21,12 @@ Cytosplore MTG Viewer. We recommend the following:
 
 Configurations with lesser specifications may work, but will result in
 longer wait times for data loading and computing. We have tested
-Cytosplore MTG Viewer on different configurations, including Windows 7
+Cytosplore Viewer on different configurations, including Windows 7
 and Windows 10, intel Core i7 and intel Xeon CPUs as well as different
 Graphics Cards (nvidia GTX 980, GTX 1080, GTX Titan, AMD Radeon r9 M290,
 and AMD Radeon Pro 460). It is highly recommended to update the drivers
 of the graphics card to the latest versions prior to installing
-Cytosplore MTG Viewer. Remote operation of Cytosplore MTG Viewer through
+Cytosplore Viewer. Remote operation of Cytosplore Viewer through
 Remote Desktop is not supported.
 
 If you have any problems just [send us a mail][mail], including your configuration.

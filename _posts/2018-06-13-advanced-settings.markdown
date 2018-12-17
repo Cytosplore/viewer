@@ -5,7 +5,7 @@ date:   2018-06-13
 category: startingup
 permalink: /documentation/advancedsettings
 ---
-Cytosplore MTG Viewer allows to define a few advanced (default) settings, for example for the A-tSNE computation (such as the number of iterations) and visualization options (e.g. point size for the scatter plots, highlighting mode).
+Cytosplore Viewer allows to define a few advanced (default) settings, for example for the A-tSNE computation (such as the number of iterations) and visualization options (e.g. point size for the scatter plots, highlighting mode).
 These defaults can be customized through the Cytosplore.ini file located in the program folder.
 
 ```
