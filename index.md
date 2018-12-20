@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Cytosplore &middot; Middle Temporal Gyrus Viewer
+title: Cytosplore Viewer
 permalink: /
 ---
 {% include main.html %}
