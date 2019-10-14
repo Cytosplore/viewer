@@ -2,5 +2,9 @@
 <datasets>
 <data version="1.0" check="a74bdc8782d89a0a4cb7074ae73d8ed1">https://sec.lumc.nl/mtg-viewer/data.h5</data>
 <mouse version="1.0" check="d2cb0b15c7f76aae7106ee7d2f13483e">https://sec.lumc.nl/mtg-viewer/mouse.h5</mouse>
+<HumanMTG version="1.0" check="012c47dbd0944287b10cb0b77450b854">https://sec.lumc.nl/mtg-viewer/data/HumanMTG.h5</HumanMTG>
+<HumanC19 version="1.0" check="714d9da538f6bc61bbd487c39d5738b0">https://sec.lumc.nl/mtg-viewer/data/HumanC19.h5</HumanC19>
+<MouseVISpALM version="1.0" check="1510439e0cf34e060d52904686e22312">https://sec.lumc.nl/mtg-viewer/data/MouseVISpALM.h5</MouseVISpALM>
+<MouseCH19 version="1.0" check="d1c7458e1da5d4328ef562c90ba003ee">https://sec.lumc.nl/mtg-viewer/data/MouseCH19.h5</MouseCH19>
 </datasets>
 
