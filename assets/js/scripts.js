@@ -37,6 +37,18 @@ function init() {
     }
 
     scroller();
+    var version = '3.0.0';
+    if(document.getElementById("download-bt") != null)
+    {
+  	if (navigator.appVersion.indexOf("Mac")!=-1){
+		let link= 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.'+version+'.dmg';
+		document.getElementById("download-bt").innerHTML='<font size="+2"> <i class="fab fa-apple"></i></font> <a href="'+link+'"><b>Download for Mac</b></a>';
+  	} else 
+	{
+		let link= 'https://sec.lumc.nl/mtg-viewer/viewer/win/'+version+'/install_cytosplore_viewer.exe';
+  		document.getElementById("download-bt").innerHTML='<font size="+2"> <i class="fab fa-windows"></i></font> <a href="'+link+'"><b>Download for Windows </b></a>';
+  	}
+    }
 }
 
 function toggleResponsiveNav() {
