@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>Cytosplore Viewer Appcast</title>
+        <description>Most recent updates to Cytosplore Viewer</description>
+        <language>en</language>
+		<item>
+            <title>Version 3.0.0</title>
+            <sparkle:releaseNotesLink>
+              https://viewer.cytosplore.org/appcast/release_notes.html
+            </sparkle:releaseNotesLink>
+            <pubDate>Mon, 15 February 2021 9:00:00 +0100</pubDate>
+            <enclosure url="https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.0.0.dmg"
+                       sparkle:version="3.0.0"
+                       length="0"
+                       type="application/octet-stream" />
+        </item>
+	
+    </channel>
+</rss>
