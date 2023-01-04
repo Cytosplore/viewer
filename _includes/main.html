@@ -11,12 +11,17 @@
 		<h1>Cytosplore Viewer</h1>
 		<div class="section">
 			<p>
-				Cytosplore Viewer is an interactive visual analysis system for the exploration of single cell data published in the <a href="http://celltypes.brain-map.org/" target="new">Allen Cell Types Database</a> and for a number of the single cell data resources of the  <a href=" https://www.biccn.org"> Brain Initiative Cell Census Network (BICCN)</a>.
+				Cytosplore Viewer is an interactive visual analysis system for the exploration of single cell data published in the <a href="http://celltypes.brain-map.org/" target="new">Allen Cell Types Database</a> and for a number of the single cell data resources of the  <a href=" https://www.biccn.org"> Brain Initiative Cell Census Network (BICCN)</a>, and the Brain Initiative Cell Atlas Network (BICAN).
 				<BR>
 				<BR>
 				Currently supported datasets include the October 2019 data releases in the Allen Cell Types Database of the Allen Institute for Brain Science: nuclear sequencing data of several areas of the human cortex, and single cell sequencing data of the mouse cortex and hippocampus.
-				Also supported is a special mode for cross-species comparison of cell types in the motor cortex between human, marmoset and mouse of BICCN (see <i>Evolution of cellular diversity in primary motor cortex of human, marmoset monkey, and mouse</i> below).
 				<BR>
+				<BR>
+				Also supported are special modes for:
+				<UL>
+				<LI> cross-species comparison of cell types in the motor cortex between human, marmoset and mouse of BICCN (see <i>Comparative cellular analysis of motor cortex in human, marmoset, and mouse</i> below). </LI>
+				<LI> comparing different spatial transcriptomics techniques of the SpaceTx Consortium (see <i> SpaceTx: A Roadmap for Benchmarking Spatial Transcriptomics Exploration of the Brain</i> below). </LI>
+				</UL>
 				<BR>
 				Cytosplore Viewer allows an interactive exploration of hierarchies of cell types. One can visualize transcriptome-wide gene expression in combination with metadata of individual cells, perform differential analyses and statistics between manual selections of cells, or between pre-defined clusters throughout the cellular hierarchy and more.
 				Cytosplore Viewer is based on <a href="https://www.cytosplore.org" style="color:rgb(90,50,90);">Cytosplore</a> and provides many of the analysis tools presented in the <a href="https://www.cytosplore.org/#publications" style="color:rgb(90,50,90);">previous Cytosplore publications</a> and is available for  <a href="#get">download</a>. 
@@ -142,7 +147,8 @@
     		at the <a href="https://www.tudelft.nl" target="new">TU Delft</a>
         in a research project, carried out in close collaboration with
         <a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/trygve-bakken/" target="new">Trygve Bakken</a>,
-        <a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/jeremy-miller/" target="new">Jeremy Miller</a>,
+		<a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/jeremy-miller/" target="new">Jeremy Miller</a>,
+		<a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/brian-long/" target="new">Brian Long</a>,
         <a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/rebecca-hodge/" target="new">Rebecca Hodge</a>,
         <a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/bosiljka-tasic/" target="new">Bosiljka Tasic</a>,
         <a href="http://www.alleninstitute.org/what-we-do/brain-science/about/team/staff-profiles/zizhen-yao/" target="new">Zizhen Yao</a>,
@@ -169,7 +175,42 @@
 	<div class="content-wrapper">
 		<h1>Publications</h1>
 		<div class="section">
-			
+
+<div class="paper">
+			<div class="paper-image">
+				  <img src="/assets/papers/spacetx.png" alt="Comparison between mouse, marmoset and human." class="paper-img left">
+			</div>
+			<h3>
+        <span class="title">SpaceTx: A Roadmap for Benchmarking Spatial Transcriptomics Exploration of the Brain</span>
+		    <span class="authors">B. Long, J. Miller, SpaceTx Consortium</span>, arXiv - Quantitative Biology, 2023
+      </h3>
+			<div class="section abstract">
+				<p>
+          <b>Abstract:</b>
+					Mapping spatial distributions of transcriptomic cell types is essential to understanding the brain, with its exceptional cellular heterogeneity and the functional significance of its spatial organization. Spatial transcriptomics techniques are hoped to accomplish these measurements, but each method uses different experimental and computational protocols, with different tradeoffs and optimizations. In 2017, the SpaceTx Consortium was formed to compare these methods and determine their suitability for large-scale spatial transcriptomic atlases. SpaceTx work included progress in tissue processing, taxonomy development, gene selection, image processing and data standardization, cell segmentation, cell type assignments, and visualization. Although the landscape of experimental methods has changed dramatically since the beginning of SpaceTx, the need for quantitative and detailed benchmarking of spatial transcriptomics methods in the brain is still unmet. Here, we summarize the work of SpaceTx and highlight outstanding challenges as spatial transcriptomics grows into a mature field. We also discuss how our progress provides a roadmap for benchmarking spatial transcriptomics methods in the future. Data and analyses from this consortium, along with code and methods are publicly available at <a href="https://spacetx.github.io/">https://spacetx.github.io/</a>.
+
+					<a href="https://arxiv.org/archive/q-bio" target="_blank">...</a>
+        </p>
+		
+			</div>
+			<div class="paper-links">
+				<div class="paper-link">
+					<a href="https://arxiv.org/archive/q-bio" target="_blank">
+            <i class="fas fa-file-pdf"></i>
+					</a>
+				</div>
+				<div class="paper-link">
+					<a href="https://arxiv.org/archive/q-bio" target="_blank">
+            <i class="fas fa-external-link-alt"></i>
+					</a>
+				</div>
+			</div>
+			<br style="clear:left;">
+		</div>
+		
+	</div>
+    <br/>
+	
 	<div class="paper">
 			<div class="paper-image">
 				  <img src="/assets/papers/hmm.png" alt="Comparison between mouse, marmoset and human." class="paper-img right">
@@ -303,7 +344,7 @@
 				
 			<p style="display: flex; justify-content: center">
 			<button class="btn-download-os" id="download-bt">
-					<font size="+2"> <i class="fab fa-windows"></i></font> <a href="https://sec.lumc.nl/mtg-viewer/viewer/win/3.0.0/install_cytosplore_viewer.exe"><b>Download for Windows </b></a>
+					<font size="+2"> <i class="fab fa-windows"></i></font> <a href="https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe"><b>Download for Windows </b></a>
 				</button>
 			</p>
 			<p class="centered">
