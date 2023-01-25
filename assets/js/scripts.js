@@ -37,7 +37,7 @@ function init() {
     }
 
     scroller();
-    var version = '3.0.0';
+    var version = '3.4.0';
     if(document.getElementById("download-bt") != null)
     {
   	if (navigator.appVersion.indexOf("Mac")!=-1){
