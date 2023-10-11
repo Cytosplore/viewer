@@ -74,6 +74,16 @@ input[type=checkbox] {
   background-size: 80px 80px
 }
 
+#portrait-sb{
+  background: url(../images/team/sb.jpg) no-repeat;
+  background-size: 80px 80px
+}
+
+#portrait-tk{
+  background: url(../images/team/tk.jpg) no-repeat;
+  background-size: 80px 80px
+}
+
 #portrait-am{
   background: url(../images/team/am.jpg) no-repeat;
   background-size: 80px 80px
@@ -256,4 +266,10 @@ background-color: #f1f1f1;
   transform: scale(1.05);
   transition: all .5s;
   opacity: 1;
+}
+
+#download-available {
+		width: 220px;
+		padding-top: 30px;
+		margin-left: auto;
 }
