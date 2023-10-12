@@ -38,17 +38,40 @@ function init() {
 
     scroller();
     var version = '3.4.0';
-    if(document.getElementById("download-bt") != null)
+    if(document.getElementById("download-cv") != null)
     {
   	if (navigator.appVersion.indexOf("Mac")!=-1){
 		let link= 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.'+version+'.dmg';
-		document.getElementById("download-bt").innerHTML='<font size="+2"> <i class="fab fa-apple"></i></font> <a href="'+link+'"><b>Download for Mac</b></a>';
+		document.getElementById("download-cv").innerHTML='<font size="+2"> <i class="fab fa-apple"></i></font> <a href="'+link+'"><b> Download Cytosplore Viewer</b></a>';
   	} else 
 	{
 		let link= 'https://sec.lumc.nl/mtg-viewer/viewer/win/'+version+'/install_cytosplore_viewer.exe';
-  		document.getElementById("download-bt").innerHTML='<font size="+2"> <i class="fab fa-windows"></i></font> <a href="'+link+'"><b>Download for Windows </b></a>';
+  		document.getElementById("download-cv").innerHTML='<font size="+2"> <i class="fab fa-windows"></i></font> <a href="'+link+'"><b> Download Cytosplore Viewer </b></a>';
   	}
     }
+
+	if (document.getElementById("download-sv") != null) {
+		let buttonElement = document.getElementById("download-sv");
+		let link;
+		let message;
+	
+		if (navigator.appVersion.indexOf("Mac") !== -1) {
+			message = '<font size="+2"> <i class="fab fa-apple"></i></font>Cytosplore Simian Viewer not yet available for macOS';
+			buttonElement.innerHTML = message;
+			buttonElement.disabled = true;
+			buttonElement.disabled = true;
+			buttonElement.style.color = 'gray';
+			buttonElement.classList.add('disabled-button'); // Add the disabled-button class
+			buttonElement.style.transform = 'scale(1)';
+            
+		} else //if (navigator.appVersion.indexOf("Win") !== -1) 
+		{
+			link = 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe';
+			message = '<font size="+2"> <i class="fab fa-windows"></i></font> <a href="' + link + '"><b>Download Cytosplore Simian Viewer</b></a>';
+			buttonElement.innerHTML = message;
+		}
+	}
+
 }
 
 function toggleResponsiveNav() {
