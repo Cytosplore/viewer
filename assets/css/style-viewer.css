@@ -267,9 +267,22 @@ background-color: #f1f1f1;
   transition: all .5s;
   opacity: 1;
 }
+.disabled-button {
+  background: linear-gradient(to right, #ccc, #ddd) !important;
+  pointer-events: none !important;
+}
 
 #download-available {
 		width: 220px;
 		padding-top: 30px;
 		margin-left: auto;
+}
+
+hrshort {
+  border: 0;
+  width: 25%;
+  color: #DDD;
+  background-color: #DDD;
+  height: 1px;
+  margin-bottom: -15px;
 }
