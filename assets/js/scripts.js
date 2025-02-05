@@ -58,7 +58,10 @@ function setupStyles() {
         'display': 'flex',
         'align-items': 'center',
         'justify-content': 'center',
-        'cursor': 'pointer'
+        'cursor': 'pointer',
+        'opacity': '1.0' ,
+        'margin-top': '10px',
+        'font-weight': 'normal'
     });
 
     $('.centered, .download-buttons').css({
