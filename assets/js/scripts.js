@@ -34,12 +34,12 @@ function setupNavigation() {
 }
 
 function setupDownloadLinks() {
-    setupDownloadLink("download-cv", "3.4.0", 'Viewer', 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe');
-    setupDownloadLink("download-sv", "1.0.0", 'Simian Viewer', '', 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe');
-    setupDownloadLink("download-ev", "1.0.0", 'EvoViewer', '', '');
+    setupDownloadLink("download-cv", "3.4.0", 'Viewer', 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe', 'Download Cytosplore Viewer');
+    setupDownloadLink("download-sv", "1.0.0", 'Simian Viewer', '', 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe', 'Download Simian Viewer');
+    setupDownloadLink("download-ev", "1.0.0", 'EvoViewer', '', '', 'Download EvoViewer');
 }
 
-function setupDownloadLink(elementId, version, label, macLink, winLink) {
+function setupDownloadLink(elementId, version, label, macLink, winLink, tooltip) {
     var element = $("#" + elementId);
     if (element.length) {
         let link = navigator.appVersion.indexOf("Mac") !== -1 ? macLink : winLink;
@@ -47,7 +47,7 @@ function setupDownloadLink(elementId, version, label, macLink, winLink) {
         if (!link) {
             element.prop('disabled', true).css('color', 'gray').addClass('disabled-button').css('transform', 'scale(1)');
         }
-        element.html(icon + label).attr('href', link);
+        element.html(icon + label).attr('href', link).attr('title', tooltip);
     }
 }
 
