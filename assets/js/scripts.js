@@ -35,8 +35,8 @@ function setupNavigation() {
 
 function setupDownloadLinks() {
     setupDownloadLink("download-cv", "3.4.0", 'Viewer', 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe', 'Download Cytosplore Viewer');
-    setupDownloadLink("download-sv", "1.0.0", 'Simian Viewer', '', 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe', 'Download Simian Viewer');
-    setupDownloadLink("download-ev", "1.0.0", 'EvoViewer', '', '', 'Download EvoViewer');
+    setupDownloadLink("download-sv", "1.0.0", 'Simian Viewer', '', 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe', 'Download Cytosplore Simian Viewer');
+    setupDownloadLink("download-ev", "1.0.0", 'EvoViewer', '', '', 'Download Cytosplore EvoViewer');
 }
 
 function setupDownloadLink(elementId, version, label, macLink, winLink, tooltip) {
@@ -53,14 +53,13 @@ function setupDownloadLink(elementId, version, label, macLink, winLink, tooltip)
 
 function setupStyles() {
     $('.btn-download-os').css({
-        'width': '125px',
+        'width': '90px',
         'height': '25px',
         'display': 'flex',
         'align-items': 'center',
         'justify-content': 'center',
         'cursor': 'pointer',
-        'opacity': '1.0' ,
-        'margin-top': '10px',
+        'margin-top': '5px',
         'font-weight': 'normal'
     });
 
