@@ -1,6 +1,5 @@
 $(document).ready(init);
-$(window).resize(sizeContent);
-$(window).scroll(scroller);
+$(window).on('resize', sizeContent).on('scroll', scroller);
 
 function init() {
     sizeContent();
@@ -12,28 +11,25 @@ function init() {
 
 function setupNavigation() {
     var navHeight = $(".nav-background").height();
-    $('a[href*=\\#]').click(function() {
+    $('a[href*=\\#]').on('click', function() {
         if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&
             location.hostname == this.hostname) {
             var $target = $(this.hash);
             $target = $target.length && $target || $('[name=' + this.hash.slice(1) + ']');
             if ($target.length) {
-                var targetOffset = $target.offset().top - navHeight;
-                $('html,body').animate({ scrollTop: targetOffset }, 1000);
+                $('html,body').animate({ scrollTop: $target.offset().top - navHeight }, 1000);
                 return false;
             }
         }
     });
 
     $("#nav-cytosplore").addClass("nav-active-indicator");
-    document.querySelector("#nav-toggle").addEventListener("click", toggleResponsiveNav);
+    $("#nav-toggle").on("click", toggleResponsiveNav);
 
-    document.querySelectorAll(".nav-item").forEach(function(item) {
-        item.addEventListener("click", function() {
-            if ($(window).width() < 710) {
-                toggleResponsiveNav();
-            }
-        });
+    $(".nav-item").on("click", function() {
+        if ($(window).width() < 710) {
+            toggleResponsiveNav();
+        }
     });
 }
 
@@ -44,24 +40,14 @@ function setupDownloadLinks() {
 }
 
 function setupDownloadLink(elementId, version, label, macLink, winLink) {
-    var element = document.getElementById(elementId);
-    if (element) {
-        let link, icon;
-        if (navigator.appVersion.indexOf("Mac") !== -1) {
-            link = macLink ? macLink : '';
-            icon = '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ';
-        } else {
-            link = winLink ?  winLink : '';
-            icon = '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
+    var element = $("#" + elementId);
+    if (element.length) {
+        let link = navigator.appVersion.indexOf("Mac") !== -1 ? macLink : winLink;
+        let icon = navigator.appVersion.indexOf("Mac") !== -1 ? '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ' : '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
+        if (!link) {
+            element.prop('disabled', true).css('color', 'gray').addClass('disabled-button').css('transform', 'scale(1)');
         }
-        if (link === "") {
-            element.disabled = true;
-            element.style.color = 'gray';
-            element.classList.add('disabled-button');
-            element.style.transform = 'scale(1)';
-        }
-        element.innerHTML = icon + label;
-        element.href = link;
+        element.html(icon + label).attr('href', link);
     }
 }
 
@@ -75,16 +61,12 @@ function setupStyles() {
         'cursor': 'pointer'
     });
 
-    $('.centered').css({
+    $('.centered, .download-buttons').css({
         'display': 'flex',
         'justify-content': 'center'
     });
 
-    $('.download-buttons').css({
-        'display': 'flex',
-        'justify-content': 'center',
-        'gap': '10px'
-    });
+    $('.download-buttons').css('gap', '10px');
 }
 
 function toggleResponsiveNav() {
@@ -102,15 +84,12 @@ function resetResponsiveNav() {
 function sizeContent() {
     var w = $('.main-wrapper').width() - 65;
     if ($(window).width() >= 710) w -= 35;
-    $('#actionvideo').width(w);
-    $('#actionvideo').height(w * 9 / 16);
+    $('#actionvideo').width(w).height(w * 9 / 16);
 
     resetResponsiveNav();
 
     if ($(window).width() < 710) {
-        var hamburger = ($(window).width() * 0.95 - 45) + "px";
-        $('#nav-hamburger').css("left", hamburger);
-        $('#nav-hamburger').show();
+        $('#nav-hamburger').css("left", ($(window).width() * 0.95 - 45) + "px").show();
         $('#nav-full').hide();
     } else {
         $('#nav-hamburger').hide();
@@ -146,7 +125,7 @@ function setActiveNav(selector) {
 }
 
 function handleOutboundLinkClicks(e) {
-    if (ga.hasOwnProperty("loaded") && ga.loaded == true) {
+    if (ga.hasOwnProperty("loaded") && ga.loaded) {
         ga('send', 'event', {
             eventCategory: 'Outbound Link',
             eventAction: 'click',
@@ -156,9 +135,9 @@ function handleOutboundLinkClicks(e) {
     }
 }
 
-document.querySelectorAll('a').forEach(function(element) {
-    var link = element.href;
+$('a').each(function() {
+    var link = this.href;
     if (link.indexOf("/documentation") < 0 && link.indexOf("#") < 0) {
-        element.onclick = handleOutboundLinkClicks;
+        $(this).on('click', handleOutboundLinkClicks);
     }
 });
