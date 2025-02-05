@@ -26,11 +26,9 @@ function setupNavigation() {
     });
 
     $("#nav-cytosplore").addClass("nav-active-indicator");
-
     document.querySelector("#nav-toggle").addEventListener("click", toggleResponsiveNav);
 
-    var navitems = document.querySelectorAll(".nav-item");
-    navitems.forEach(function(item) {
+    document.querySelectorAll(".nav-item").forEach(function(item) {
         item.addEventListener("click", function() {
             if ($(window).width() < 710) {
                 toggleResponsiveNav();
@@ -40,67 +38,30 @@ function setupNavigation() {
 }
 
 function setupDownloadLinks() {
-    var version = '3.4.0';
-    var downloadCv = document.getElementById("download-cv");
-    if (downloadCv) {
-        let link, icon;
-        if (navigator.appVersion.indexOf("Mac") != -1) {
-            link = 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.' + version + '.dmg';
-            icon = '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ';
-        } else {
-            link = 'https://sec.lumc.nl/mtg-viewer/viewer/win/' + version + '/install_cytosplore_viewer.exe';
-            icon = '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
-        }
-        if (link === ""){
-            downloadSv.disabled = true;
-            downloadSv.style.color = 'gray';
-            downloadSv.classList.add('disabled-button');
-            downloadSv.style.transform = 'scale(1)';
-        }
-        downloadCv.innerHTML = icon + 'Viewer';
-        downloadCv.href = link;
-    }
+    setupDownloadLink("download-cv", "3.4.0", 'Viewer', 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe');
+    setupDownloadLink("download-sv", "1.0.0", 'Simian Viewer', '', 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe');
+    setupDownloadLink("download-ev", "1.0.0", 'EvoViewer', '', '');
+}
 
-    var downloadSv = document.getElementById("download-sv");
-    if (downloadSv) {
+function setupDownloadLink(elementId, version, label, macLink, winLink) {
+    var element = document.getElementById(elementId);
+    if (element) {
         let link, icon;
         if (navigator.appVersion.indexOf("Mac") !== -1) {
-            link="";
+            link = macLink ? macLink : '';
             icon = '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ';
-
         } else {
-            link = 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe';
+            link = winLink ?  winLink : '';
             icon = '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
         }
-        if (link === ""){
-            downloadSv.disabled = true;
-            downloadSv.style.color = 'gray';
-            downloadSv.classList.add('disabled-button');
-            downloadSv.style.transform = 'scale(1)';
+        if (link === "") {
+            element.disabled = true;
+            element.style.color = 'gray';
+            element.classList.add('disabled-button');
+            element.style.transform = 'scale(1)';
         }
-        downloadSv.innerHTML = icon + 'Simian Viewer';
-        downloadSv.href = link;
-    }
-
-    var downloadEv = document.getElementById("download-ev");
-    if (downloadEv) {
-        let link, icon;
-        if (navigator.appVersion.indexOf("Mac") !== -1) {
-            link="";
-            icon = '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ';
-
-        } else {
-            link = '';
-            icon = '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
-        }
-        if (link === ""){
-            downloadEv.disabled = true;
-            downloadEv.style.color = 'gray';
-            downloadEv.classList.add('disabled-button');
-            downloadEv.style.transform = 'scale(1)';
-        }
-        downloadEv.innerHTML = icon + 'EvoViewer';
-        downloadEv.href = link;
+        element.innerHTML = icon + label;
+        element.href = link;
     }
 }
 
@@ -195,10 +156,9 @@ function handleOutboundLinkClicks(e) {
     }
 }
 
-var elements = document.getElementsByTagName('a');
-for (var i = 0, len = elements.length; i < len; i++) {
-    var link = elements[i].href;
+document.querySelectorAll('a').forEach(function(element) {
+    var link = element.href;
     if (link.indexOf("/documentation") < 0 && link.indexOf("#") < 0) {
-        elements[i].onclick = handleOutboundLinkClicks;
+        element.onclick = handleOutboundLinkClicks;
     }
-}
+});
