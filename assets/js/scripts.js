@@ -3,6 +3,7 @@ $(window).on('resize', function() {
     sizeContent();
     setupStyles();
 }).on('scroll', scroller);
+
 function init() {
     sizeContent();
     setupNavigation();
@@ -36,16 +37,23 @@ function setupNavigation() {
 }
 
 function setupDownloadLinks() {
-    setupDownloadLink("download-cv", "3.4.0", 'Viewer', 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe', 'Download Cytosplore Viewer');
-    setupDownloadLink("download-sv", "1.0.0", 'Simian Viewer', '', 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe', 'Download Cytosplore Simian Viewer');
-    setupDownloadLink("download-ev", "1.0.0", 'EvoViewer', '', '', 'Download Cytosplore EvoViewer');
+    const buttons = [
+        { id: "download-cv", version: "3.4.0", label: 'Viewer', macLink: 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', winLink: 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe', tooltip: 'Download Cytosplore Viewer' },
+        { id: "download-sv", version: "1.0.0", label: 'Simian Viewer', macLink: '', winLink: 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe', tooltip: 'Download Cytosplore Simian Viewer' },
+        { id: "download-ev", version: "1.0.0", label: 'EvoViewer', macLink: '', winLink: '', tooltip: 'Download Cytosplore EvoViewer' }
+    ];
+
+    buttons.forEach(buttonItem => {
+        setupDownloadLink(buttonItem.id, buttonItem.version, buttonItem.label, buttonItem.macLink, buttonItem.winLink, buttonItem.tooltip);
+    });
 }
 
 function setupDownloadLink(elementId, version, label, macLink, winLink, tooltip) {
     var element = $("#" + elementId);
     if (element.length) {
-        let link = navigator.appVersion.indexOf("Mac") !== -1 ? macLink : winLink;
-        let icon = navigator.appVersion.indexOf("Mac") !== -1 ? '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ' : '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
+        let isMac = navigator.appVersion.indexOf("Mac") !== -1;
+        let link = isMac ? macLink : winLink;
+        let icon = isMac ? '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> ' : '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> ';
         if (!link) {
             element.prop('disabled', true).css('color', 'gray').addClass('disabled-button').css('transform', 'scale(1)');
         }
@@ -54,22 +62,22 @@ function setupDownloadLink(elementId, version, label, macLink, winLink, tooltip)
 }
 
 function setupStyles() {
+    const commonStyles = {
+        'display': 'flex',
+        'justify-content': 'center',
+        'align-items': 'center'
+    };
+
     $('.btn-download-os').css({
         'width': '140px',
         'height': '25px',
-        'display': 'flex',
-        'align-items': 'center',
-        'justify-content': 'center',
         'cursor': 'pointer',
         'margin-top': '5px',
-        'font-weight': 'normal'
+        'font-weight': 'normal',
+        ...commonStyles
     });
 
-    $('.centered, .download-buttons').css({
-        'display': 'flex',
-        'justify-content': 'center',
-        'align-items': 'center' // Add this line
-    });
+    $('.centered, .download-buttons').css(commonStyles);
 
     $('.download-buttons').css('gap', '10px');
 
@@ -81,7 +89,13 @@ function setupStyles() {
     } else {
         $('.download-buttons').css('flex-direction', 'row');
     }
+
+    // Add animation to scroll to download-buttons
+    if ($('.download-buttons').length) {
+        $('html, body').animate({ scrollTop: $('.download-buttons').offset().top }, 1000);
+    }
 }
+
 function toggleResponsiveNav() {
     $('#nav-toggle').toggleClass("active");
     $('#nav-full').slideToggle(250);
@@ -116,18 +130,18 @@ function scroller() {
         setActiveNav("#nav-documentation");
     } else {
         var scrollPosition = $(window).scrollTop() + 100;
-        var p1 = $("#team").offset().top;
-        var p2 = $("#publications").offset().top;
-        var p3 = $("#get").offset().top;
+        var positions = [
+            { id: "#nav-download", pos: $("#get").offset().top },
+            { id: "#nav-publications", pos: $("#publications").offset().top },
+            { id: "#nav-team", pos: $("#team").offset().top },
+            { id: "#nav-cytosplore", pos: 0 }
+        ];
 
-        if (scrollPosition > p3 || $(window).scrollTop() + $(window).height() > $(document).height() - 100) {
-            setActiveNav("#nav-download");
-        } else if (scrollPosition > p2) {
-            setActiveNav("#nav-publications");
-        } else if (scrollPosition > p1) {
-            setActiveNav("#nav-team");
-        } else {
-            setActiveNav("#nav-cytosplore");
+        for (let i = 0; i < positions.length; i++) {
+            if (scrollPosition > positions[i].pos || (i === 0 && $(window).scrollTop() + $(window).height() > $(document).height() - 100)) {
+                setActiveNav(positions[i].id);
+                break;
+            }
         }
     }
 }
