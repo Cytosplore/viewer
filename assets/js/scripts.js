@@ -1,6 +1,8 @@
 $(document).ready(init);
-$(window).on('resize', sizeContent).on('scroll', scroller);
-
+$(window).on('resize', function() {
+    sizeContent();
+    setupStyles();
+}).on('scroll', scroller);
 function init() {
     sizeContent();
     setupNavigation();
@@ -65,12 +67,21 @@ function setupStyles() {
 
     $('.centered, .download-buttons').css({
         'display': 'flex',
-        'justify-content': 'center'
+        'justify-content': 'center',
+        'align-items': 'center' // Add this line
     });
 
     $('.download-buttons').css('gap', '10px');
-}
 
+    if ($(window).width() < 710) {
+        $('.download-buttons').css({
+            'flex-direction': 'column',
+            'align-items': 'center'
+        });
+    } else {
+        $('.download-buttons').css('flex-direction', 'row');
+    }
+}
 function toggleResponsiveNav() {
     $('#nav-toggle').toggleClass("active");
     $('#nav-full').slideToggle(250);
