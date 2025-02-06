@@ -104,10 +104,6 @@ function setupStyles() {
         $('.download-buttons').css('flex-direction', 'row');
     }
 
-    // Add animation to scroll to download-buttons
-    if ($('.download-buttons').length) {
-        $('html, body').animate({ scrollTop: $('.download-buttons').offset().top }, 1000);
-    }
 }
 
 function toggleResponsiveNav() {
