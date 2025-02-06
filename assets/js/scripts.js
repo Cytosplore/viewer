@@ -53,7 +53,7 @@ function setupDownloadLink(elementId, version, label, macLink, winLink, tooltip)
 
 function setupStyles() {
     $('.btn-download-os').css({
-        'width': '90px',
+        'width': '140px',
         'height': '25px',
         'display': 'flex',
         'align-items': 'center',
