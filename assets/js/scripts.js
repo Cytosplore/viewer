@@ -37,6 +37,8 @@ function setupNavigation() {
 }
 
 function setupDownloadLinks() {
+    $(".btn-download-os").remove();
+
     const buttons = [
         { id: "download-cv", version: "3.4.0", label: 'Viewer', macLink: 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg', winLink: 'https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe', tooltip: 'Download Cytosplore Viewer' },
         { id: "download-sv", version: "1.0.0", label: 'Simian Viewer', macLink: '', winLink: 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe', tooltip: 'Download Cytosplore Simian Viewer' },
@@ -44,6 +46,18 @@ function setupDownloadLinks() {
     ];
 
     buttons.forEach(buttonItem => {
+        // Create new button element
+        const button = $('<a>', {
+            id: buttonItem.id,
+            class: 'btn-download-os',
+            href: '#',
+            title: buttonItem.tooltip
+        });
+
+        // Append the button to the container
+        $('.download-buttons').append(button);
+
+        // Setup the button link and styles
         setupDownloadLink(buttonItem.id, buttonItem.version, buttonItem.label, buttonItem.macLink, buttonItem.winLink, buttonItem.tooltip);
     });
 }
@@ -122,6 +136,8 @@ function sizeContent() {
         $('#nav-hamburger').hide();
         $('#nav-full').show();
     }
+    setupDownloadLinks();
+    setupStyles();
 }
 
 function scroller() {
