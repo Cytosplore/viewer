@@ -1,12 +1,13 @@
-<hr />
+<hr class="publications-hr" />
 <div class="publications" id="publications">
-  <div class="content-wrapper">
+  <div class="publications-content-wrapper">
     <h1>Publications</h1>
-    <div class="section" id="publications-container"></div>
+    <div class="publications-section" id="publications-container"></div>
   </div>
 </div>
 
 <script>
+  // (Keep the exact same JavaScript code as originally provided)
   async function loadPublications() {
     const container = document.getElementById("publications-container");
     const totalPublications = 6;
@@ -20,7 +21,7 @@
         container.appendChild(createPublicationElement(markdown, i));
         // Add larger space after each publication
         const spacer = document.createElement("div");
-        spacer.style.marginBottom = "100px";
+        spacer.className = "publication-spacer";
         container.appendChild(spacer);
       } catch (e) {
         console.error(`Error loading publication ${i}:`, e);
@@ -43,22 +44,29 @@
       inLinks: false,
       inSupporting: false,
     };
+    let hasImage = false;
 
     for (const line of lines) {
       if (line.startsWith("![")) {
         html += parseImage(line, index);
+        hasImage = true;
       } else if (line.startsWith("### ")) {
         html += `<h3><b>${line.substring(4)}</b></h3>`;
       } else if (/^\*\*.*\*\*, .*?, \d{4}/.test(line)) {
-        html += `<p class="authors">${line}</p>`;
+        html += `<p class="paper-authors">${line}</p>`;
       } else if (line.startsWith("**Abstract:**")) {
-        html += handleSectionStart("abstract", line, sectionState);
+        // If there's an image, don't add a new paragraph for the abstract
+        const abstractStart = hasImage
+          ? `<div class="paper-abstract"><b>Abstract:</b> `
+          : `<div class="paper-abstract"><p><b>Abstract:</b> `;
+        html += abstractStart;
+        sectionState.inAbstract = true;
       } else if (line.startsWith("**Links:**")) {
         html += handleSectionStart("links", line, sectionState);
       } else if (line.startsWith("**Supporting Publications:**")) {
         html += handleSectionStart("supporting", line, sectionState);
       } else if (sectionState.inAbstract) {
-        html += line;
+        html += handleAbstractContent(line);
       } else if (sectionState.inLinks || sectionState.inSupporting) {
         html += parseLink(line);
       }
@@ -68,9 +76,36 @@
     return html;
   }
 
+  function handleAbstractContent(line) {
+    const maxAbstractLength = 400; // Limit abstract length
+    if (line.length > maxAbstractLength) {
+      return `<span class="abstract-short">${line.substring(
+        0,
+        maxAbstractLength
+      )}...</span>
+              <span class="abstract-full" style="display:none;">${line}</span>
+              <a href="#" class="see-more" onclick="toggleAbstract(this); return false;">See more</a>`;
+    }
+    return line;
+  }
+
+  function toggleAbstract(link) {
+    const shortText = link.previousElementSibling.previousElementSibling;
+    const fullText = link.previousElementSibling;
+    if (fullText.style.display === "none") {
+      fullText.style.display = "inline";
+      shortText.style.display = "none";
+      link.textContent = "See less";
+    } else {
+      fullText.style.display = "none";
+      shortText.style.display = "inline";
+      link.textContent = "See more";
+    }
+  }
+
   function handleSectionStart(type, line, sectionState) {
     const sectionMap = {
-      abstract: `<div class="section abstract"><p><b>Abstract:</b> `,
+      abstract: `<div class="paper-abstract"><p><b>Abstract:</b> `,
       links: `<div class="paper-links">`,
       supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4><p>`,
     };
@@ -128,16 +163,140 @@
 </script>
 
 <style>
-  .paper-links {
-    margin-bottom: 10px;
+  /* HR styling */
+  .publications-hr {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 20px 0;
   }
 
+  /* Main container */
+  .publications {
+    width: 100%;
+  }
+
+  .publications-content-wrapper {
+    width: 100%;
+  }
+
+  .publications h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  /* Paper styling */
+  .paper {
+    margin-bottom: 20px;
+    overflow: hidden; /* Clear floats */
+  }
+
+  .paper h3 {
+    margin: 15px 0 10px 0;
+    font-size: 18px;
+  }
+
+  .paper-authors {
+    margin: 5px 0 15px 0;
+    font-style: italic;
+  }
+
+  /* Image styling - Updated for consistent height and better wrapping */
+  .paper-image {
+    margin: 10px 0;
+  }
+
+  .paper-img {
+    max-width: 100%; /* Ensure the image scales responsively */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure the entire image is visible */
+    object-position: center; /* Center the image */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 -1px 3px rgba(0, 0, 0, 0.06); /* Add shadow in all directions */
+  }
+
+  .paper-img.left {
+    float: left;
+    margin: 0 20px 10px 0; /* Top, Right, Bottom, Left */
+    shape-outside: margin-box; /* Better text wrapping */
+  }
+
+  .paper-img.right {
+    float: right;
+    margin: 0 0 10px 20px; /* Top, Right, Bottom, Left */
+    shape-outside: margin-box; /* Better text wrapping */
+  }
+
+  /* Abstract styling - Modified for better wrapping */
+  .paper-abstract {
+    margin: 15px 0;
+    text-align: justify; /* For better alignment around images */
+  }
+
+  .paper-abstract p {
+    line-height: 1.5;
+    margin: 0; /* Remove default paragraph margins */
+  }
+
+  .abstract-short {
+    display: inline;
+  }
+
+  .abstract-full {
+    display: none;
+  }
+
+  .see-more {
+    color: #0066cc;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .see-more:hover {
+    text-decoration: underline;
+  }
+
+  /* Links styling */
+  .paper-links {
+    margin: 15px 0;
+    clear: both; /* Ensure links appear below floated content */
+  }
+
+  .paper-link {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .paper-link a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  .paper-link a:hover {
+    text-decoration: underline;
+  }
+
+  .paper-link i {
+    margin-right: 5px;
+  }
+
+  /* Supporting publications */
   .supporting-publications {
     display: block;
-    box-sizing: border-box;
-    margin-top: 0px;
-    padding-top: 0.5px;
-    padding-bottom: 0.5px;
-    clear: both;
+    margin-top: 15px;
+    clear: both; /* Ensure it appears below floated content */
+  }
+
+  .supporting-publications h4 {
+    margin: 10px 0 5px 0;
+    font-size: 16px;
+  }
+
+  .supporting-publications p {
+    line-height: 1.5;
+  }
+
+  /* Spacer */
+  .publication-spacer {
+    margin-bottom: 50px;
   }
 </style>
