@@ -95,7 +95,7 @@
           <i class="fas fa-user"></i> Authors: ${authors} | 
           <i class="fas fa-calendar-alt"></i> Year: ${year} | 
           <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
-          <i class="fas fa-book"></i> DOI: <a href="${doi}" target="_blank">${doi}</a>
+          <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>
         </p>`;
         sectionState.inLinks = true;
       } else if (line.startsWith("- [")) {
@@ -126,7 +126,7 @@
           } else if (linkText.toLowerCase().includes("article")) {
             iconClass = "fas fa-newspaper";
           } else if (linkText.toLowerCase().includes("preprint")) {
-            iconClass = "fas fa-file-upload";
+            iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
           } else if (linkText.toLowerCase().includes("installer download")) {
             iconClass = "fas fa-download";
           }
@@ -168,7 +168,7 @@
           <i class="fas fa-user"></i> Authors: ${authors} | 
           <i class="fas fa-calendar-alt"></i> Year: ${year} | 
           <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
-          <i class="fas fa-book"></i> DOI: <a href="${doi}" target="_blank">${doi}</a>
+          <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>
         </p>`;
       } else if (sectionState.inSupporting && line.startsWith("- [")) {
         if (sectionState.inLinks) {
@@ -198,7 +198,7 @@
           } else if (linkText.toLowerCase().includes("article")) {
             iconClass = "fas fa-newspaper";
           } else if (linkText.toLowerCase().includes("preprint")) {
-            iconClass = "fas fa-file-upload";
+            iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
           } else if (linkText.toLowerCase().includes("installer download")) {
             iconClass = "fas fa-download";
           }
