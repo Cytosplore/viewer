@@ -126,18 +126,17 @@ function setupDownloadLink(
         .prop("disabled", true)
         .css("color", "gray")
         .addClass("disabled-button")
-        .css("transform", "scale(1)");
+        .css("transform", "scale(1)")
+        .attr("title", "Unsupported operating system");
     } else {
       element
         .prop("disabled", false)
         .removeClass("disabled-button")
         .css("color", "")
-        .css("transform", "");
+        .css("transform", "")
+        .attr("title", tooltip);
     }
-    element
-      .html(icon + label)
-      .attr("href", link)
-      .attr("title", tooltip);
+    element.html(icon + label).attr("href", link);
   }
 }
 
