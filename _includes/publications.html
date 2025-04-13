@@ -66,10 +66,11 @@
           inAbstract = false;
         }
         if (inLinks) {
-          html += `</div>`;
+          html += `</div>`; // Close paper-links div
           inLinks = false;
         }
-        html += `</div><br/><div class="supporting-publications"><h4>Supporting Publications:</h4>`;
+        html += `</div>`; // Ensure separation from previous sections
+        html += `<div class="supporting-publications"><h4>Supporting Publications:</h4>`;
         inSupporting = true;
       } else if (inAbstract) {
         html += line;
@@ -129,5 +130,19 @@
     margin: 10px 0; /* Adds a small gap above and below the separator */
     border: none;
     border-top: 0.5px solid #ccc; /* Optional: Customize the separator style */
+  }
+
+  .paper-links {
+    margin-bottom: 10px; /* Add spacing below paper links */
+  }
+
+  .supporting-publications {
+    display: block; /* Ensure it behaves as a block element */
+    box-sizing: border-box; /* Include padding and border in element's total width/height */
+    margin-top: 15px; /* Further increased spacing above Supporting Publications */
+    margin-bottom: 0px; /* Completely removed spacing below Supporting Publications */
+    padding-top: 1px; /* Add padding above for additional spacing */
+    padding-bottom: 0px; /* Ensure no padding below */
+    clear: both; /* Ensure it starts on a new line */
   }
 </style>
