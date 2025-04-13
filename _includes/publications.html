@@ -39,17 +39,15 @@
     let html = "";
     let sectionState = {
       inTitle: true,
-      inAuthors: false,
-      inLinks: false,
       inAbstract: false,
       inSupporting: false,
     };
-    let hasImage = false;
 
     // Start with content that will wrap around the image
     html += `<div class="paper-content-wrapper">`;
 
     // First pass to check if there's an image
+    let hasImage = false;
     for (const line of lines) {
       if (line.startsWith("![")) {
         hasImage = true;
@@ -65,26 +63,13 @@
       } else if (line.startsWith("### ")) {
         html += `<h3><b>${line.substring(4)}</b></h3>`;
         sectionState.inTitle = false;
-        sectionState.inAuthors = true;
-      } else if (/^\*\*.*\*\*, .*?, \d{4}/.test(line)) {
-        html += `<p class="paper-authors">${line}</p>`;
-        sectionState.inAuthors = false;
-      } else if (line.startsWith("**Links:**")) {
-        html += `<div class="paper-links">`;
-        sectionState.inLinks = true;
       } else if (line.startsWith("**Abstract:**")) {
-        if (sectionState.inLinks) {
-          html += `</div>`; // Close links div
-          sectionState.inLinks = false;
-        }
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
       } else if (line.startsWith("**Supporting Publications:**")) {
         html += handleSectionStart("supporting", line, sectionState);
       } else if (sectionState.inAbstract) {
         html += handleAbstractContent(line);
-      } else if (sectionState.inLinks) {
-        html += parseLink(line);
       }
     }
 
@@ -124,17 +109,14 @@
 
   function handleSectionStart(type, line, sectionState) {
     const sectionMap = {
-      links: `<div class="paper-links">`,
       abstract: `<div class="paper-abstract"><p><b>Abstract:</b> `,
       supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4><p>`,
     };
 
     let html = "";
-    if (sectionState.inLinks) html += `</div>`;
     if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inSupporting) html += `</p></div>`;
 
-    sectionState.inLinks = type === "links";
     sectionState.inAbstract = type === "abstract";
     sectionState.inSupporting = type === "supporting";
 
@@ -144,7 +126,6 @@
   function closeOpenSections(sectionState) {
     let html = "";
     if (sectionState.inAbstract) html += `</p></div>`;
-    if (sectionState.inLinks) html += `</div>`;
     if (sectionState.inSupporting) html += `</p></div>`;
     return html;
   }
@@ -153,29 +134,6 @@
     const [alt, src] = line.match(/!\[(.*?)\]\((.*?)\)/).slice(1);
     const alignClass = index % 2 === 0 ? "right" : "left";
     return `<div class="paper-image ${alignClass}"><img src="${src}" alt="${alt}" class="paper-img" /></div>`;
-  }
-
-  function parseLink(line) {
-    if (line.trim() && line.includes("[")) {
-      const [text, url] = line.match(/\[(.*?)\]\((.*?)\)/).slice(1);
-      const icon = determineLinkIcon(url);
-      return `<div class="paper-link"><a href="${url}" target="_blank"><i class="fas ${icon}"></i> ${text}</a></div>`;
-    }
-    return "";
-  }
-
-  function determineLinkIcon(url) {
-    const iconMap = [
-      { pattern: /youtu\.be|youtube\.com|vimeo\.com/, icon: "fa-file-video" },
-      { pattern: /github\.com/, icon: "fa-code" },
-      { pattern: /\.pdf$/, icon: "fa-file-pdf" },
-      { pattern: /nature\.com|science\.org|doi\.org/, icon: "fa-book" },
-      { pattern: /arxiv\.org/, icon: "fa-archive" },
-      { pattern: /researchgate\.net/, icon: "fa-researchgate" },
-      { pattern: /zenodo\.org/, icon: "fa-database" },
-    ];
-
-    return iconMap.find(({ pattern }) => pattern.test(url))?.icon || "fa-link";
   }
 
   document.addEventListener("DOMContentLoaded", loadPublications);
@@ -249,47 +207,6 @@
     line-height: 1.3;
   }
 
-  /* Authors styling */
-  .paper-authors {
-    margin: 0 0 15px 0;
-    font-style: italic;
-    font-size: 14px;
-  }
-
-  /* Links styling - Fixed overlapping issue */
-  .paper-links {
-    margin: 15px 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px; /* Reduced gap to prevent wrapping issues */
-    clear: none;
-  }
-
-  .paper-link {
-    flex: 0 0 auto; /* Prevent links from growing/shrinking */
-  }
-
-  .paper-link a {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px; /* Slightly reduced padding */
-    background: #f0f0f0;
-    border-radius: 4px;
-    color: #0066cc;
-    text-decoration: none;
-    font-size: 14px;
-    white-space: nowrap;
-    min-width: 120px; /* Slightly reduced minimum width */
-    text-align: center;
-    box-sizing: border-box;
-  }
-
-  .paper-link a:hover {
-    background: #e0e0e0;
-  }
-
   /* Abstract styling */
   .paper-abstract {
     margin: 15px 0;
@@ -345,16 +262,6 @@
       width: 100%;
       float: none !important;
       margin: 0 0 20px 0 !important;
-    }
-
-    .paper-links {
-      gap: 8px;
-    }
-
-    .paper-link a {
-      min-width: 100px;
-      padding: 6px 10px;
-      font-size: 13px;
     }
   }
 </style>
