@@ -44,14 +44,16 @@
 }
 
 .paper-metadata {
-  font-size: 14px;
+  font-size: 16px;
   color: #555;
-  margin: 5px 0 10px 0;
+  margin: 3px 0 3px 0; /* Further reduce top and bottom margins */
+  line-height: 1.4; /* Slightly reduce line height */
 }
 
 .paper-metadata a {
   color: rgb(50, 110, 170);
   text-decoration: none;
+  font-size: inherit; /* Inherit size from .paper-metadata */
 }
 
 .paper-metadata a:hover {
@@ -59,8 +61,8 @@
 }
 
 .paper-abstract {
-  margin: 15px 0;
-  line-height: 1.5;
+  margin: 8px 0; /* Further reduce top and bottom margins */
+  line-height: 1.4; /* Slightly reduce line height */
   text-align: justify;
   clear: none;
 }
@@ -79,6 +81,7 @@
   cursor: pointer;
   white-space: nowrap;
   margin-left: 5px;
+  font-size: 16px; /* Match the size of the abstract text */
 }
 
 .see-more:hover {
@@ -97,8 +100,26 @@
 }
 
 .supporting-publications p {
-  line-height: 1.5;
-  margin-bottom: 20px;
+  margin: 8px 0; /* Further reduce top and bottom margins */
+  line-height: 1.4; /* Slightly reduce line height */
+  text-align: justify;
+}
+
+.supporting-metadata {
+  font-size: 16px; /* Match the size of the abstract text */
+  color: #555;
+  margin: 3px 0 3px 0; /* Reduce top and bottom margins */
+  line-height: 1.4; /* Slightly reduce line height */
+}
+
+.supporting-metadata a {
+  color: rgb(50, 110, 170);
+  text-decoration: none;
+  font-size: inherit; /* Inherit size from .supporting-metadata */
+}
+
+.supporting-metadata a:hover {
+  text-decoration: underline;
 }
 
 .publication-spacer {

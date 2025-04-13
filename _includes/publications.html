@@ -72,7 +72,7 @@
       if (line.startsWith("![")) {
         html += parseImage(line, index);
       } else if (line.startsWith("### ")) {
-        html += `<h3 ><b>${line.substring(4)}</b></h3>`;
+        html += `<h3><b>${line.substring(4)}</b></h3>`;
         sectionState.inTitle = false;
       } else if (line.startsWith("**Authors:**")) {
         const authors = line.substring(12).trim();
@@ -95,9 +95,14 @@
           <i class="fas fa-user"></i> Authors: ${authors} | 
           <i class="fas fa-calendar-alt"></i> Year: ${year} | 
           <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
-          <i class="fas fa-book"></i> DOI: <a href="${doi}" target="_blank">${doi}</a> | Links: `;
+          <i class="fas fa-book"></i> DOI: <a href="${doi}" target="_blank">${doi}</a>
+        </p>`;
         sectionState.inLinks = true;
       } else if (line.startsWith("- [")) {
+        if (sectionState.inLinks) {
+          html += `<p class="paper-metadata"><b>Links:</b> `;
+          sectionState.inLinks = false;
+        }
         const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
         if (linkMatch) {
           const linkText = linkMatch[1];
@@ -122,30 +127,95 @@
             iconClass = "fas fa-newspaper";
           } else if (linkText.toLowerCase().includes("preprint")) {
             iconClass = "fas fa-file-upload";
-          } else if (linkText.toLowerCase().includes("download")) {
+          } else if (linkText.toLowerCase().includes("installer download")) {
             iconClass = "fas fa-download";
           }
-
           html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
         }
       } else if (line.startsWith("**Abstract:**")) {
-        if (sectionState.inLinks) {
+        if (!sectionState.inLinks) {
           html = html.replace(/, $/, "");
           html += `</p>`;
-          sectionState.inLinks = false;
         }
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
       } else if (line.startsWith("**Supporting Publications:**")) {
-        html += handleSectionStart("supporting", line, sectionState);
+        html += closeOpenSections(sectionState); // Ensure all open sections are closed
+        sectionState.inSupporting = true; // Mark the start of the supporting publications section
+        html += `<div class="supporting-publications"><h4>Supporting Publications:</h4>`;
+      } else if (sectionState.inSupporting && line.startsWith("### ")) {
+        html += `<div class="supporting-publication"><h5>${line.substring(
+          4
+        )}</h5>`;
+      } else if (sectionState.inSupporting && line.startsWith("**Authors:**")) {
+        const authors = line.substring(12).trim();
+        const venue =
+          lines
+            .find((l) => l.startsWith("**Venue:**"))
+            ?.substring(10)
+            .trim() || "";
+        const year =
+          lines
+            .find((l) => l.startsWith("**Year:**"))
+            ?.substring(9)
+            .trim() || "";
+        const doi =
+          lines
+            .find((l) => l.startsWith("**DOI:**"))
+            ?.substring(8)
+            .trim() || "";
+        html += `<p class="supporting-metadata">
+          <i class="fas fa-user"></i> Authors: ${authors} | 
+          <i class="fas fa-calendar-alt"></i> Year: ${year} | 
+          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
+          <i class="fas fa-book"></i> DOI: <a href="${doi}" target="_blank">${doi}</a>
+        </p>`;
+      } else if (sectionState.inSupporting && line.startsWith("- [")) {
+        if (sectionState.inLinks) {
+          html += `<p class="supporting-metadata"><b>Links:</b> `;
+          sectionState.inLinks = false;
+        }
+        const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
+        if (linkMatch) {
+          const linkText = linkMatch[1];
+          const linkUrl = linkMatch[2];
+          let iconClass = "fas fa-link";
+
+          if (linkText.toLowerCase().includes("video")) {
+            iconClass = "fas fa-video";
+          } else if (linkText.toLowerCase().includes("github")) {
+            iconClass = "fab fa-github";
+          } else if (linkText.toLowerCase().includes("pdf")) {
+            iconClass = "fas fa-file-pdf";
+          } else if (linkText.toLowerCase().includes("slides")) {
+            iconClass = "fas fa-file-powerpoint";
+          } else if (linkText.toLowerCase().includes("code")) {
+            iconClass = "fas fa-code";
+          } else if (linkText.toLowerCase().includes("paper")) {
+            iconClass = "fas fa-file-alt";
+          } else if (linkText.toLowerCase().includes("website")) {
+            iconClass = "fas fa-globe";
+          } else if (linkText.toLowerCase().includes("article")) {
+            iconClass = "fas fa-newspaper";
+          } else if (linkText.toLowerCase().includes("preprint")) {
+            iconClass = "fas fa-file-upload";
+          } else if (linkText.toLowerCase().includes("installer download")) {
+            iconClass = "fas fa-download";
+          }
+          html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
+        }
       } else if (sectionState.inAbstract) {
         html += handleAbstractContent(line);
       }
     }
 
-    if (sectionState.inLinks) {
+    if (!sectionState.inLinks) {
       html = html.replace(/, $/, "");
       html += `</p>`;
+    }
+    if (sectionState.inSupporting) {
+      html += `</div>`; // Close the supporting publications section
+      sectionState.inSupporting = false;
     }
     html += closeOpenSections(sectionState);
     html += `</div>`;
@@ -202,11 +272,18 @@
 
   function closeOpenSections(sectionState) {
     let html = "";
-    if (sectionState.inAbstract) html += `</p></div>`;
-    if (sectionState.inSupporting) html += `</p></div>`;
+    if (sectionState.inAbstract) {
+      html += `</p></div>`;
+      sectionState.inAbstract = false;
+    }
+    if (sectionState.inSupporting) {
+      html += `</p></div>`;
+      sectionState.inSupporting = false;
+    }
     if (sectionState.inLinks) {
       html = html.replace(/, $/, "");
       html += `</p>`;
+      sectionState.inLinks = false;
     }
     return html;
   }
