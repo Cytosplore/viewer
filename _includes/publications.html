@@ -6,6 +6,14 @@
   </div>
 </div>
 
+<head>
+  <!-- Add Font Awesome CDN -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet"
+  />
+</head>
+
 <script>
   async function loadPublications() {
     const container = document.getElementById("publications-container");
@@ -77,7 +85,11 @@
             .find((l) => l.startsWith("**DOI:**"))
             ?.substring(8)
             .trim() || "";
-        html += `<p class="paper-metadata">Authors: ${authors} | Venue: ${venue} | Year: ${year} | DOI: <a href="${doi}" target="_blank">${doi}</a> | Links: `;
+        html += `<p class="paper-metadata">
+          <i class="fas fa-user"></i> Authors: ${authors} | 
+          <i class="fas fa-calendar-alt"></i> Year: ${year} | 
+          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
+          <i class="fas fa-book"></i> DOI: <a href="${doi}" target="_blank">${doi}</a> | Links: `;
         sectionState.inLinks = true;
       } else if (line.startsWith("- [")) {
         // Parse links
@@ -85,7 +97,29 @@
         if (linkMatch) {
           const linkText = linkMatch[1];
           const linkUrl = linkMatch[2];
-          html += `<a href="${linkUrl}" target="_blank">${linkText}</a>, `;
+          let iconClass = "fas fa-link"; // Default icon
+
+          if (linkText.toLowerCase().includes("video")) {
+            iconClass = "fas fa-video";
+          } else if (linkText.toLowerCase().includes("github")) {
+            iconClass = "fab fa-github";
+          } else if (linkText.toLowerCase().includes("pdf")) {
+            iconClass = "fas fa-file-pdf";
+          } else if (linkText.toLowerCase().includes("slides")) {
+            iconClass = "fas fa-file-powerpoint";
+          } else if (linkText.toLowerCase().includes("code")) {
+            iconClass = "fas fa-code";
+          } else if (linkText.toLowerCase().includes("paper")) {
+            iconClass = "fas fa-file-alt";
+          } else if (linkText.toLowerCase().includes("website")) {
+            iconClass = "fas fa-globe";
+          } else if (linkText.toLowerCase().includes("article")) {
+            iconClass = "fas fa-newspaper";
+          } else if (linkText.toLowerCase().includes("preprint")) {
+            iconClass = "fas fa-file-upload";
+          }
+
+          html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
         }
       } else if (line.startsWith("**Abstract:**")) {
         // Close links section if open
