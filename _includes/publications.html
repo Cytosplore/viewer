@@ -1,8 +1,11 @@
 <hr class="publications-hr" />
-<div class="publications" id="publications">
-  <div class="publications-content-wrapper">
-    <h1 class="middle-blue">Publications</h1>
-    <div class="publications-section" id="publications-container"></div>
+<div class="cytosplore" id="publications">
+  <div class="content-wrapper">
+    <h1>Publications</h1>
+    <div class="section">
+      <br />
+      <div class="publications-section" id="publications-container"></div>
+    </div>
   </div>
 </div>
 
@@ -69,7 +72,7 @@
       if (line.startsWith("![")) {
         html += parseImage(line, index);
       } else if (line.startsWith("### ")) {
-        html += `<h3 class="middle-blue"><b>${line.substring(4)}</b></h3>`;
+        html += `<h3 ><b>${line.substring(4)}</b></h3>`;
         sectionState.inTitle = false;
       } else if (line.startsWith("**Authors:**")) {
         const authors = line.substring(12).trim();

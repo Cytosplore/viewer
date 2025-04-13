@@ -1,27 +1,3 @@
-.publications-hr {
-  background: rgba(50, 110, 170, 0.25);
-  height: 1px;
-  border: none;
-  margin: 20px 0;
-}
-
-.publications {
-  width: 100%;
-  padding-bottom: 0;
-}
-
-.publications-content-wrapper {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.publications h1 {
-  color: rgb(50, 110, 170);
-  font-size: 28px;
-  margin-bottom: 20px;
-}
-
 .paper {
   margin-bottom: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
