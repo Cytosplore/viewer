@@ -43,10 +43,8 @@
       inSupporting: false,
     };
 
-    // Start with content that will wrap around the image
     html += `<div class="paper-content-wrapper">`;
 
-    // First pass to check if there's an image
     let hasImage = false;
     for (const line of lines) {
       if (line.startsWith("![")) {
@@ -55,14 +53,30 @@
       }
     }
 
-    // Second pass to build HTML
     for (const line of lines) {
       if (line.startsWith("![")) {
-        // Insert image with proper floating
         html += parseImage(line, index);
       } else if (line.startsWith("### ")) {
         html += `<h3><b>${line.substring(4)}</b></h3>`;
         sectionState.inTitle = false;
+      } else if (line.startsWith("**Authors:**")) {
+        const authors = line.substring(12).trim();
+        const venue =
+          lines
+            .find((l) => l.startsWith("**Venue:**"))
+            ?.substring(10)
+            .trim() || "";
+        const year =
+          lines
+            .find((l) => l.startsWith("**Year:**"))
+            ?.substring(9)
+            .trim() || "";
+        const doi =
+          lines
+            .find((l) => l.startsWith("**DOI:**"))
+            ?.substring(8)
+            .trim() || "";
+        html += `<p class="paper-metadata">Authors: ${authors} | Venue: ${venue} | Year: ${year} | DOI: <a href="${doi}" target="_blank">${doi}</a></p>`;
       } else if (line.startsWith("**Abstract:**")) {
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
@@ -73,9 +87,7 @@
       }
     }
 
-    // Close any open sections
     html += closeOpenSections(sectionState);
-    // Close content wrapper
     html += `</div>`;
     return html;
   }
@@ -205,6 +217,22 @@
     margin: 0 0 5px 0; /* Adjusted bottom margin */
     font-size: 18px;
     line-height: 1.3;
+  }
+
+  /* Metadata styling */
+  .paper-metadata {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0 10px 0;
+  }
+
+  .paper-metadata a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  .paper-metadata a:hover {
+    text-decoration: underline;
   }
 
   /* Abstract styling */
