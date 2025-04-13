@@ -3,7 +3,7 @@ $(window)
   .on("resize", function () {
     sizeContent();
     setupStyles();
-    setupDownloadLinks(); // Ensure buttons are updated with the current OS info
+    setupDownloadLinks();
   })
   .on("scroll", scroller);
 
@@ -47,10 +47,8 @@ function setupNavigation() {
 }
 
 function setupDownloadLinks() {
-  // Clear all existing buttons
   $(".btn-download-os").remove();
 
-  // Define the latest button configurations
   const buttons = [
     {
       id: "download-classic",
@@ -60,7 +58,7 @@ function setupDownloadLinks() {
         "https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg",
       winLink:
         "https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe",
-      linuxLink: "", // Linux link placeholder
+      linLink: "",
       tooltip: "Download Classic Cytosplore Viewer",
       container: "#get-classic-cytosplore-installer .download-buttons",
     },
@@ -69,15 +67,13 @@ function setupDownloadLinks() {
       version: "1.0.0",
       label: "Latest Viewer",
       macLink: "",
-      winLink:
-        "https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe",
-      linuxLink: "", // Linux link placeholder
+      winLink: "",
+      linLink: "",
       tooltip: "Download Latest Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
     },
   ];
 
-  // Reinitialize buttons with the latest information
   buttons.forEach((buttonItem) => {
     const button = $("<a>", {
       id: buttonItem.id,
@@ -86,17 +82,15 @@ function setupDownloadLinks() {
       title: buttonItem.tooltip,
     });
 
-    // Append the button to the specified container
     $(buttonItem.container).append(button);
 
-    // Dynamically determine the OS and update the button
     setupDownloadLink(
       buttonItem.id,
       buttonItem.version,
       buttonItem.label,
       buttonItem.macLink,
       buttonItem.winLink,
-      buttonItem.linuxLink,
+      buttonItem.linLink,
       buttonItem.tooltip
     );
   });
@@ -108,18 +102,17 @@ function setupDownloadLink(
   label,
   macLink,
   winLink,
-  linuxLink,
+  linLink,
   tooltip
 ) {
   var element = $("#" + elementId);
   if (element.length) {
-    // Dynamically determine the OS on each call
     let userAgent = navigator.userAgent.toLowerCase();
     let isMac = userAgent.indexOf("mac") !== -1;
     let isLinux = userAgent.indexOf("linux") !== -1;
     let isWindows = userAgent.indexOf("win") !== -1;
 
-    let link = isMac ? macLink : isLinux ? linuxLink : isWindows ? winLink : "";
+    let link = isMac ? macLink : isLinux ? linLink : isWindows ? winLink : "";
     let icon = isMac
       ? '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> '
       : isLinux
