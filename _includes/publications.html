@@ -7,7 +7,6 @@
 </div>
 
 <script>
-  // (Keep the exact same JavaScript code as originally provided)
   async function loadPublications() {
     const container = document.getElementById("publications-container");
     const totalPublications = 6;
@@ -19,7 +18,6 @@
 
         const markdown = await response.text();
         container.appendChild(createPublicationElement(markdown, i));
-        // Add larger space after each publication
         const spacer = document.createElement("div");
         spacer.className = "publication-spacer";
         container.appendChild(spacer);
@@ -40,44 +38,65 @@
     const lines = markdown.split("\n");
     let html = "";
     let sectionState = {
-      inAbstract: false,
+      inTitle: true,
+      inAuthors: false,
       inLinks: false,
+      inAbstract: false,
       inSupporting: false,
     };
     let hasImage = false;
 
+    // Start with content that will wrap around the image
+    html += `<div class="paper-content-wrapper">`;
+
+    // First pass to check if there's an image
     for (const line of lines) {
       if (line.startsWith("![")) {
-        html += parseImage(line, index);
         hasImage = true;
+        break;
+      }
+    }
+
+    // Second pass to build HTML
+    for (const line of lines) {
+      if (line.startsWith("![")) {
+        // Insert image with proper floating
+        html += parseImage(line, index);
       } else if (line.startsWith("### ")) {
         html += `<h3><b>${line.substring(4)}</b></h3>`;
+        sectionState.inTitle = false;
+        sectionState.inAuthors = true;
       } else if (/^\*\*.*\*\*, .*?, \d{4}/.test(line)) {
         html += `<p class="paper-authors">${line}</p>`;
-      } else if (line.startsWith("**Abstract:**")) {
-        // If there's an image, don't add a new paragraph for the abstract
-        const abstractStart = hasImage
-          ? `<div class="paper-abstract"><b>Abstract:</b> `
-          : `<div class="paper-abstract"><p><b>Abstract:</b> `;
-        html += abstractStart;
-        sectionState.inAbstract = true;
+        sectionState.inAuthors = false;
       } else if (line.startsWith("**Links:**")) {
-        html += handleSectionStart("links", line, sectionState);
+        html += `<div class="paper-links">`;
+        sectionState.inLinks = true;
+      } else if (line.startsWith("**Abstract:**")) {
+        if (sectionState.inLinks) {
+          html += `</div>`; // Close links div
+          sectionState.inLinks = false;
+        }
+        html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
+        sectionState.inAbstract = true;
       } else if (line.startsWith("**Supporting Publications:**")) {
         html += handleSectionStart("supporting", line, sectionState);
       } else if (sectionState.inAbstract) {
         html += handleAbstractContent(line);
-      } else if (sectionState.inLinks || sectionState.inSupporting) {
+      } else if (sectionState.inLinks) {
         html += parseLink(line);
       }
     }
 
+    // Close any open sections
     html += closeOpenSections(sectionState);
+    // Close content wrapper
+    html += `</div>`;
     return html;
   }
 
   function handleAbstractContent(line) {
-    const maxAbstractLength = 400; // Limit abstract length
+    const maxAbstractLength = 400;
     if (line.length > maxAbstractLength) {
       return `<span class="abstract-short">${line.substring(
         0,
@@ -105,18 +124,18 @@
 
   function handleSectionStart(type, line, sectionState) {
     const sectionMap = {
-      abstract: `<div class="paper-abstract"><p><b>Abstract:</b> `,
       links: `<div class="paper-links">`,
+      abstract: `<div class="paper-abstract"><p><b>Abstract:</b> `,
       supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4><p>`,
     };
 
     let html = "";
-    if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inLinks) html += `</div>`;
+    if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inSupporting) html += `</p></div>`;
 
-    sectionState.inAbstract = type === "abstract";
     sectionState.inLinks = type === "links";
+    sectionState.inAbstract = type === "abstract";
     sectionState.inSupporting = type === "supporting";
 
     return html + sectionMap[type];
@@ -133,14 +152,14 @@
   function parseImage(line, index) {
     const [alt, src] = line.match(/!\[(.*?)\]\((.*?)\)/).slice(1);
     const alignClass = index % 2 === 0 ? "right" : "left";
-    return `<div class="paper-image"><img src="${src}" alt="${alt}" class="paper-img ${alignClass}" /></div>`;
+    return `<div class="paper-image ${alignClass}"><img src="${src}" alt="${alt}" class="paper-img" /></div>`;
   }
 
   function parseLink(line) {
     if (line.trim() && line.includes("[")) {
       const [text, url] = line.match(/\[(.*?)\]\((.*?)\)/).slice(1);
       const icon = determineLinkIcon(url);
-      return `<div class="paper-link"><a href="${url}" target="_blank" title="${text}"><i class="fas ${icon}"></i></a></div>`;
+      return `<div class="paper-link"><a href="${url}" target="_blank"><i class="fas ${icon}"></i> ${text}</a></div>`;
     }
     return "";
   }
@@ -178,6 +197,8 @@
 
   .publications-content-wrapper {
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .publications h1 {
@@ -185,104 +206,122 @@
     margin-bottom: 20px;
   }
 
-  /* Paper styling */
+  /* Main paper container */
   .paper {
-    margin-bottom: 20px;
-    overflow: hidden; /* Clear floats */
+    margin-bottom: 30px;
   }
 
-  .paper h3 {
-    margin: 15px 0 10px 0;
-    font-size: 18px;
+  /* Content wrapper for text wrapping */
+  .paper-content-wrapper {
+    overflow: hidden; /* Creates new formatting context */
+    position: relative;
   }
 
-  .paper-authors {
-    margin: 5px 0 15px 0;
-    font-style: italic;
-  }
-
-  /* Image styling - Updated for consistent height and better wrapping */
+  /* Image styling */
   .paper-image {
-    margin: 10px 0;
+    width: 35%; /* Reduced from 40% to give more text space */
+    margin-bottom: 15px;
+  }
+
+  .paper-image.left {
+    float: left;
+    margin-right: 25px;
+    margin-bottom: 15px;
+  }
+
+  .paper-image.right {
+    float: right;
+    margin-left: 25px;
+    margin-bottom: 15px;
   }
 
   .paper-img {
-    max-width: 100%; /* Ensure the image scales responsively */
-    height: auto; /* Maintain aspect ratio */
-    object-fit: contain; /* Ensure the entire image is visible */
-    object-position: center; /* Center the image */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 -1px 3px rgba(0, 0, 0, 0.06); /* Add shadow in all directions */
+    width: 400px; /* Set a fixed width */
+    height: 200px; /* Set a fixed height */
+    object-fit: contain; /* Ensure the whole image is visible within the dimensions */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-  .paper-img.left {
-    float: left;
-    margin: 0 20px 10px 0; /* Top, Right, Bottom, Left */
-    shape-outside: margin-box; /* Better text wrapping */
+  /* Title styling */
+  .paper h3 {
+    margin: 0 0 5px 0; /* Adjusted bottom margin */
+    font-size: 18px;
+    line-height: 1.3;
   }
 
-  .paper-img.right {
-    float: right;
-    margin: 0 0 10px 20px; /* Top, Right, Bottom, Left */
-    shape-outside: margin-box; /* Better text wrapping */
+  /* Authors styling */
+  .paper-authors {
+    margin: 0 0 15px 0;
+    font-style: italic;
+    font-size: 14px;
   }
 
-  /* Abstract styling - Modified for better wrapping */
+  /* Links styling - Fixed overlapping issue */
+  .paper-links {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px; /* Reduced gap to prevent wrapping issues */
+    clear: none;
+  }
+
+  .paper-link {
+    flex: 0 0 auto; /* Prevent links from growing/shrinking */
+  }
+
+  .paper-link a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px; /* Slightly reduced padding */
+    background: #f0f0f0;
+    border-radius: 4px;
+    color: #0066cc;
+    text-decoration: none;
+    font-size: 14px;
+    white-space: nowrap;
+    min-width: 120px; /* Slightly reduced minimum width */
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .paper-link a:hover {
+    background: #e0e0e0;
+  }
+
+  /* Abstract styling */
   .paper-abstract {
     margin: 15px 0;
-    text-align: justify; /* For better alignment around images */
+    line-height: 1.5;
+    text-align: justify;
+    clear: none;
   }
 
   .paper-abstract p {
-    line-height: 1.5;
-    margin: 0; /* Remove default paragraph margins */
+    margin: 0;
   }
 
-  .abstract-short {
-    display: inline;
-  }
-
+  .abstract-short,
   .abstract-full {
-    display: none;
+    display: inline;
   }
 
   .see-more {
     color: #0066cc;
-    text-decoration: none;
     cursor: pointer;
+    white-space: nowrap;
+    margin-left: 5px;
   }
 
   .see-more:hover {
     text-decoration: underline;
   }
 
-  /* Links styling */
-  .paper-links {
-    margin: 15px 0;
-    clear: both; /* Ensure links appear below floated content */
-  }
-
-  .paper-link {
-    display: inline-block;
-    margin-right: 10px;
-  }
-
-  .paper-link a {
-    color: #0066cc;
-    text-decoration: none;
-  }
-
-  .paper-link a:hover {
-    text-decoration: underline;
-  }
-
-  .paper-link i {
-    margin-right: 5px;
-  }
-
   /* Supporting publications */
   .supporting-publications {
     display: block;
-    margin-top: 15px;
+    margin-top: 20px;
     clear: both; /* Ensure it appears below floated content */
   }
 
@@ -298,5 +337,24 @@
   /* Spacer */
   .publication-spacer {
     margin-bottom: 50px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .paper-image {
+      width: 100%;
+      float: none !important;
+      margin: 0 0 20px 0 !important;
+    }
+
+    .paper-links {
+      gap: 8px;
+    }
+
+    .paper-link a {
+      min-width: 100px;
+      padding: 6px 10px;
+      font-size: 13px;
+    }
   }
 </style>
