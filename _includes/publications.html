@@ -48,7 +48,7 @@
       if (line.startsWith("![")) {
         html += parseImage(line, index);
       } else if (line.startsWith("### ")) {
-        html += `<h3>${line.substring(4)}</h3>`;
+        html += `<h3><b>${line.substring(4)}</b></h3>`;
       } else if (/^\*\*.*\*\*, .*?, \d{4}/.test(line)) {
         html += `<p class="authors">${line}</p>`;
       } else if (line.startsWith("**Abstract:**")) {
