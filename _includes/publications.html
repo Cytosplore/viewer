@@ -9,8 +9,7 @@
 <script>
   async function loadPublications() {
     const container = document.getElementById("publications-container");
-
-    const totalPublications = 6; // You can change this value to load more or fewer publications
+    const totalPublications = 6;
 
     for (let i = totalPublications; i >= 1; i--) {
       try {
@@ -18,72 +17,84 @@
         if (!response.ok) continue;
 
         const markdown = await response.text();
-        const paperDiv = document.createElement("div");
-        paperDiv.className = "paper";
-
-        // Parse markdown into HTML structure
-        let html = parseMarkdownToHtml(markdown, i);
-        paperDiv.innerHTML = html;
-        container.appendChild(paperDiv);
-
-        // Add a separator after each publication
-        const separator = document.createElement("hr");
-        separator.className = "publication-separator";
-        container.appendChild(separator);
+        container.appendChild(createPublicationElement(markdown, i));
+        container.appendChild(createSeparator());
       } catch (e) {
         console.error(`Error loading publication ${i}:`, e);
       }
     }
   }
 
+  function createPublicationElement(markdown, index) {
+    const paperDiv = document.createElement("div");
+    paperDiv.className = "paper";
+    paperDiv.innerHTML = parseMarkdownToHtml(markdown, index);
+    return paperDiv;
+  }
+
+  function createSeparator() {
+    const separator = document.createElement("hr");
+    separator.className = "publication-separator";
+    return separator;
+  }
+
   function parseMarkdownToHtml(markdown, index) {
     const lines = markdown.split("\n");
     let html = "";
-    let inAbstract = false;
-    let inLinks = false;
-    let inSupporting = false;
+    let sectionState = {
+      inAbstract: false,
+      inLinks: false,
+      inSupporting: false,
+    };
 
     for (const line of lines) {
       if (line.startsWith("![")) {
         html += parseImage(line, index);
       } else if (line.startsWith("### ")) {
         html += `<h3>${line.substring(4)}</h3>`;
-      } else if (line.match(/^\*\*.*\*\*, .*?, \d{4}/)) {
+      } else if (/^\*\*.*\*\*, .*?, \d{4}/.test(line)) {
         html += `<p class="authors">${line}</p>`;
       } else if (line.startsWith("**Abstract:**")) {
-        html += `<div class="section abstract"><p><b>Abstract:</b> `;
-        inAbstract = true;
+        html += handleSectionStart("abstract", line, sectionState);
       } else if (line.startsWith("**Links:**")) {
-        if (inAbstract) {
-          html += `</p></div>`;
-          inAbstract = false;
-        }
-        html += `<div class="paper-links">`;
-        inLinks = true;
+        html += handleSectionStart("links", line, sectionState);
       } else if (line.startsWith("**Supporting Publications:**")) {
-        if (inAbstract) {
-          html += `</p></div>`;
-          inAbstract = false;
-        }
-        if (inLinks) {
-          html += `</div>`; // Close paper-links div
-          inLinks = false;
-        }
-        html += `</div>`; // Ensure separation from previous sections
-        html += `<div class="supporting-publications"><h4>Supporting Publications:</h4>`;
-        inSupporting = true;
-      } else if (inAbstract) {
+        html += handleSectionStart("supporting", line, sectionState);
+      } else if (sectionState.inAbstract) {
         html += line;
-      } else if (inLinks || inSupporting) {
+      } else if (sectionState.inLinks || sectionState.inSupporting) {
         html += parseLink(line);
       }
     }
 
-    // Final cleanup
-    if (inAbstract) html += `</p></div>`;
-    if (inLinks) html += `</div>`;
-    if (inSupporting) html += `</div>`;
+    html += closeOpenSections(sectionState);
+    return html;
+  }
 
+  function handleSectionStart(type, line, sectionState) {
+    const sectionMap = {
+      abstract: `<div class="section abstract"><p><b>Abstract:</b> `,
+      links: `<div class="paper-links">`,
+      supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4>`,
+    };
+
+    let html = "";
+    if (sectionState.inAbstract) html += `</p></div>`;
+    if (sectionState.inLinks) html += `</div>`;
+    if (sectionState.inSupporting) html += `</div>`;
+
+    sectionState.inAbstract = type === "abstract";
+    sectionState.inLinks = type === "links";
+    sectionState.inSupporting = type === "supporting";
+
+    return html + sectionMap[type];
+  }
+
+  function closeOpenSections(sectionState) {
+    let html = "";
+    if (sectionState.inAbstract) html += `</p></div>`;
+    if (sectionState.inLinks) html += `</div>`;
+    if (sectionState.inSupporting) html += `</div>`;
     return html;
   }
 
@@ -96,7 +107,7 @@
   function parseLink(line) {
     if (line.trim() && line.includes("[")) {
       const [text, url] = line.match(/\[(.*?)\]\((.*?)\)/).slice(1);
-      let icon = determineLinkIcon(url);
+      const icon = determineLinkIcon(url);
       return `<div class="paper-link"><a href="${url}" target="_blank" title="${text}"><i class="fas ${icon}"></i></a></div>`;
     }
     return "";
@@ -108,18 +119,12 @@
       { pattern: /github\.com/, icon: "fa-code" },
       { pattern: /\.pdf$/, icon: "fa-file-pdf" },
       { pattern: /nature\.com|science\.org|doi\.org/, icon: "fa-book" },
-      { pattern: /arxiv\.org/, icon: "fa-archive" }, // Example: Add arXiv
-      { pattern: /researchgate\.net/, icon: "fa-researchgate" }, // Example: Add ResearchGate
-      { pattern: /zenodo\.org/, icon: "fa-database" }, // Example: Add Zenodo
+      { pattern: /arxiv\.org/, icon: "fa-archive" },
+      { pattern: /researchgate\.net/, icon: "fa-researchgate" },
+      { pattern: /zenodo\.org/, icon: "fa-database" },
     ];
 
-    for (const { pattern, icon } of iconMap) {
-      if (pattern.test(url)) {
-        return icon;
-      }
-    }
-
-    return "fa-link"; // Default icon
+    return iconMap.find(({ pattern }) => pattern.test(url))?.icon || "fa-link";
   }
 
   document.addEventListener("DOMContentLoaded", loadPublications);
@@ -127,22 +132,20 @@
 
 <style>
   .publication-separator {
-    margin: 10px 0; /* Adds a small gap above and below the separator */
+    margin: 10px 0;
     border: none;
-    border-top: 0.5px solid #ccc; /* Optional: Customize the separator style */
+    border-top: 0.5px solid #ccc;
   }
 
   .paper-links {
-    margin-bottom: 10px; /* Add spacing below paper links */
+    margin-bottom: 10px;
   }
 
   .supporting-publications {
-    display: block; /* Ensure it behaves as a block element */
-    box-sizing: border-box; /* Include padding and border in element's total width/height */
-    margin-top: 15px; /* Further increased spacing above Supporting Publications */
-    margin-bottom: 0px; /* Completely removed spacing below Supporting Publications */
-    padding-top: 1px; /* Add padding above for additional spacing */
-    padding-bottom: 0px; /* Ensure no padding below */
-    clear: both; /* Ensure it starts on a new line */
+    display: block;
+    box-sizing: border-box;
+    margin-top: 15px;
+    padding-top: 1px;
+    clear: both;
   }
 </style>
