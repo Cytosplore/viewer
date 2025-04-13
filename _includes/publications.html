@@ -18,8 +18,10 @@
 
         const markdown = await response.text();
         container.appendChild(createPublicationElement(markdown, i));
-        // Add space after each publication
-        container.appendChild(document.createElement("br"));
+        // Add larger space after each publication
+        const spacer = document.createElement("div");
+        spacer.style.marginBottom = "100px";
+        container.appendChild(spacer);
       } catch (e) {
         console.error(`Error loading publication ${i}:`, e);
       }
