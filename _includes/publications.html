@@ -214,9 +214,9 @@
 
 <style>
   .publications-hr {
-    border: 0;
+    background: rgba(50, 110, 170, 0.25); /* Consistent with portrait hr */
     height: 1px;
-    background: #ddd;
+    border: none;
     margin: 20px 0;
   }
 
@@ -232,6 +232,7 @@
   }
 
   .publications h1 {
+    color: rgb(50, 110, 170); /* Consistent with middle-blue */
     font-size: 28px;
     margin-bottom: 20px;
   }
@@ -282,7 +283,7 @@
   }
 
   .paper-metadata a {
-    color: #326eaa;
+    color: rgb(50, 110, 170); /* Consistent with a, a:visited */
     text-decoration: none;
   }
 
@@ -307,7 +308,7 @@
   }
 
   .see-more {
-    color: #0066cc;
+    color: rgb(50, 110, 170); /* Consistent with middle-blue */
     cursor: pointer;
     white-space: nowrap;
     margin-left: 5px;
@@ -334,6 +335,28 @@
 
   .publication-spacer {
     margin-bottom: 0;
+  }
+
+  .btn-download-os {
+    background: linear-gradient(
+      to right,
+      #4689c4,
+      #123e6c
+    ); /* Consistent with btn-download-os */
+    color: white;
+    border-radius: 4px;
+    padding: 14px;
+    font-size: 16px;
+    display: block;
+    line-height: 24px;
+    opacity: 0.9;
+    text-align: center;
+  }
+
+  .btn-download-os:hover {
+    transform: scale(1.05);
+    transition: all 0.5s;
+    opacity: 1;
   }
 
   @media (max-width: 1280px) {
