@@ -18,7 +18,8 @@
 
         const markdown = await response.text();
         container.appendChild(createPublicationElement(markdown, i));
-        container.appendChild(createSeparator());
+        // Add space after each publication
+        container.appendChild(document.createElement("br"));
       } catch (e) {
         console.error(`Error loading publication ${i}:`, e);
       }
@@ -30,12 +31,6 @@
     paperDiv.className = "paper";
     paperDiv.innerHTML = parseMarkdownToHtml(markdown, index);
     return paperDiv;
-  }
-
-  function createSeparator() {
-    const separator = document.createElement("hr");
-    separator.className = "publication-separator";
-    return separator;
   }
 
   function parseMarkdownToHtml(markdown, index) {
@@ -75,13 +70,13 @@
     const sectionMap = {
       abstract: `<div class="section abstract"><p><b>Abstract:</b> `,
       links: `<div class="paper-links">`,
-      supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4>`,
+      supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4><p>`,
     };
 
     let html = "";
     if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inLinks) html += `</div>`;
-    if (sectionState.inSupporting) html += `</div>`;
+    if (sectionState.inSupporting) html += `</p></div>`;
 
     sectionState.inAbstract = type === "abstract";
     sectionState.inLinks = type === "links";
@@ -94,7 +89,7 @@
     let html = "";
     if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inLinks) html += `</div>`;
-    if (sectionState.inSupporting) html += `</div>`;
+    if (sectionState.inSupporting) html += `</p></div>`;
     return html;
   }
 
@@ -131,12 +126,6 @@
 </script>
 
 <style>
-  .publication-separator {
-    margin: 10px 0;
-    border: none;
-    border-top: 0.5px solid #ccc;
-  }
-
   .paper-links {
     margin-bottom: 10px;
   }
@@ -144,8 +133,9 @@
   .supporting-publications {
     display: block;
     box-sizing: border-box;
-    margin-top: 15px;
-    padding-top: 1px;
+    margin-top: 0px;
+    padding-top: 0.5px;
+    padding-bottom: 0.5px;
     clear: both;
   }
 </style>
