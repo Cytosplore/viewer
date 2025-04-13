@@ -27,9 +27,6 @@
 
         const markdown = await response.text();
         container.appendChild(createPublicationElement(markdown, i));
-        const spacer = document.createElement("div");
-        spacer.className = "publication-spacer";
-        container.appendChild(spacer);
       } catch (e) {
         console.error(`Error loading publication ${i}:`, e);
       }
@@ -239,7 +236,13 @@
   }
 
   .paper {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05); /* More subtle bottom border */
+    padding-bottom: 15px;
+  }
+
+  .paper:last-child {
+    border-bottom: none; /* Remove border for the last publication */
   }
 
   .paper-content-wrapper {
@@ -265,8 +268,8 @@
   }
 
   .paper-img {
-    width: 400px;
-    height: 200px;
+    width: 350px;
+    height: 220px;
     object-fit: contain;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -360,7 +363,7 @@
     opacity: 1;
   }
 
-  @media (max-width: 1280px) {
+  @media (max-width: 1200px) {
     .paper-image {
       width: 100%;
       float: none !important;
