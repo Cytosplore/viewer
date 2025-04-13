@@ -129,6 +129,8 @@
             iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
           } else if (linkText.toLowerCase().includes("installer download")) {
             iconClass = "fas fa-download";
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>, `;
+            continue;
           }
           html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
         }
@@ -201,6 +203,8 @@
             iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
           } else if (linkText.toLowerCase().includes("installer download")) {
             iconClass = "fas fa-download";
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>, `;
+            continue;
           }
           html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
         }
