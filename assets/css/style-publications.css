@@ -31,8 +31,8 @@
 }
 
 .paper-img {
-  width: 350px;
-  height: 220px;
+  width: 380px;
+  height: 250px;
   object-fit: contain;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
