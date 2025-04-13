@@ -41,6 +41,7 @@
       inTitle: true,
       inAbstract: false,
       inSupporting: false,
+      inLinks: false,
     };
 
     html += `<div class="paper-content-wrapper">`;
@@ -76,8 +77,23 @@
             .find((l) => l.startsWith("**DOI:**"))
             ?.substring(8)
             .trim() || "";
-        html += `<p class="paper-metadata">Authors: ${authors} | Venue: ${venue} | Year: ${year} | DOI: <a href="${doi}" target="_blank">${doi}</a></p>`;
+        html += `<p class="paper-metadata">Authors: ${authors} | Venue: ${venue} | Year: ${year} | DOI: <a href="${doi}" target="_blank">${doi}</a> | Links: `;
+        sectionState.inLinks = true;
+      } else if (line.startsWith("- [")) {
+        // Parse links
+        const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
+        if (linkMatch) {
+          const linkText = linkMatch[1];
+          const linkUrl = linkMatch[2];
+          html += `<a href="${linkUrl}" target="_blank">${linkText}</a>, `;
+        }
       } else if (line.startsWith("**Abstract:**")) {
+        // Close links section if open
+        if (sectionState.inLinks) {
+          html = html.replace(/, $/, ""); // Remove trailing comma
+          html += `</p>`;
+          sectionState.inLinks = false;
+        }
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
       } else if (line.startsWith("**Supporting Publications:**")) {
@@ -87,6 +103,11 @@
       }
     }
 
+    // Close any open sections
+    if (sectionState.inLinks) {
+      html = html.replace(/, $/, ""); // Remove trailing comma
+      html += `</p>`;
+    }
     html += closeOpenSections(sectionState);
     html += `</div>`;
     return html;
@@ -128,6 +149,11 @@
     let html = "";
     if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inSupporting) html += `</p></div>`;
+    if (sectionState.inLinks) {
+      html = html.replace(/, $/, ""); // Remove trailing comma
+      html += `</p>`;
+      sectionState.inLinks = false;
+    }
 
     sectionState.inAbstract = type === "abstract";
     sectionState.inSupporting = type === "supporting";
@@ -139,6 +165,10 @@
     let html = "";
     if (sectionState.inAbstract) html += `</p></div>`;
     if (sectionState.inSupporting) html += `</p></div>`;
+    if (sectionState.inLinks) {
+      html = html.replace(/, $/, ""); // Remove trailing comma
+      html += `</p>`;
+    }
     return html;
   }
 
