@@ -122,6 +122,8 @@
             iconClass = "fas fa-newspaper";
           } else if (linkText.toLowerCase().includes("preprint")) {
             iconClass = "fas fa-file-upload";
+          } else if (linkText.toLowerCase().includes("download")) {
+            iconClass = "fas fa-download";
           }
 
           html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
