@@ -103,11 +103,17 @@
         const doi = findMetadata(lines, "**DOI:**", i);
 
         html += `<p class="paper-metadata">
-          <i class="fas fa-user"></i> Authors: ${authors} |
-          <i class="fas fa-calendar-alt"></i> Year: ${year} |
-          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} |
-          <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>
-        </p>`;
+          <i class="fas fa-user"></i> Authors: ${authors}`;
+        if (year) {
+          html += ` | <i class="fas fa-calendar-alt"></i> Year: ${year}`;
+        }
+        if (venue) {
+          html += ` | <i class="fas fa-map-marker-alt"></i> Venue: ${venue}`;
+        }
+        if (doi) {
+          html += ` | <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
+        }
+        html += `</p>`;
       } else if (line.startsWith("- [")) {
         if (!sectionState.inLinks && !sectionState.inSupportingLinks) {
           // Determine if we're in main paper or supporting publication
@@ -171,11 +177,17 @@
         const doi = findMetadata(lines, "**DOI:**", i);
 
         html += `<p class="supporting-metadata">
-          <i class="fas fa-user"></i> Authors: ${authors} |
-          <i class="fas fa-calendar-alt"></i> Year: ${year} |
-          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} |
-          <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>
-        </p>`;
+          <i class="fas fa-user"></i> Authors: ${authors}`;
+        if (year) {
+          html += ` | <i class="fas fa-calendar-alt"></i> Year: ${year}`;
+        }
+        if (venue) {
+          html += ` | <i class="fas fa-map-marker-alt"></i> Venue: ${venue}`;
+        }
+        if (doi) {
+          html += ` | <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
+        }
+        html += `</p>`;
       }
     }
 
