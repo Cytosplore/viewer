@@ -112,12 +112,15 @@
         if (!sectionState.inLinks && !sectionState.inSupportingLinks) {
           // Determine if we're in main paper or supporting publication
           if (sectionState.inSupporting) {
-            html += `<p class="supporting-metadata"><b>Links:</b> `;
+            html += `<p class="supporting-metadata"><b>Links:</b>`;
             sectionState.inSupportingLinks = true;
           } else {
-            html += `<p class="paper-metadata"><b>Links:</b> `;
+            html += `<p class="paper-metadata"><b>Links:</b>`;
             sectionState.inLinks = true;
           }
+        } else {
+          // Add separator only if it's not the first link
+          html += ` | `;
         }
 
         const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
@@ -130,9 +133,9 @@
             linkText.toLowerCase().includes("classic viewer") ||
             linkText.toLowerCase().includes("latest viewer")
           ) {
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>, `;
+            html += ` <a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
           } else {
-            html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
+            html += ` <a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>`;
           }
         }
       } else if (line.startsWith("**Abstract:**")) {
@@ -205,6 +208,8 @@
     if (text.includes("website")) return "fas fa-globe";
     if (text.includes("article")) return "fas fa-newspaper";
     if (text.includes("preprint")) return "fas fa-file-alt";
+    if (text.includes("classic viewer") || text.includes("latest viewer"))
+      return "fas fa-download";
     return "fas fa-link";
   }
 
@@ -212,13 +217,11 @@
     let html = "";
 
     if (sectionState.inLinks) {
-      html = html.replace(/, $/, "");
       html += `</p>`;
       sectionState.inLinks = false;
     }
 
     if (sectionState.inSupportingLinks) {
-      html = html.replace(/, $/, "");
       html += `</p>`;
       sectionState.inSupportingLinks = false;
     }
