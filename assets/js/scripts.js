@@ -156,8 +156,8 @@ function setupStyles() {
   };
 
   $(".btn-download-os").css({
-    width: "140px",
-    height: "25px",
+    width: "200px", // Updated width
+    height: "40px",
     cursor: "pointer",
     "margin-top": "5px",
     "font-weight": "normal",
