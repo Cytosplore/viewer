@@ -1,188 +1,255 @@
 $(document).ready(init);
-
-$(window).resize(sizeContent);
-
-$(window).scroll(scroller);
+$(window)
+  .on("resize", function () {
+    sizeContent();
+    setupStyles();
+    setupDownloadLinks();
+  })
+  .on("scroll", scroller);
 
 function init() {
+  sizeContent();
+  setupNavigation();
+  setupDownloadLinks();
+  setupStyles();
+  scroller();
+}
 
-	sizeContent();
-
-	var navHeight = $(".nav-background").height();
-    $('a[href*=\\#]').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
-        && location.hostname == this.hostname) {
-            var $target = $(this.hash);
-            $target = $target.length && $target || $('[name=' + this.hash.slice(1) +']');
-            if ($target.length) {
-                var targetOffset = $target.offset().top;
-				if(true) targetOffset -= navHeight;
-                $('html,body').animate({scrollTop: targetOffset}, 1000);
-                return false;
-            }
-        }
-    });
-
-	$("#nav-cytosplore").addClass("nav-active-indicator");
-
-    document.querySelector( "#nav-toggle" ).addEventListener( "click", function() {
-        toggleResponsiveNav();
-    });
-
-    var navitems = document.querySelectorAll( ".nav-item" )
-    for (var i = 0, len = navitems.length; i < len; i++) {
-        navitems[i].addEventListener( "click", function() {
-            if( $( window ).width() < 710 ){ toggleResponsiveNav(); }
-        });
+function setupNavigation() {
+  var navHeight = $(".nav-background").height();
+  $("a[href*=\\#]").on("click", function () {
+    if (
+      location.pathname.replace(/^\//, "") ==
+        this.pathname.replace(/^\//, "") &&
+      location.hostname == this.hostname
+    ) {
+      var $target = $(this.hash);
+      $target =
+        ($target.length && $target) || $("[name=" + this.hash.slice(1) + "]");
+      if ($target.length) {
+        $("html,body").animate(
+          { scrollTop: $target.offset().top - navHeight },
+          1000
+        );
+        return false;
+      }
     }
+  });
 
-    scroller();
-    var version = '3.4.0';
-    if(document.getElementById("download-cv") != null)
+  $("#nav-cytosplore").addClass("nav-active-indicator");
+  $("#nav-toggle").on("click", toggleResponsiveNav);
+
+  $(".nav-item").on("click", function () {
+    if ($(window).width() < 710) {
+      toggleResponsiveNav();
+    }
+  });
+}
+
+function setupDownloadLinks() {
+  $(".btn-download-os").remove();
+
+  const buttons = [
     {
-  	if (navigator.appVersion.indexOf("Mac")!=-1){
-		let link= 'https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.'+version+'.dmg';
-		document.getElementById("download-cv").innerHTML='<font size="+2"> <i class="fab fa-apple"></i></font> <a href="'+link+'"><b> Download Cytosplore Viewer</b></a>';
-  	} else 
-	{
-		let link= 'https://sec.lumc.nl/mtg-viewer/viewer/win/'+version+'/install_cytosplore_viewer.exe';
-  		document.getElementById("download-cv").innerHTML='<font size="+2"> <i class="fab fa-windows"></i></font> <a href="'+link+'"><b> Download Cytosplore Viewer </b></a>';
-  	}
+      id: "download-classic",
+      version: "3.4.0",
+      label: "Classic Viewer",
+      macLink:
+        "https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg",
+      winLink:
+        "https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe",
+      linLink: "",
+      tooltip: "Download Classic Cytosplore Viewer",
+      container: "#get-classic-cytosplore-installer .download-buttons",
+    },
+    {
+      id: "download-latest",
+      version: "1.0.0",
+      label: "Latest Viewer",
+      macLink: "",
+      winLink: "",
+      linLink: "",
+      tooltip: "Download Latest Cytosplore Viewer",
+      container: "#get-Manivault-cytosplore-installer .download-buttons",
+    },
+  ];
+
+  buttons.forEach((buttonItem) => {
+    const button = $("<a>", {
+      id: buttonItem.id,
+      class: "btn-download-os",
+      href: "#",
+      title: buttonItem.tooltip,
+    });
+
+    $(buttonItem.container).append(button);
+
+    setupDownloadLink(
+      buttonItem.id,
+      buttonItem.version,
+      buttonItem.label,
+      buttonItem.macLink,
+      buttonItem.winLink,
+      buttonItem.linLink,
+      buttonItem.tooltip
+    );
+  });
+}
+
+function setupDownloadLink(
+  elementId,
+  version,
+  label,
+  macLink,
+  winLink,
+  linLink,
+  tooltip
+) {
+  var element = $("#" + elementId);
+  if (element.length) {
+    let userAgent = navigator.userAgent.toLowerCase();
+    let isMac = userAgent.indexOf("mac") !== -1;
+    let isLinux = userAgent.indexOf("linux") !== -1;
+    let isWindows = userAgent.indexOf("win") !== -1;
+
+    let link = isMac ? macLink : isLinux ? linLink : isWindows ? winLink : "";
+    let icon = isMac
+      ? '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> '
+      : isLinux
+      ? '<i class="fab fa-linux" style="font-size: 1.5em; margin-right: 5px;"></i> '
+      : isWindows
+      ? '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> '
+      : "";
+
+    if (!link) {
+      element
+        .prop("disabled", true)
+        .css("color", "gray")
+        .addClass("disabled-button")
+        .css("transform", "scale(1)")
+        .attr("title", "Unsupported operating system");
+    } else {
+      element
+        .prop("disabled", false)
+        .removeClass("disabled-button")
+        .css("color", "")
+        .css("transform", "")
+        .attr("title", tooltip);
     }
+    element.html(icon + label).attr("href", link);
+  }
+}
 
-	if (document.getElementById("download-sv") != null) {
-		let buttonElement = document.getElementById("download-sv");
-		let link;
-		let message;
-	
-		if (navigator.appVersion.indexOf("Mac") !== -1) {
-			message = '<font size="+2"> <i class="fab fa-apple"></i></font>Cytosplore Simian Viewer not yet available for macOS';
-			buttonElement.innerHTML = message;
-			buttonElement.disabled = true;
-			buttonElement.disabled = true;
-			buttonElement.style.color = 'gray';
-			buttonElement.classList.add('disabled-button'); // Add the disabled-button class
-			buttonElement.style.transform = 'scale(1)';
-            
-		} else //if (navigator.appVersion.indexOf("Win") !== -1) 
-		{
-			link = 'https://sec.lumc.nl/mtg-viewer/viewer/win/SV/install_cytosplore_simian_viewer_offline.exe';
-			message = '<font size="+2"> <i class="fab fa-windows"></i></font> <a href="' + link + '"><b>Download Cytosplore Simian Viewer</b></a>';
-			buttonElement.innerHTML = message;
-		}
-	}
+function setupStyles() {
+  const commonStyles = {
+    display: "flex",
+    "justify-content": "center",
+    "align-items": "center",
+  };
 
+  $(".btn-download-os").css({
+    width: "140px",
+    height: "25px",
+    cursor: "pointer",
+    "margin-top": "5px",
+    "font-weight": "normal",
+    ...commonStyles,
+  });
+
+  $(".centered, .download-buttons").css(commonStyles);
+
+  $(".download-buttons").css("gap", "10px");
+
+  if ($(window).width() < 710) {
+    $(".download-buttons").css({
+      "flex-direction": "column",
+      "align-items": "center",
+    });
+  } else {
+    $(".download-buttons").css("flex-direction", "row");
+  }
 }
 
 function toggleResponsiveNav() {
-    $('#nav-toggle').toggleClass( "active" );
-    $('#nav-full').slideToggle(250);
-    $('.nav-background').toggleClass("nav-toggled");
+  $("#nav-toggle").toggleClass("active");
+  $("#nav-full").slideToggle(250);
+  $(".nav-background").toggleClass("nav-toggled");
 }
 
 function resetResponsiveNav() {
-    $('#nav-toggle').removeClass( "active" );
-    $('#nav-full').hide();
-    $('.nav-background').removeClass("nav-toggled");
+  $("#nav-toggle").removeClass("active");
+  $("#nav-full").hide();
+  $(".nav-background").removeClass("nav-toggled");
 }
 
 function sizeContent() {
+  var w = $(".main-wrapper").width() - 65;
+  if ($(window).width() >= 710) w -= 35;
+  $("#actionvideo")
+    .width(w)
+    .height((w * 9) / 16);
 
-	var w = $('.main-wrapper').width() - 65;
-	if( $( window ).width() >= 710 ) w -= 35;
-	$('#actionvideo').width(w);
-	$('#actionvideo').height(w*9/16);
+  resetResponsiveNav();
 
-    resetResponsiveNav();
-
-    if($( window ).width() < 710)
-    {
-        var hamburger = ($( window ).width() * 0.95 - 45) + "px";
-        $('#nav-hamburger').css("left", hamburger);
-
-        $('#nav-hamburger').show();
-        $('#nav-full').hide();
-
-    } else {
-        $('#nav-hamburger').hide();
-        $('#nav-full').show();
-    }
+  if ($(window).width() < 710) {
+    $("#nav-hamburger")
+      .css("left", $(window).width() * 0.95 - 45 + "px")
+      .show();
+    $("#nav-full").hide();
+  } else {
+    $("#nav-hamburger").hide();
+    $("#nav-full").show();
+  }
+  setupDownloadLinks();
+  setupStyles();
 }
+
 function scroller() {
-
   var url = window.location.href;
-  if( url.indexOf('documentation') >= 0 )
-  {
-    $("#nav-cytosplore").removeClass("nav-active-indicator");
-    $("#nav-team").removeClass("nav-active-indicator");
-    $("#nav-publications").removeClass("nav-active-indicator");
-    $("#nav-download").removeClass("nav-active-indicator");
-    $("#nav-documentation").addClass("nav-active-indicator");
+  if (url.indexOf("documentation") >= 0) {
+    setActiveNav("#nav-documentation");
+  } else {
+    var scrollPosition = $(window).scrollTop() + 100;
+    var positions = [
+      { id: "#nav-download", pos: $("#get").offset().top },
+      { id: "#nav-publications", pos: $("#publications").offset().top },
+      { id: "#nav-team", pos: $("#team").offset().top },
+      { id: "#nav-cytosplore", pos: 0 },
+    ];
+
+    for (let i = 0; i < positions.length; i++) {
+      if (
+        scrollPosition > positions[i].pos ||
+        (i === 0 &&
+          $(window).scrollTop() + $(window).height() >
+            $(document).height() - 100)
+      ) {
+        setActiveNav(positions[i].id);
+        break;
+      }
+    }
   }
-  else {
+}
 
-  	var scrollPosition = $(window).scrollTop() + 100;
-
-  	var p0 = 0;
-  	var p1 = $("#team").offset().top;
-  	var p2 = $("#publications").offset().top;
-  	var p3 = $("#get").offset().top;
-
-  	if( scrollPosition > p3 || $(window).scrollTop() + $(window).height() > $(document).height() - 100 )
-  	{
-  		$("#nav-cytosplore").removeClass("nav-active-indicator");
-  		$("#nav-team").removeClass("nav-active-indicator");
-  		$("#nav-publications").removeClass("nav-active-indicator");
-  		$("#nav-download").addClass("nav-active-indicator");
-  		$("#nav-documentation").removeClass("nav-active-indicator");
-  	}
-  	else if( scrollPosition > p2 )
-  	{
-  		$("#nav-cytosplore").removeClass("nav-active-indicator");
-  		$("#nav-team").removeClass("nav-active-indicator");
-  		$("#nav-publications").addClass("nav-active-indicator");
-  		$("#nav-download").removeClass("nav-active-indicator");
-  		$("#nav-documentation").removeClass("nav-active-indicator");
-  	}
-  	else if( scrollPosition > p1 )
-  	{
-  		$("#nav-cytosplore").removeClass("nav-active-indicator");
-  		$("#nav-team").addClass("nav-active-indicator");
-  		$("#nav-publications").removeClass("nav-active-indicator");
-  		$("#nav-download").removeClass("nav-active-indicator");
-  		$("#nav-documentation").removeClass("nav-active-indicator");
-  	}
-  	else
-  	{
-  		$("#nav-cytosplore").addClass("nav-active-indicator");
-  		$("#nav-team").removeClass("nav-active-indicator");
-  		$("#nav-publications").removeClass("nav-active-indicator");
-  		$("#nav-download").removeClass("nav-active-indicator");
-  		$("#nav-documentation").removeClass("nav-active-indicator");
-  	}
-  }
+function setActiveNav(selector) {
+  $(".nav-active-indicator").removeClass("nav-active-indicator");
+  $(selector).addClass("nav-active-indicator");
 }
 
 function handleOutboundLinkClicks(e) {
-	if (ga.hasOwnProperty("loaded") && ga.loaded == true)
-	{
-	  ga('send', 'event', {
-	    eventCategory: 'Outbound Link',
-	    eventAction: 'click',
-	    eventLabel: e.target.parentNode.href,
-	    transport: 'beacon'
-	  });
-	}
+  if (ga.hasOwnProperty("loaded") && ga.loaded) {
+    ga("send", "event", {
+      eventCategory: "Outbound Link",
+      eventAction: "click",
+      eventLabel: e.target.parentNode.href,
+      transport: "beacon",
+    });
+  }
 }
 
-var elements = document.getElementsByTagName('a');
-for(var i = 0, len = elements.length; i < len; i++) {
-	var link = elements[i].href;
-	if(link.indexOf("/documentation") < 0 && link.indexOf("#") < 0 )
-	{
-		console.log(elements[i].href);
-		elements[i].onclick = function (e) {
-	  	handleOutboundLinkClicks(e);
-	  }
-	}
-}
+$("a").each(function () {
+  var link = this.href;
+  if (link.indexOf("/documentation") < 0 && link.indexOf("#") < 0) {
+    $(this).on("click", handleOutboundLinkClicks);
+  }
+});
