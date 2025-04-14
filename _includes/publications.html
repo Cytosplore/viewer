@@ -136,7 +136,10 @@
           const iconClass = getIconClass(linkText);
 
           if (linkText.toLowerCase().includes("tutorial")) {
-            html += ` <a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
+            const sanitizedUrl = linkUrl.endsWith("/")
+              ? linkUrl.slice(0, -1)
+              : linkUrl;
+            html += ` <a href="${sanitizedUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
           } else if (
             linkText.toLowerCase().includes("classic viewer") ||
             linkText.toLowerCase().includes("latest viewer")
