@@ -7,7 +7,7 @@ permalink: /documentation/evoviewer
 ---
 
 <link rel="stylesheet" href="/assets/css/tutorial.css" type="text/css">
-<link rel="stylesheet" href="/assets/fontawesome/css/fontawesome.min.css" type="text/css"/>
+<link rel="stylesheet" href="/assets/css/fontawesome-all.css" type="text/css"/>
 
 Welcome to the **<span class="cytosplore-gradient-text"><a href="https://viewer.cytosplore.org/" target="_blank">Cytosplore EvoViewer</a></span>** tutorial! Follow the structured steps below to unlock the full potential of EvoViewer.
 
