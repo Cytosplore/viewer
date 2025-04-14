@@ -144,7 +144,7 @@
         sectionState.inAbstract = true;
       } else if (line.startsWith("**Additional Publications:**")) {
         html += closeOpenSections(sectionState);
-        html += `<div class="supporting-publications"><h4>Additional Publications:</h4>`;
+        html += `<div class="supporting-publications-container"><div class="supporting-publications"><h4>Additional Publications:</h4>`;
         sectionState.inSupporting = true;
       } else if (sectionState.inSupporting && line.startsWith("### ")) {
         html += closeOpenSections(sectionState);

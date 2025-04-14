@@ -137,7 +137,9 @@
   opacity: 0.9;
   text-align: center;
 }
-
+.supporting-publications-container {
+  margin-left: 20px;
+}
 .btn-download-os:hover {
   transform: scale(1.05);
   transition: all 0.5s;
