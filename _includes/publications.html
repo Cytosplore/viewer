@@ -139,9 +139,9 @@
         html += closeOpenSections(sectionState);
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
-      } else if (line.startsWith("**Supporting Publications:**")) {
+      } else if (line.startsWith("**Additional Publications:**")) {
         html += closeOpenSections(sectionState);
-        html += `<div class="supporting-publications"><h4>Supporting Publications:</h4>`;
+        html += `<div class="supporting-publications"><h4>Additional Publications:</h4>`;
         sectionState.inSupporting = true;
       } else if (sectionState.inSupporting && line.startsWith("### ")) {
         html += closeOpenSections(sectionState);
