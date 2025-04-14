@@ -28,228 +28,228 @@
     const container = document.getElementById("publications-container");
     const totalPublications = 6;
 
+    // Clear container first
+    container.innerHTML = "";
+
     for (let i = totalPublications; i >= 1; i--) {
       try {
         const response = await fetch(`assets/publications/${i}.md`);
-        if (!response.ok) continue;
+        if (!response.ok) {
+          console.warn(`Publication ${i}.md not found or failed to load`);
+          continue;
+        }
 
         const markdown = await response.text();
-        container.appendChild(createPublicationElement(markdown, i));
+        const element = createPublicationElement(markdown, i);
+        if (element) {
+          container.appendChild(element);
+        }
       } catch (e) {
         console.error(`Error loading publication ${i}:`, e);
       }
+    }
+
+    // If no publications loaded, show message
+    if (container.children.length === 0) {
+      container.innerHTML =
+        "<p>No publications found. Please check the file paths.</p>";
     }
   }
 
   function createPublicationElement(markdown, index) {
     const paperDiv = document.createElement("div");
     paperDiv.className = "paper";
-    paperDiv.innerHTML = parseMarkdownToHtml(markdown, index);
-    return paperDiv;
+
+    try {
+      paperDiv.innerHTML = parseMarkdownToHtml(markdown, index);
+      return paperDiv;
+    } catch (e) {
+      console.error(`Error parsing publication ${index}:`, e);
+      return null;
+    }
   }
 
   function parseMarkdownToHtml(markdown, index) {
-    const lines = markdown.split("\n");
+    const lines = markdown.split("\n").filter((line) => line.trim() !== "");
     let html = "";
     let sectionState = {
       inTitle: true,
       inAbstract: false,
       inSupporting: false,
       inLinks: false,
+      inSupportingLinks: false,
     };
 
     html += `<div class="paper-content-wrapper">`;
 
-    let hasImage = false;
-    for (const line of lines) {
-      if (line.startsWith("![")) {
-        hasImage = true;
-        break;
-      }
+    // Check for image
+    const imageLine = lines.find((line) => line.startsWith("!["));
+    if (imageLine) {
+      html += parseImage(imageLine, index);
     }
 
-    for (const line of lines) {
-      if (line.startsWith("![")) {
-        html += parseImage(line, index);
-      } else if (line.startsWith("### ")) {
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      if (line.startsWith("### ")) {
+        // Close previous sections if needed
+        html += closeOpenSections(sectionState);
         html += `<h3><b>${line.substring(4)}</b></h3>`;
         sectionState.inTitle = false;
       } else if (line.startsWith("**Authors:**")) {
         const authors = line.substring(12).trim();
-        const venue =
-          lines
-            .find((l) => l.startsWith("**Venue:**"))
-            ?.substring(10)
-            .trim() || "";
-        const year =
-          lines
-            .find((l) => l.startsWith("**Year:**"))
-            ?.substring(9)
-            .trim() || "";
-        const doi =
-          lines
-            .find((l) => l.startsWith("**DOI:**"))
-            ?.substring(8)
-            .trim() || "";
+        const venue = findMetadata(lines, "**Venue:**", i);
+        const year = findMetadata(lines, "**Year:**", i);
+        const doi = findMetadata(lines, "**DOI:**", i);
+
         html += `<p class="paper-metadata">
-          <i class="fas fa-user"></i> Authors: ${authors} | 
-          <i class="fas fa-calendar-alt"></i> Year: ${year} | 
-          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
+          <i class="fas fa-user"></i> Authors: ${authors} |
+          <i class="fas fa-calendar-alt"></i> Year: ${year} |
+          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} |
           <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>
         </p>`;
-        sectionState.inLinks = true;
       } else if (line.startsWith("- [")) {
-        if (sectionState.inLinks) {
-          html += `<p class="paper-metadata"><b>Links:</b> `;
-          sectionState.inLinks = false;
+        if (!sectionState.inLinks && !sectionState.inSupportingLinks) {
+          // Determine if we're in main paper or supporting publication
+          if (sectionState.inSupporting) {
+            html += `<p class="supporting-metadata"><b>Links:</b> `;
+            sectionState.inSupportingLinks = true;
+          } else {
+            html += `<p class="paper-metadata"><b>Links:</b> `;
+            sectionState.inLinks = true;
+          }
         }
+
         const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
         if (linkMatch) {
           const linkText = linkMatch[1];
           const linkUrl = linkMatch[2];
-          let iconClass = "fas fa-link";
+          const iconClass = getIconClass(linkText);
 
-          if (linkText.toLowerCase().includes("video")) {
-            iconClass = "fas fa-video";
-          } else if (linkText.toLowerCase().includes("github")) {
-            iconClass = "fab fa-github";
-          } else if (linkText.toLowerCase().includes("pdf")) {
-            iconClass = "fas fa-file-pdf";
-          } else if (linkText.toLowerCase().includes("slides")) {
-            iconClass = "fas fa-file-powerpoint";
-          } else if (linkText.toLowerCase().includes("code")) {
-            iconClass = "fas fa-code";
-          } else if (linkText.toLowerCase().includes("paper")) {
-            iconClass = "fas fa-file-alt";
-          } else if (linkText.toLowerCase().includes("website")) {
-            iconClass = "fas fa-globe";
-          } else if (linkText.toLowerCase().includes("article")) {
-            iconClass = "fas fa-newspaper";
-          } else if (linkText.toLowerCase().includes("preprint")) {
-            iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
-          } else if (linkText.toLowerCase().includes("classic viewer")) {
-            iconClass = "fas fa-download";
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Classic Viewer</a>, `;
-            continue;
-          } else if (linkText.toLowerCase().includes("latest viewer")) {
-            iconClass = "fas fa-download";
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Latest Viewer</a>, `;
-            continue;
+          if (
+            linkText.toLowerCase().includes("classic viewer") ||
+            linkText.toLowerCase().includes("latest viewer")
+          ) {
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>, `;
+          } else {
+            html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
           }
-          html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
         }
       } else if (line.startsWith("**Abstract:**")) {
-        if (!sectionState.inLinks) {
-          html = html.replace(/, $/, "");
-          html += `</p>`;
-        }
+        html += closeOpenSections(sectionState);
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
       } else if (line.startsWith("**Supporting Publications:**")) {
-        html += closeOpenSections(sectionState); // Ensure all open sections are closed
-        sectionState.inSupporting = true; // Mark the start of the supporting publications section
-        html += `<div class="supporting-publications"><h3>Supporting Publications:</h3>`;
+        html += closeOpenSections(sectionState);
+        html += `<div class="supporting-publications"><h4>Supporting Publications:</h4>`;
+        sectionState.inSupporting = true;
       } else if (sectionState.inSupporting && line.startsWith("### ")) {
+        html += closeOpenSections(sectionState);
         html += `<div class="supporting-publication"><h5>${line.substring(
           4
         )}</h5>`;
+      } else if (sectionState.inAbstract) {
+        // Handle abstract content
+        const maxAbstractLength = 350;
+        if (line.length > maxAbstractLength) {
+          html += `<span class="abstract-short">${line.substring(
+            0,
+            maxAbstractLength
+          )}...</span>
+                  <span class="abstract-full" style="display:none;">${line}</span>
+                  <a href="#" class="see-more" onclick="toggleAbstract(this); return false;">See more</a>`;
+        } else {
+          html += line;
+        }
       } else if (sectionState.inSupporting && line.startsWith("**Authors:**")) {
         const authors = line.substring(12).trim();
-        const venue =
-          lines
-            .find((l) => l.startsWith("**Venue:**"))
-            ?.substring(10)
-            .trim() || "";
-        const year =
-          lines
-            .find((l) => l.startsWith("**Year:**"))
-            ?.substring(9)
-            .trim() || "";
-        const doi =
-          lines
-            .find((l) => l.startsWith("**DOI:**"))
-            ?.substring(8)
-            .trim() || "";
+        const venue = findMetadata(lines, "**Venue:**", i);
+        const year = findMetadata(lines, "**Year:**", i);
+        const doi = findMetadata(lines, "**DOI:**", i);
+
         html += `<p class="supporting-metadata">
-          <i class="fas fa-user"></i> Authors: ${authors} | 
-          <i class="fas fa-calendar-alt"></i> Year: ${year} | 
-          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} | 
+          <i class="fas fa-user"></i> Authors: ${authors} |
+          <i class="fas fa-calendar-alt"></i> Year: ${year} |
+          <i class="fas fa-map-marker-alt"></i> Venue: ${venue} |
           <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>
         </p>`;
-      } else if (sectionState.inSupporting && line.startsWith("- [")) {
-        if (sectionState.inLinks) {
-          html += `<p class="supporting-metadata"><b>Links:</b> `;
-          sectionState.inLinks = false;
-        }
-        const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-          const linkText = linkMatch[1];
-          const linkUrl = linkMatch[2];
-          let iconClass = "fas fa-link";
-
-          if (linkText.toLowerCase().includes("video")) {
-            iconClass = "fas fa-video";
-          } else if (linkText.toLowerCase().includes("github")) {
-            iconClass = "fab fa-github";
-          } else if (linkText.toLowerCase().includes("pdf")) {
-            iconClass = "fas fa-file-pdf";
-          } else if (linkText.toLowerCase().includes("slides")) {
-            iconClass = "fas fa-file-powerpoint";
-          } else if (linkText.toLowerCase().includes("code")) {
-            iconClass = "fas fa-code";
-          } else if (linkText.toLowerCase().includes("paper")) {
-            iconClass = "fas fa-file-alt";
-          } else if (linkText.toLowerCase().includes("website")) {
-            iconClass = "fas fa-globe";
-          } else if (linkText.toLowerCase().includes("article")) {
-            iconClass = "fas fa-newspaper";
-          } else if (linkText.toLowerCase().includes("preprint")) {
-            iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
-          } else if (linkText.toLowerCase().includes("classic viewer")) {
-            iconClass = "fas fa-download";
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Classic Viewer</a>, `;
-            continue;
-          } else if (linkText.toLowerCase().includes("latest viewer")) {
-            iconClass = "fas fa-download";
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Latest Viewer</a>, `;
-            continue;
-          }
-          html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
-        }
-      } else if (sectionState.inAbstract) {
-        html += handleAbstractContent(line);
       }
     }
 
-    if (!sectionState.inLinks) {
-      html = html.replace(/, $/, "");
-      html += `</p>`;
-    }
-    if (sectionState.inSupporting) {
-      html += `</div>`; // Close the supporting publications section
-      sectionState.inSupporting = false;
-    }
+    // Close any remaining open sections
     html += closeOpenSections(sectionState);
-    html += `</div>`;
+    html += `</div>`; // Close paper-content-wrapper
+
     return html;
   }
 
-  function handleAbstractContent(line) {
-    const maxAbstractLength = 350;
-    if (line.length > maxAbstractLength) {
-      return `<span class="abstract-short">${line.substring(
-        0,
-        maxAbstractLength
-      )}...</span>
-              <span class="abstract-full" style="display:none;">${line}</span>
-              <a href="#" class="see-more" onclick="toggleAbstract(this); return false;">See more</a>`;
+  // Helper function to find metadata
+  function findMetadata(lines, prefix, startIndex) {
+    for (let i = startIndex; i < lines.length; i++) {
+      if (lines[i].startsWith(prefix)) {
+        return lines[i].substring(prefix.length).trim();
+      }
     }
-    return line;
+    return "";
+  }
+
+  // Helper function to get appropriate icon class
+  function getIconClass(linkText) {
+    const text = linkText.toLowerCase();
+    if (text.includes("video")) return "fas fa-video";
+    if (text.includes("github")) return "fab fa-github";
+    if (text.includes("pdf")) return "fas fa-file-pdf";
+    if (text.includes("slides")) return "fas fa-file-powerpoint";
+    if (text.includes("code")) return "fas fa-code";
+    if (text.includes("paper")) return "fas fa-file-alt";
+    if (text.includes("website")) return "fas fa-globe";
+    if (text.includes("article")) return "fas fa-newspaper";
+    if (text.includes("preprint")) return "fas fa-file-alt";
+    return "fas fa-link";
+  }
+
+  function closeOpenSections(sectionState) {
+    let html = "";
+
+    if (sectionState.inLinks) {
+      html = html.replace(/, $/, "");
+      html += `</p>`;
+      sectionState.inLinks = false;
+    }
+
+    if (sectionState.inSupportingLinks) {
+      html = html.replace(/, $/, "");
+      html += `</p>`;
+      sectionState.inSupportingLinks = false;
+    }
+
+    if (sectionState.inAbstract) {
+      html += `</p></div>`;
+      sectionState.inAbstract = false;
+    }
+
+    if (sectionState.inSupporting) {
+      html += `</div>`; // Close supporting-publication if open
+      sectionState.inSupporting = false;
+    }
+
+    return html;
+  }
+
+  function parseImage(line, index) {
+    const match = line.match(/!\[(.*?)\]\((.*?)\)/);
+    if (!match) return "";
+
+    const [_, alt, src] = match;
+    const alignClass = index % 2 === 0 ? "right" : "left";
+    return `<div class="paper-image ${alignClass}"><img src="${src}" alt="${alt}" class="paper-img" /></div>`;
   }
 
   function toggleAbstract(link) {
-    const shortText = link.previousElementSibling.previousElementSibling;
-    const fullText = link.previousElementSibling;
+    const container = link.parentNode;
+    const shortText = container.querySelector(".abstract-short");
+    const fullText = container.querySelector(".abstract-full");
+
     if (fullText.style.display === "none") {
       fullText.style.display = "inline";
       shortText.style.display = "none";
@@ -259,51 +259,6 @@
       shortText.style.display = "inline";
       link.textContent = "See more";
     }
-  }
-
-  function handleSectionStart(type, line, sectionState) {
-    const sectionMap = {
-      abstract: `<div class="paper-abstract"><p><b>Abstract:</b> `,
-      supporting: `<div class="supporting-publications"><h4>Supporting Publications:</h4><p>`,
-    };
-
-    let html = "";
-    if (sectionState.inAbstract) html += `</p></div>`;
-    if (sectionState.inSupporting) html += `</p></div>`;
-    if (sectionState.inLinks) {
-      html = html.replace(/, $/, "");
-      html += `</p>`;
-      sectionState.inLinks = false;
-    }
-
-    sectionState.inAbstract = type === "abstract";
-    sectionState.inSupporting = type === "supporting";
-
-    return html + sectionMap[type];
-  }
-
-  function closeOpenSections(sectionState) {
-    let html = "";
-    if (sectionState.inAbstract) {
-      html += `</p></div>`;
-      sectionState.inAbstract = false;
-    }
-    if (sectionState.inSupporting) {
-      html += `</p></div>`;
-      sectionState.inSupporting = false;
-    }
-    if (sectionState.inLinks) {
-      html = html.replace(/, $/, "");
-      html += `</p>`;
-      sectionState.inLinks = false;
-    }
-    return html;
-  }
-
-  function parseImage(line, index) {
-    const [alt, src] = line.match(/!\[(.*?)\]\((.*?)\)/).slice(1);
-    const alignClass = index % 2 === 0 ? "right" : "left";
-    return `<div class="paper-image ${alignClass}"><img src="${src}" alt="${alt}" class="paper-img" /></div>`;
   }
 
   document.addEventListener("DOMContentLoaded", loadPublications);
