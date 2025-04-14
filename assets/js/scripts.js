@@ -156,7 +156,7 @@ function setupStyles() {
   };
 
   $(".btn-download-os").css({
-    width: "200px", // Updated width
+    width: "220px", // Updated width
     height: "40px",
     cursor: "pointer",
     "margin-top": "5px",
