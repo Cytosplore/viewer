@@ -1,0 +1,161 @@
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #6c757d;
+  --background-light: #f8f9fa;
+  --background-hover: #e9ecef;
+  --border-color: #dee2e6;
+  --border-radius: 6px;
+  --transition-speed: 0.3s;
+}
+
+.section-header,
+.demo-details summary {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--primary-color);
+  background-color: var(--background-light);
+  padding: 12px 15px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  margin: 0;
+}
+
+.section-header:hover,
+.demo-details summary:hover {
+  background-color: var(--background-hover);
+}
+
+.section-header .icon,
+.section-header .arrow,
+.instruction-icon {
+  margin-right: 10px;
+  color: var(--secondary-color);
+}
+
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.section-header .arrow::before,
+.demo-details summary::before {
+  content: "\25B8";
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform var(--transition-speed);
+}
+
+details[open] .arrow::before,
+.demo-details[open] summary::before {
+  content: "\25BE";
+}
+
+.instruction-block {
+  margin: 15px 0 15px 20px;
+  border-left: 3px solid var(--secondary-color);
+  padding-left: 15px;
+}
+
+.instruction-content {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.demo-details {
+  margin: 15px 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.demo-details .demo-content {
+  padding: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
+.demo-details .demo-gif {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .section-header,
+  .demo-details summary {
+    padding: 10px 12px;
+    font-size: 1em;
+  }
+
+  .demo-details .demo-content {
+    padding: 10px;
+  }
+}
+
+.header-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.tutorial-header {
+  margin: 0;
+  font-size: 1.5em;
+  color: var(--primary-color);
+}
+
+.expand-collapse-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.control-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 3px 6px;
+  font-size: 0.95em;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.control-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.button-text {
+  font-weight: bold;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.info-text {
+  background-color: #f8f9fa;
+  padding: 8px 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #000000;
+  line-height: 1.5;
+}
+.cytosplore-gradient-text {
+  background: linear-gradient(
+    180deg,
+    #14406f,
+    #4284bd
+  ); /* Define your gradient colors */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold; /* Optional: make the text bold */
+}

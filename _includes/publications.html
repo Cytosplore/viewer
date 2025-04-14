@@ -135,7 +135,9 @@
           const linkUrl = linkMatch[2];
           const iconClass = getIconClass(linkText);
 
-          if (
+          if (linkText.toLowerCase().includes("tutorial")) {
+            html += ` <a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
+          } else if (
             linkText.toLowerCase().includes("classic viewer") ||
             linkText.toLowerCase().includes("latest viewer")
           ) {
@@ -220,7 +222,9 @@
     if (text.includes("website")) return "fas fa-globe";
     if (text.includes("article")) return "fas fa-newspaper";
     if (text.includes("preprint")) return "fas fa-file-alt";
-    if (text.includes("tutorial")) return "fas fa-chalkboard-teacher"; // Added icon for tutorial
+    if (text.includes("tutorial")) {
+      return "fas fa-chalkboard-teacher"; // Added icon for tutorial
+    }
     if (text.includes("classic viewer") || text.includes("latest viewer"))
       return "fas fa-download";
     return "fas fa-link";
