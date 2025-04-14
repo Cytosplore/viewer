@@ -135,6 +135,14 @@ function setupDownloadLink(
         .css("color", "")
         .css("transform", "")
         .attr("title", tooltip);
+
+      // Fix for Windows Firefox text color visibility
+      if (
+        navigator.userAgent.toLowerCase().indexOf("windows") !== -1 &&
+        navigator.userAgent.toLowerCase().indexOf("firefox") !== -1
+      ) {
+        element.css("color", "white");
+      }
     }
     element.html(icon + label).attr("href", link);
   }
