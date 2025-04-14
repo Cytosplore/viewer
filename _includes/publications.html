@@ -127,9 +127,13 @@
             iconClass = "fas fa-newspaper";
           } else if (linkText.toLowerCase().includes("preprint")) {
             iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
-          } else if (linkText.toLowerCase().includes("installer download")) {
+          } else if (linkText.toLowerCase().includes("classic viewer")) {
             iconClass = "fas fa-download";
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>, `;
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Classic Viewer</a>, `;
+            continue;
+          } else if (linkText.toLowerCase().includes("latest viewer")) {
+            iconClass = "fas fa-download";
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Latest Viewer</a>, `;
             continue;
           }
           html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
@@ -201,9 +205,13 @@
             iconClass = "fas fa-newspaper";
           } else if (linkText.toLowerCase().includes("preprint")) {
             iconClass = "fas fa-file-alt"; // Use a different icon for preprint links
-          } else if (linkText.toLowerCase().includes("installer download")) {
+          } else if (linkText.toLowerCase().includes("classic viewer")) {
             iconClass = "fas fa-download";
-            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>, `;
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Classic Viewer</a>, `;
+            continue;
+          } else if (linkText.toLowerCase().includes("latest viewer")) {
+            iconClass = "fas fa-download";
+            html += `<a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> Latest Viewer</a>, `;
             continue;
           }
           html += `<a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>, `;
