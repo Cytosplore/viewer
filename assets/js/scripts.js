@@ -63,13 +63,13 @@ function setupDownloadLinks() {
       container: "#get-classic-cytosplore-installer .download-buttons",
     },
     {
-      id: "download-latest",
+      id: "download-combined",
       version: "1.0.0",
-      label: "Latest Viewer",
+      label: "Combined Viewer",
       macLink: "",
       winLink: "",
       linLink: "",
-      tooltip: "Download Latest Cytosplore Viewer",
+      tooltip: "Download Combined Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
     },
   ];

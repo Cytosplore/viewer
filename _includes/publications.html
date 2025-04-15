@@ -103,25 +103,25 @@
         const doi = findMetadata(lines, "**DOI:**", i);
 
         html += `<p class="paper-metadata">
-          <i class="fas fa-user"></i> Authors: ${authors}`;
+          <i class="fas fa-user"></i> ${authors}`;
         if (year) {
-          html += ` | <i class="fas fa-calendar-alt"></i> Year: ${year}`;
+          html += ` | <i class="fas fa-calendar-alt"></i> ${year}`;
         }
         if (venue) {
-          html += ` | <i class="fas fa-map-marker-alt"></i> Venue: ${venue}`;
+          html += ` | <i class="fas fa-map-marker-alt"></i> ${venue}`;
         }
         if (doi) {
-          html += ` | <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
+          html += ` | <i class="fas fa-book"></i> <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
         }
         html += `</p>`;
       } else if (line.startsWith("- [")) {
         if (!sectionState.inLinks && !sectionState.inSupportingLinks) {
           // Determine if we're in main paper or supporting publication
           if (sectionState.inSupporting) {
-            html += `<p class="supporting-metadata"><b>Links:</b>`;
+            html += `<p class="supporting-metadata">`;
             sectionState.inSupportingLinks = true;
           } else {
-            html += `<p class="paper-metadata"><b>Links:</b>`;
+            html += `<p class="paper-metadata">`;
             sectionState.inLinks = true;
           }
         } else {
@@ -142,7 +142,7 @@
             html += ` <a href="${sanitizedUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
           } else if (
             linkText.toLowerCase().includes("classic viewer") ||
-            linkText.toLowerCase().includes("latest viewer")
+            linkText.toLowerCase().includes("combined viewer")
           ) {
             html += ` <a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
           } else {
@@ -155,7 +155,7 @@
         sectionState.inAbstract = true;
       } else if (line.startsWith("**Additional Publications:**")) {
         html += closeOpenSections(sectionState);
-        html += `<div class="supporting-publications-container"><div class="supporting-publications"><h4>Additional Publications:</h4>`;
+        html += `<div class="supporting-publications-container"><div class="supporting-publications">`;
         sectionState.inSupporting = true;
       } else if (sectionState.inSupporting && line.startsWith("### ")) {
         html += closeOpenSections(sectionState);
@@ -182,15 +182,15 @@
         const doi = findMetadata(lines, "**DOI:**", i);
 
         html += `<p class="supporting-metadata">
-          <i class="fas fa-user"></i> Authors: ${authors}`;
+          <i class="fas fa-user"></i> ${authors}`;
         if (year) {
-          html += ` | <i class="fas fa-calendar-alt"></i> Year: ${year}`;
+          html += ` | <i class="fas fa-calendar-alt"></i> ${year}`;
         }
         if (venue) {
-          html += ` | <i class="fas fa-map-marker-alt"></i> Venue: ${venue}`;
+          html += ` | <i class="fas fa-map-marker-alt"></i> ${venue}`;
         }
         if (doi) {
-          html += ` | <i class="fas fa-book"></i> DOI: <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
+          html += ` | <i class="fas fa-book"></i> <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
         }
         html += `</p>`;
       }
@@ -228,7 +228,7 @@
     if (text.includes("tutorial")) {
       return "fas fa-chalkboard-teacher"; // Added icon for tutorial
     }
-    if (text.includes("classic viewer") || text.includes("latest viewer"))
+    if (text.includes("classic viewer") || text.includes("combined viewer"))
       return "fas fa-download";
     return "fas fa-link";
   }
