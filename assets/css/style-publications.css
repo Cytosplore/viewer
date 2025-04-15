@@ -20,19 +20,15 @@
 
 .paper-image.left {
   float: left;
-  margin-right: 25px;
-  margin-bottom: 15px;
 }
 
 .paper-image.right {
   float: right;
-  margin-left: 25px;
-  margin-bottom: 15px;
 }
 
 .paper-img {
   width: 380px;
-  height: 250px;
+  height: 100%;
   object-fit: contain;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -138,7 +134,7 @@
   text-align: center;
 }
 .supporting-publications-container {
-  margin-left: 20px;
+  margin-left: 0px;
 }
 .btn-download-os:hover {
   transform: scale(1.05);
