@@ -36,7 +36,7 @@
       {% endfor %}
     </ul>
   {% endif %}
-
+<!--
   {% if ifstartingup %}
     <h2>Cytosplore Viewer Introduction</h2>
 
@@ -48,13 +48,13 @@
       {% endfor %}
     </ul>
   {% endif %}
-
+-->
   {% if ifviews %}
-    <h2>The Main Views in Detail</h2>
+    <h2>Tutorials</h2>
 
     <ul>
       {% for post in sorted_posts %}
-        {% if post.category == "views" %}
+        {% if post.category == "views" or post.category == "startingup"%}
           <li><a href="{{ post.url }}">{{ post.title }}</a></li>
         {% endif %}
       {% endfor %}
