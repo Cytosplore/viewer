@@ -40,7 +40,7 @@ To start exploring the dataset, cells can be selected and analyzed at different 
   </div>
   <details class="demo-details">
     <summary> Watch how to select cells from the hierarchy</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/select_cells_hierarchy.gif" alt="Select cells from the hierarchy" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/select_cells_hierarchy.gif" alt="Select cells from the hierarchy" class="demo-gif">
   </details>
 </div>
 
@@ -52,14 +52,14 @@ Zooming in and out of the Hierarchy
   </div>
   <details class="demo-details">
     <summary> Watch how to zoom in</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/zoom_in_hierarchy.gif" alt="Zoom into the hierarchy" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/zoom_in_hierarchy.gif" alt="Zoom into the hierarchy" class="demo-gif">
   </details>
     <div class="instruction-content">
     <i class="fas fa-hand-point-right instruction-icon"></i> Press Ctrl and click on a parent cell type rectangle to zoom out.
   </div>
   <details class="demo-details">
     <summary> Watch how to zoom out</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/zoom_out_hierarchy.gif" alt="Zoom out of the hierarchy" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/zoom_out_hierarchy.gif" alt="Zoom out of the hierarchy" class="demo-gif">
   </details>
 </div>
 
@@ -72,7 +72,7 @@ Free-Form Selection in Scatterplot
   </div>
   <details class="demo-details">
     <summary> Watch how to make free-form selections</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/free_form_selection_scatterplot.gif" alt="Free form selection in scatterplot" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/free_form_selection_scatterplot.gif" alt="Free form selection in scatterplot" class="demo-gif">
   </details>
 </div>
 
@@ -93,7 +93,7 @@ Analyze the characteristics of genes and cell types to gain deeper insights into
   </div>
   <details class="demo-details">
     <summary> Watch how to compute characteristics</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/compute_characteristics.gif" alt="Compute gene and cell type characteristics" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/compute_characteristics.gif" alt="Compute gene and cell type characteristics" class="demo-gif">
   </details>
 </div>
 
@@ -109,7 +109,7 @@ Customizing Options
   </div>
   <details class="demo-details">
     <summary> Watch how to modify options</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/modify_options.gif" alt="Modify computation options" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/modify_options.gif" alt="Modify computation options" class="demo-gif">
   </details>
 </div>
 
@@ -132,7 +132,7 @@ Compare the abundance of cell types across species.
   </div>
   <details class="demo-details">
     <summary> Watch how to sort species</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/sort_species_abundance.gif" alt="Sort species by abundance" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/sort_species_abundance.gif" alt="Sort species by abundance" class="demo-gif">
   </details>
 </div>
 
@@ -144,7 +144,7 @@ Exploring Numerical Data
   </div>
   <details class="demo-details">
     <summary> Watch how to explore table values</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_table_values.gif" alt="Explore numerical table values" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_table_values.gif" alt="Explore numerical table values" class="demo-gif">
   </details>
 </div>
 
@@ -165,7 +165,7 @@ Identify genes with high differential expression for a specific cell type (marke
   </div>
   <details class="demo-details">
     <summary> Watch how to sort genes</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/sort_genes_species.gif" alt="Sort genes by species appearance" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/sort_genes_species.gif" alt="Sort genes by species appearance" class="demo-gif">
   </details>
 </div>
 
@@ -177,7 +177,7 @@ Adjusting Gene Ranking Threshold
   </div>
   <details class="demo-details">
     <summary> Watch how to modify thresholds</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/modify_gene_threshold.gif" alt="Modify gene ranking threshold" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/modify_gene_threshold.gif" alt="Modify gene ranking threshold" class="demo-gif">
   </details>
 </div>
 
@@ -204,12 +204,12 @@ For identified genes, explore their relevance for the same cell type in other sp
   </div>
   <details class="demo-details">
     <summary> Watch how to select a gene for exploration</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/select_gene.gif" alt="Select Gene" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/select_gene.gif" alt="Select Gene" class="demo-gif">
   </details>
     <i class="fas fa-hand-point-right instruction-icon"></i> Click on <div class="button-text">Deselect</div> to deselect the gene selection and go back to the cell type embedding.
   <details class="demo-details">
     <summary> Watch how to deselect</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/deselect_gene.gif" alt="Deselect Gene" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/deselect_gene.gif" alt="Deselect Gene" class="demo-gif">
   </details>
 </div>
 
@@ -221,7 +221,7 @@ Explore table attributes
   </div>
   <details class="demo-details">
     <summary> Watch how to explore table attributes</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_table_attributes.gif" alt="Explore table attribute" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_table_attributes.gif" alt="Explore table attribute" class="demo-gif">
   </details>
 </div>
 
@@ -233,12 +233,12 @@ Explore missed species
   </div>
   <details class="demo-details">
     <summary> Watch how to explore missed species</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_missed_species.gif" alt="Explore missed species" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_missed_species.gif" alt="Explore missed species" class="demo-gif">
   </details>
     <i class="fas fa-hand-point-right instruction-icon"></i> Click on <div class="button-text">Revert</div> to revert to initial selection.
     <details class="demo-details">
     <summary> Watch how to revert selection</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/revert_selection.gif" alt="Revert Species Selection" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/revert_selection.gif" alt="Revert Species Selection" class="demo-gif">
   </details>
 </div>
 
@@ -250,7 +250,7 @@ Toggle scatterplot selection to explore the expression values for the selected c
   </div>
   <details class="demo-details">
     <summary> Watch how to toggle scatterplot selection</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/toggle_scatterplot_selection.gif" alt="Toggle scatterplot selection" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/toggle_scatterplot_selection.gif" alt="Toggle scatterplot selection" class="demo-gif">
   </details>
 </div>
 
@@ -270,7 +270,7 @@ Compare species according to prior knowledge, such as traits or phylogeny accord
   </div>
   <details class="demo-details">
     <summary> Watch how to switch between attributes in the tree</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/tree_attribute_switch.gif" alt="Switch between attributes" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/tree_attribute_switch.gif" alt="Switch between attributes" class="demo-gif">
   </details>
 </div>
 
@@ -284,7 +284,7 @@ Explore expression of selected species
   </div>
   <details class="demo-details">
     <summary> Watch how to explore expression of selected species</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_tree_selection.gif" alt="Explore expression of selected species" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/explore_tree_selection.gif" alt="Explore expression of selected species" class="demo-gif">
   </details>
 </div>
 
@@ -296,7 +296,7 @@ Revert species to initial
   </div>
   <details class="demo-details">
     <summary> Watch how to revert tree selection to initial</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/revert_tree_selection.gif" alt="Revert tree selection to initial" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/revert_tree_selection.gif" alt="Revert tree selection to initial" class="demo-gif">
   </details>
 </div>
 </details>
@@ -319,7 +319,7 @@ Exporting Table Data
   </div>
   <details class="demo-details">
     <summary> Watch how to save table data</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/save_table_data.gif" alt="Save table data" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/save_table_data.gif" alt="Save table data" class="demo-gif">
   </details>
 </div>
 
@@ -332,7 +332,7 @@ Exporting Tree Data
   </div>
   <details class="demo-details">
     <summary> Watch how to save tree data</summary>
-    <img src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/save_tree_data.gif" alt="Save tree data" class="demo-gif">
+    <img data-src="https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/EvoViewer/TutorialImages/save_tree_data.gif" alt="Save tree data" class="demo-gif">
   </details>
 </div>
 </details>
