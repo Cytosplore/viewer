@@ -67,7 +67,8 @@ function setupDownloadLinks() {
       version: "1.0.0",
       label: "Combined Viewer",
       macLink: "",
-      winLink: "",
+      winLink:
+        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Windows.exe",
       linLink: "",
       tooltip: "Download Combined Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
