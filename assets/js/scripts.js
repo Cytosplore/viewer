@@ -66,7 +66,8 @@ function setupDownloadLinks() {
       id: "download-combined",
       version: "1.0.0",
       label: "Combined Viewer",
-      macLink: "",
+      macLink:
+        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Mac.dmg",
       winLink:
         "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Windows.exe",
       linLink: "",
