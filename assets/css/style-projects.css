@@ -14,7 +14,7 @@
 }
 
 .paper-image {
-  width: 35%;
+  width: 25%;
   margin-bottom: 15px;
 }
 
@@ -27,8 +27,9 @@
 }
 
 .paper-img {
-  width: 380px;
-  height: 100%;
+  width: 350px;
+  max-width: 100%;
+  height: auto;
   object-fit: contain;
 }
 
@@ -106,7 +107,7 @@
 }
 
 .group-list .paper .paper-image {
-  width: 65%;
+  width: 50%;
   margin: 0 16px 0 0;
   float: left;
 }
@@ -117,7 +118,7 @@
   object-fit: contain;
   border-radius: 6px;
   box-shadow: none;
-  max-height: 350px;
+  max-height: 300px;
 }
 
 .group-list .paper:nth-child(even) .paper-image {
