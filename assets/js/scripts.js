@@ -222,9 +222,9 @@ function scroller() {
   } else {
     var scrollPosition = $(window).scrollTop() + 100;
     var positions = [
-      { id: "#nav-download", pos: $("#get").offset().top },
-      { id: "#nav-publications", pos: $("#publications").offset().top },
-      { id: "#nav-team", pos: $("#team").offset().top },
+      { id: "#nav-download", pos: $("#get").length ? $("#get").offset().top : Number.MAX_SAFE_INTEGER },
+      { id: "#nav-publications", pos: $("#publications").length ? $("#publications").offset().top : Number.MAX_SAFE_INTEGER },
+      { id: "#nav-team", pos: $("#team").length ? $("#team").offset().top : Number.MAX_SAFE_INTEGER },
       { id: "#nav-cytosplore", pos: 0 },
     ];
 

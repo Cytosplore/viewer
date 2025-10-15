@@ -12,13 +12,13 @@
 <head>
   <link
     rel="stylesheet"
-    href="assets/css/fontawesome-all.css"
+    href="/assets/css/fontawesome-all.css"
     type="text/css"
   />
-  <link rel="stylesheet" href="assets/css/style-viewer.css" type="text/css" />
+  <link rel="stylesheet" href="/assets/css/style-viewer.css" type="text/css" />
   <link
     rel="stylesheet"
-    href="assets/css/style-publications.css"
+    href="/assets/css/style-publications.css"
     type="text/css"
   />
 </head>
@@ -33,7 +33,7 @@
 
     for (let i = totalPublications; i >= 1; i--) {
       try {
-        const response = await fetch(`assets/publications/${i}.md`);
+        const response = await fetch(`/assets/publications/${i}.md`);
         if (!response.ok) {
           console.warn(`Publication ${i}.md not found or failed to load`);
           continue;
