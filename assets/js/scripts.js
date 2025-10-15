@@ -67,10 +67,9 @@ function setupDownloadLinks() {
       version: "1.0.0",
       label: "Combined Viewer",
       macLink:
-        //  "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Mac.dmg",
-        "",
+        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/HMBA/Cytosplore_Viewer_Mac.dmg",
       winLink:
-        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Windows.exe",
+        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/HMBA/Cytosplore_Viewer_Windows.exe",
       linLink: "",
       tooltip: "Download Combined Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
@@ -225,19 +224,34 @@ function scroller() {
   var scrollPosition = $(window).scrollTop() + 100;
 
   var positions = [
-    { id: "#nav-download", pos: $("#get").length ? $("#get").offset().top : -Infinity },
-    { id: "#nav-publications", pos: $("#publications").length ? $("#publications").offset().top : -Infinity },
-    { id: "#nav-projects", pos: $("#projects").length ? $("#projects").offset().top : -Infinity },
-    { id: "#nav-team", pos: $("#team").length ? $("#team").offset().top : -Infinity },
+    {
+      id: "#nav-download",
+      pos: $("#get").length ? $("#get").offset().top : -Infinity,
+    },
+    {
+      id: "#nav-publications",
+      pos: $("#publications").length
+        ? $("#publications").offset().top
+        : -Infinity,
+    },
+    {
+      id: "#nav-projects",
+      pos: $("#projects").length ? $("#projects").offset().top : -Infinity,
+    },
+    {
+      id: "#nav-team",
+      pos: $("#team").length ? $("#team").offset().top : -Infinity,
+    },
     { id: "#nav-cytosplore", pos: 0 },
   ];
 
   positions.sort((a, b) => b.pos - a.pos);
 
-  var atBottom = $(window).scrollTop() + $(window).height() >= $(document).height() - 10;
+  var atBottom =
+    $(window).scrollTop() + $(window).height() >= $(document).height() - 10;
 
   for (let i = 0; i < positions.length; i++) {
-    if (positions[i].pos === -Infinity) continue; 
+    if (positions[i].pos === -Infinity) continue;
     if (scrollPosition >= positions[i].pos || (atBottom && i === 0)) {
       setActiveNav(positions[i].id);
       break;
