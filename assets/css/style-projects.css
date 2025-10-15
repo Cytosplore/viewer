@@ -30,7 +30,6 @@
   width: 380px;
   height: 100%;
   object-fit: contain;
-  box-shadow: none;
 }
 
 .paper h3 {
@@ -110,7 +109,6 @@
   width: 65%;
   margin: 0 16px 0 0;
   float: left;
-  display: block;
 }
 
 .group-list .paper .paper-img {

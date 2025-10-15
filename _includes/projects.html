@@ -55,6 +55,7 @@
     const container = document.getElementById("projects-container");
     container.innerHTML = "";
 
+    // Create placeholders for all groups first so DOM is ready
     for (const group of PROJECT_GROUPS) {
       const groupEl = document.createElement("section");
       groupEl.className = "project-group";
@@ -66,16 +67,18 @@
         group.key
       }"><p class="loading">Loading...</p></div>`;
       container.appendChild(groupEl);
+    }
 
-      try {
-        await loadGroupMarkdowns(group.path, `group-${group.key}`);
-      } catch (e) {
+    const loadPromises = PROJECT_GROUPS.map((group) =>
+      loadGroupMarkdowns(group.path, `group-${group.key}`).catch((e) => {
         console.error(e);
         const target = document.getElementById(`group-${group.key}`);
         if (target)
           target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
-      }
-    }
+      })
+    );
+
+    await Promise.all(loadPromises);
   }
 
   async function loadGroupMarkdowns(folderPath, targetId) {
@@ -190,27 +193,24 @@
     const candidates = [];
     for (let major = 5; major >= 0; major--) {
       for (let minor = 10; minor >= 0; minor--) {
-        for (let patch = 10; patch >= 0; patch--)
-          candidates.push(`v${major}.${minor}.${patch}.md`);
         candidates.push(`v${major}.${minor}.md`);
+        for (let patch = 3; patch >= 0; patch--)
+          candidates.push(`v${major}.${minor}.${patch}.md`);
       }
-      for (let i = 20; i >= 1; i--) candidates.push(`${i}.md`);
+      for (let i = 10; i >= 1; i--) candidates.push(`${i}.md`);
     }
 
-    const concurrency = 8;
+    const concurrency = 6;
     const found = [];
     for (let i = 0; i < candidates.length; i += concurrency) {
-      const batch = candidates.slice(i, i + concurrency).map(async (name) => {
-        try {
-          const r = await fetch(`${folderPath}/${name}`);
-          if (r.ok) return name;
-        } catch (e) {}
-        return null;
-      });
+      const batchNames = candidates.slice(i, i + concurrency);
+      const batch = batchNames.map((name) =>
+        fetch(`${folderPath}/${name}`)
+          .then((r) => (r.ok ? name : null))
+          .catch(() => null)
+      );
       const res = await Promise.all(batch);
-      res.forEach((s) => {
-        if (s) found.push(s);
-      });
+      for (const s of res) if (s) found.push(s);
       if (found.length > 20) break;
     }
 
