@@ -67,80 +67,7 @@
   margin: 0;
 }
 
-.abstract-short,
-.abstract-full {
-  display: inline;
-}
-
-.see-more {
-  color: rgb(50, 110, 170);
-  cursor: pointer;
-  white-space: nowrap;
-  margin-left: 5px;
-  font-size: 16px; /* Match the size of the abstract text */
-}
-
-.see-more:hover {
-  text-decoration: underline;
-}
-
-.supporting-projects {
-  display: block;
-  margin-top: 20px;
-  clear: both;
-}
-
-.supporting-projects h4 {
-  margin: 10px 0 5px 0;
-  font-size: 16px;
-}
-
-.supporting-projects p {
-  margin: 8px 0; /* Further reduce top and bottom margins */
-  line-height: 1.4; /* Slightly reduce line height */
-  text-align: justify;
-}
-
-.supporting-metadata {
-  font-size: 16px; /* Match the size of the abstract text */
-  color: #555;
-  margin: 3px 0 3px 0; /* Reduce top and bottom margins */
-  line-height: 1.4; /* Slightly reduce line height */
-}
-
-.supporting-metadata a {
-  color: rgb(50, 110, 170);
-  text-decoration: none;
-  font-size: inherit; /* Inherit size from .supporting-metadata */
-}
-
-.supporting-metadata a:hover {
-  text-decoration: underline;
-}
-
-.project-spacer {
-  margin-bottom: 0;
-}
-
-.btn-download-os {
-  background: linear-gradient(to right, #4689c4, #123e6c);
-  color: white;
-  border-radius: 4px;
-  padding: 14px;
-  font-size: 16px;
-  display: block;
-  line-height: 24px;
-  opacity: 0.9;
-  text-align: center;
-}
-.supporting-projects-container {
-  margin-left: 0px;
-}
-.btn-download-os:hover {
-  transform: scale(1.05);
-  transition: all 0.5s;
-  opacity: 1;
-}
+/* Removed legacy supporting-projects, see-more and download button rules — not used by new cards */
 
 @media (max-width: 1200px) {
   .paper-image {
@@ -148,4 +75,82 @@
     float: none !important;
     margin: 0 0 20px 0 !important;
   }
+}
+
+/* New styles for grouped projects and cards */
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.project-group {
+  background: transparent;
+}
+
+.group-title {
+  font-size: 20px;
+  margin: 6px 0 12px 0;
+  color: #2b5d86;
+}
+
+.group-desc {
+  margin: 0 0 14px 0;
+  color: #444;
+  font-size: 15px;
+}
+
+.projects-cards {
+  display: block;
+}
+
+/* Make project entries use the same layout as publications (float image + content) */
+.group-list .paper {
+  padding: 0 0 15px 0; /* match .paper spacing */
+  background: transparent;
+}
+
+.group-list .paper .paper-image {
+  /* Increase width so images are shown more fully on desktop */
+  width: 65%;
+  margin: 0 16px 0 0;
+  float: left;
+  display: block;
+}
+
+.group-list .paper .paper-img {
+  width: 100%;
+  /* Let the image keep its natural aspect ratio and avoid cropping */
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+  max-height: 520px; /* prevent extremely tall images from breaking layout */
+}
+
+/* Alternate image side for visual variety like publications */
+.group-list .paper:nth-child(even) .paper-image {
+  float: right;
+  margin: 0 0 0 12px;
+}
+
+@media (max-width: 1200px) {
+  .group-list .paper {
+    overflow: visible;
+  }
+  .group-list .paper .paper-image {
+    width: 100%;
+    float: none !important;
+    margin: 0 0 12px 0 !important;
+  }
+  .group-list .paper .paper-img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.group-list p.loading,
+.group-list p.error {
+  margin: 6px 0 10px 0;
+  color: #666;
 }

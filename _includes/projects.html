@@ -3,10 +3,8 @@
   <div class="content-wrapper">
     <div class="section">
       <br />
-      <div class="projects-section" id="projects-container"></div>
-    </div>
-    <div class=""section">
-    
+      <div class="projects-grid" id="projects-container">
+      </div>
     </div>
   </div>
 </div>
@@ -26,265 +24,245 @@
 </head>
 
 <script>
-  async function loadprojects() {
-    const container = document.getElementById("projects-container");
-    const totalprojects = 6;
+  const PROJECT_GROUPS = [
+    {
+      key: 'HMBA',
+      path: '/assets/projects/HMBA',
+      title: 'Human Mammalian Brain Atlas',
+      description: 'HMBA projects focus on large-scale mapping and interactive exploration of mammalian brain single-cell datasets.'
+    },
+    {
+      key: 'SimianEvo',
+      path: '/assets/projects/SimianEvo',
+      title: 'Cross-Species Analysis in Single-Cell Transcriptomics',
+      description: 'EvoViewer and Simian projects provide comparative and evolutionary visualizations across species.'
+    },
+    {
+      key: 'Cortical',
+      path: '/assets/projects/Cortical',
+      title: 'Studies of the Mammalian Cortex',
+      description: 'Cortex projects focus on cortical surface mapping, annotations, and region-based analyses.'
+    }
+  ];
 
-    // Clear container first
-    container.innerHTML = "";
+  document.addEventListener('DOMContentLoaded', () => {
+    loadAllGroups();
+  });
 
-    for (let i = totalprojects; i >= 1; i--) {
+  async function loadAllGroups() {
+    const container = document.getElementById('projects-container');
+    container.innerHTML = '';
+
+    for (const group of PROJECT_GROUPS) {
+  const groupEl = document.createElement('section');
+  groupEl.className = 'project-group';
+  groupEl.innerHTML = `<h2 class="group-title">${group.title}</h2><p class="group-desc">${group.description || ''}</p><div class="group-list" id="group-${group.key}"><p class="loading">Loading...</p></div>`;
+      container.appendChild(groupEl);
+
+      // load markdowns for this group
       try {
-        const response = await fetch(`/assets/projects/${i}.md`);
-        if (!response.ok) {
-          console.warn(`project ${i}.md not found or failed to load`);
-          continue;
-        }
-
-        const markdown = await response.text();
-        const element = createprojectElement(markdown, i);
-        if (element) {
-          container.appendChild(element);
-        }
+        await loadGroupMarkdowns(group.path, `group-${group.key}`);
       } catch (e) {
-        console.error(`Error loading project ${i}:`, e);
+        console.error(e);
+        const target = document.getElementById(`group-${group.key}`);
+        if (target) target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
+      }
+    }
+  }
+
+  async function loadGroupMarkdowns(folderPath, targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+    target.innerHTML = '';
+    // Collect all .md files inside the folder. We can't reliably list directories on every host,
+    // so first try fetching the folder URL (some servers return an index HTML), parse any links
+    // to .md files. If that fails, fall back to probing common filename patterns.
+    let files = await listMdFiles(folderPath);
+
+    if (!files || files.length === 0) {
+      target.innerHTML = '<p>No projects found in this group.</p>';
+      return;
+    }
+
+    // Sort files by semantic version (highest first). Filenames like v3.2.1.md, 3.md, v1.4.md
+    files = Array.from(new Set(files)).sort((a,b) => compareVersions(b,a));
+
+    const cards = [];
+    for (const f of files) {
+      try {
+        const r = await fetch(`${folderPath}/${f}`);
+        if (!r.ok) continue;
+        const md = await r.text();
+        const parsed = parseProjectMarkdown(md, f);
+        cards.push(parsed);
+      } catch (e) {
+        console.warn('Could not load', f, e);
       }
     }
 
-    // If no projects loaded, show message
-    if (container.children.length === 0) {
-      container.innerHTML =
-        "<p>No projects found. Please check the file paths.</p>";
+    if (cards.length === 0) {
+      target.innerHTML = '<p>No project markdowns could be loaded.</p>';
+      return;
     }
+
+    const grid = document.createElement('div');
+    grid.className = 'projects-cards';
+    for (let idx = 0; idx < cards.length; idx++) {
+      grid.appendChild(renderCard(cards[idx], idx));
+    }
+    target.appendChild(grid);
   }
 
-  function createprojectElement(markdown, index) {
-    const paperDiv = document.createElement("div");
-    paperDiv.className = "paper";
-
-    try {
-      paperDiv.innerHTML = parseMarkdownToHtml(markdown, index);
-      return paperDiv;
-    } catch (e) {
-      console.error(`Error parsing project ${index}:`, e);
-      return null;
-    }
-  }
-
-  function parseMarkdownToHtml(markdown, index) {
-    const lines = markdown.split("\n").filter((line) => line.trim() !== "");
-    let html = "";
-    let sectionState = {
-      inTitle: true,
-      inAbstract: false,
-      inSupporting: false,
-      inLinks: false,
-      inSupportingLinks: false,
-    };
-
-    html += `<div class="paper-content-wrapper">`;
-
-    // Check for image
-    const imageLine = lines.find((line) => line.startsWith("!["));
-    if (imageLine) {
-      html += parseImage(imageLine, index);
-    }
+  function parseProjectMarkdown(md, fname) {
+    const lines = md.split(/\r?\n/);
+    const data = { title: '', image: '', description: '', authors: '', year: '', venue: '', links: [], fname };
+    const desc = [];
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-
-      if (line.startsWith("### ")) {
-        // Close previous sections if needed
-        html += closeOpenSections(sectionState);
-        html += `<h3><b>${line.substring(4)}</b></h3>`;
-        sectionState.inTitle = false;
-      } else if (line.startsWith("**Authors:**")) {
-        const authors = line.substring(12).trim();
-        const venue = findMetadata(lines, "**Venue:**", i);
-        const year = findMetadata(lines, "**Year:**", i);
-        const doi = findMetadata(lines, "**DOI:**", i);
-
-        html += `<p class="paper-metadata">
-          <i class="fas fa-user"></i> ${authors}`;
-        if (year) {
-          html += ` | <i class="fas fa-calendar-alt"></i> ${year}`;
-        }
-        if (venue) {
-          html += ` | <i class="fas fa-map-marker-alt"></i> ${venue}`;
-        }
-        if (doi) {
-          html += ` | <i class="fas fa-book"></i> <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
-        }
-        html += `</p>`;
-      } else if (line.startsWith("- [")) {
-        if (!sectionState.inLinks && !sectionState.inSupportingLinks) {
-          // Determine if we're in main paper or supporting project
-          if (sectionState.inSupporting) {
-            html += `<p class="supporting-metadata">`;
-            sectionState.inSupportingLinks = true;
-          } else {
-            html += `<p class="paper-metadata">`;
-            sectionState.inLinks = true;
-          }
-        } else {
-          // Add separator only if it's not the first link
-          html += ` | `;
-        }
-
-        const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/);
-        if (linkMatch) {
-          const linkText = linkMatch[1];
-          const linkUrl = linkMatch[2];
-          const iconClass = getIconClass(linkText);
-
-          if (linkText.toLowerCase().includes("tutorial")) {
-            const sanitizedUrl = linkUrl.endsWith("/")
-              ? linkUrl.slice(0, -1)
-              : linkUrl;
-            html += ` <a href="${sanitizedUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
-          } else if (
-            linkText.toLowerCase().includes("classic viewer") ||
-            linkText.toLowerCase().includes("combined viewer")
-          ) {
-            html += ` <a href="${linkUrl}" target="_self"><i class="${iconClass}"></i> ${linkText}</a>`;
-          } else {
-            html += ` <a href="${linkUrl}" target="_blank"><i class="${iconClass}"></i> ${linkText}</a>`;
-          }
-        }
-      } else if (line.startsWith("**Abstract:**")) {
-        html += closeOpenSections(sectionState);
-        html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
-        sectionState.inAbstract = true;
-      } else if (line.startsWith("**Additional projects:**")) {
-        html += closeOpenSections(sectionState);
-        html += `<div class="supporting-projects-container"><div class="supporting-projects">`;
-        sectionState.inSupporting = true;
-      } else if (sectionState.inSupporting && line.startsWith("### ")) {
-        html += closeOpenSections(sectionState);
-        html += `<div class="supporting-project"><h5>${line.substring(
-          4
-        )}</h5>`;
-      } else if (sectionState.inAbstract) {
-        // Handle abstract content
-        const maxAbstractLength = 350;
-        if (line.length > maxAbstractLength) {
-          html += `<span class="abstract-short">${line.substring(
-            0,
-            maxAbstractLength
-          )}...</span>
-                  <span class="abstract-full" style="display:none;">${line}</span>
-                  <a href="#" class="see-more" onclick="toggleAbstract(this); return false;">See more</a>`;
-        } else {
-          html += line;
-        }
-      } else if (sectionState.inSupporting && line.startsWith("**Authors:**")) {
-        const authors = line.substring(12).trim();
-        const venue = findMetadata(lines, "**Venue:**", i);
-        const year = findMetadata(lines, "**Year:**", i);
-        const doi = findMetadata(lines, "**DOI:**", i);
-
-        html += `<p class="supporting-metadata">
-          <i class="fas fa-user"></i> ${authors}`;
-        if (year) {
-          html += ` | <i class="fas fa-calendar-alt"></i> ${year}`;
-        }
-        if (venue) {
-          html += ` | <i class="fas fa-map-marker-alt"></i> ${venue}`;
-        }
-        if (doi) {
-          html += ` | <i class="fas fa-book"></i> <a href="https://doi.org/${doi}" target="_blank">${doi}</a>`;
-        }
-        html += `</p>`;
-      }
+      const raw = lines[i];
+      const line = raw.trim();
+      if (!data.title && line.startsWith('# ')) { data.title = line.replace(/^# /, '').trim(); continue; }
+      const img = line.match(/!\[(.*?)\]\((.*?)\)/);
+      if (!data.image && img) { data.image = img[2]; continue; }
+      if (line.startsWith('**Authors:**')) { data.authors = line.replace('**Authors:**', '').trim(); continue; }
+      if (line.startsWith('**Year:**')) { data.year = line.replace('**Year:**', '').trim(); continue; }
+      if (line.startsWith('**Venue:**')) { data.venue = line.replace('**Venue:**', '').trim(); continue; }
+      const link = line.match(/- \[(.*?)\]\((.*?)\)/);
+      if (link) { data.links.push({ text: link[1], url: link[2] }); continue; }
+      if (line !== '' && !line.startsWith('**')) desc.push(raw);
     }
 
-    // Close any remaining open sections
-    html += closeOpenSections(sectionState);
-    html += `</div>`; // Close paper-content-wrapper
-
-    return html;
+    data.description = desc.join('\n').trim();
+    return data;
   }
 
-  // Helper function to find metadata
-  function findMetadata(lines, prefix, startIndex) {
-    for (let i = startIndex; i < lines.length; i++) {
-      if (lines[i].startsWith(prefix)) {
-        return lines[i].substring(prefix.length).trim();
+  // Try to list markdown files by fetching the folder URL and parsing links; fallback to probing.
+  async function listMdFiles(folderPath) {
+    const files = [];
+    try {
+      const resp = await fetch(folderPath + '/');
+      if (resp.ok) {
+        const text = await resp.text();
+        // Find hrefs to .md files
+        const regex = /href=\"([^\"]+\.md)\"/gi;
+        let m;
+        while ((m = regex.exec(text)) !== null) {
+          const name = m[1].replace(/^\.\//, '');
+          files.push(name);
+        }
       }
+    } catch (e) {
+      // ignore
     }
-    return "";
+
+    if (files.length > 0) return files;
+
+    // Fallback probe: try v{major}.{minor}.{patch}.md patterns and simple numbers
+    const candidates = [];
+    for (let major = 5; major >= 0; major--) {
+      for (let minor = 10; minor >= 0; minor--) {
+        for (let patch = 10; patch >= 0; patch--) candidates.push(`v${major}.${minor}.${patch}.md`);
+        candidates.push(`v${major}.${minor}.md`);
+      }
+      for (let i = 20; i >= 1; i--) candidates.push(`${i}.md`);
+    }
+
+    const concurrency = 8;
+    const found = [];
+    for (let i = 0; i < candidates.length; i += concurrency) {
+      const batch = candidates.slice(i, i + concurrency).map(async (name) => {
+        try {
+          const r = await fetch(`${folderPath}/${name}`);
+          if (r.ok) return name;
+        } catch (e) {}
+        return null;
+      });
+      const res = await Promise.all(batch);
+      res.forEach(s => { if (s) found.push(s); });
+      // Stop early if we found many
+      if (found.length > 20) break;
+    }
+
+    return found;
   }
 
-  // Helper function to get appropriate icon class
+  // Compare two filenames by extracting numbers (vX.Y.Z or N) and performing numeric compare
+  function compareVersions(a, b) {
+    const pa = parseVersion(a);
+    const pb = parseVersion(b);
+    for (let i = 0; i < 4; i++) {
+      const na = pa[i] || 0;
+      const nb = pb[i] || 0;
+      if (na !== nb) return na - nb;
+    }
+    return 0;
+  }
+
+  function parseVersion(name) {
+    // strip extension
+    const base = name.replace(/\.md$/i, '').replace(/^v/i, '');
+    const parts = base.split(/[\.\-_]/).map(p => parseInt(p, 10)).filter(n => !isNaN(n));
+    // normalize to 4 parts
+    while (parts.length < 4) parts.push(0);
+    return parts.slice(0,4);
+  }
+
+  function renderCard(data, index) {
+    const article = document.createElement('div');
+    article.className = 'paper';
+
+    // alternate left/right based on index like publications
+    const align = (index % 2 === 0) ? 'left' : 'right';
+    const imgHtml = data.image ? `<div class="paper-image ${align}"><img src="${data.image}" alt="${escapeHtml(data.title)}" class="paper-img"/></div>` : '';
+
+    let meta = '';
+    if (data.authors || data.year || data.venue) {
+      meta += '<p class="paper-metadata">';
+      if (data.authors) meta += `<i class="fas fa-user"></i> ${escapeHtml(data.authors)}`;
+      if (data.year) meta += ` | <i class="fas fa-calendar-alt"></i> ${escapeHtml(data.year)}`;
+      if (data.venue) meta += ` | <i class="fas fa-map-marker-alt"></i> ${escapeHtml(data.venue)}`;
+      meta += '</p>';
+    }
+
+    let links = '';
+    if (data.links && data.links.length) {
+      links = '<p class="paper-metadata">' + data.links.map(l => {
+        const icon = getIconClass(l.text);
+        const isSame = l.text.toLowerCase().includes('tutorial') || l.text.toLowerCase().includes('viewer');
+        const targ = isSame ? '_self' : '_blank';
+        const rel = isSame ? '' : ' rel="noopener noreferrer"';
+        return ` <a href="${l.url}" target="${targ}"${rel}><i class="${icon}"></i> ${escapeHtml(l.text)}</a>`;
+      }).join(' | ') + '</p>';
+    }
+
+    article.innerHTML = `
+      <div class="paper-content-wrapper">
+        ${imgHtml}
+        <h3>${escapeHtml(data.title)}</h3>
+        ${meta}
+        <div class="paper-abstract"><p>${escapeHtml(truncateText(data.description, 350))}</p></div>
+        ${links}
+      </div>
+    `;
+
+    return article;
+  }
+
+  function truncateText(t, n) { if (!t) return ''; return t.length > n ? t.substring(0,n) + '...' : t; }
+  function escapeHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
   function getIconClass(linkText) {
-    const text = linkText.toLowerCase();
-    if (text.includes("video")) return "fas fa-video";
-    if (text.includes("github")) return "fab fa-github";
-    if (text.includes("pdf")) return "fas fa-file-pdf";
-    if (text.includes("slides")) return "fas fa-file-powerpoint";
-    if (text.includes("code")) return "fas fa-code";
-    if (text.includes("paper")) return "fas fa-file-alt";
-    if (text.includes("website")) return "fas fa-globe";
-    if (text.includes("article")) return "fas fa-newspaper";
-    if (text.includes("preprint")) return "fas fa-file-alt";
-    if (text.includes("tutorial")) {
-      return "fas fa-chalkboard-teacher"; // Added icon for tutorial
-    }
-    if (text.includes("classic viewer") || text.includes("combined viewer"))
-      return "fas fa-download";
-    return "fas fa-link";
+    const text = (linkText||'').toLowerCase();
+    if (text.includes('video')) return 'fas fa-video';
+    if (text.includes('github')) return 'fab fa-github';
+    if (text.includes('pdf')) return 'fas fa-file-pdf';
+    if (text.includes('slides')) return 'fas fa-file-powerpoint';
+    if (text.includes('code')) return 'fas fa-code';
+    if (text.includes('paper')||text.includes('preprint')) return 'fas fa-file-alt';
+    if (text.includes('website')) return 'fas fa-globe';
+    if (text.includes('article')) return 'fas fa-newspaper';
+    if (text.includes('tutorial')) return 'fas fa-chalkboard-teacher';
+    if (text.includes('classic viewer')||text.includes('combined viewer')) return 'fas fa-download';
+    return 'fas fa-link';
   }
-
-  function closeOpenSections(sectionState) {
-    let html = "";
-
-    if (sectionState.inLinks) {
-      html += `</p>`;
-      sectionState.inLinks = false;
-    }
-
-    if (sectionState.inSupportingLinks) {
-      html += `</p>`;
-      sectionState.inSupportingLinks = false;
-    }
-
-    if (sectionState.inAbstract) {
-      html += `</p></div>`;
-      sectionState.inAbstract = false;
-    }
-
-    if (sectionState.inSupporting) {
-      html += `</div>`; // Close supporting-project if open
-      sectionState.inSupporting = false;
-    }
-
-    return html;
-  }
-
-  function parseImage(line, index) {
-    const match = line.match(/!\[(.*?)\]\((.*?)\)/);
-    if (!match) return "";
-
-    const [_, alt, src] = match;
-    const alignClass = index % 2 === 0 ? "right" : "left";
-    return `<div class="paper-image ${alignClass}"><img src="${src}" alt="${alt}" class="paper-img" /></div>`;
-  }
-
-  function toggleAbstract(link) {
-    const container = link.parentNode;
-    const shortText = container.querySelector(".abstract-short");
-    const fullText = container.querySelector(".abstract-full");
-
-    if (fullText.style.display === "none") {
-      fullText.style.display = "inline";
-      shortText.style.display = "none";
-      link.textContent = "See less";
-    } else {
-      fullText.style.display = "none";
-      shortText.style.display = "inline";
-      link.textContent = "See more";
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", loadprojects);
 </script>
