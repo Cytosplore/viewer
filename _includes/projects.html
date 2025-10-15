@@ -1,9 +1,12 @@
-<hr class="publications-hr" />
-<div class="cytosplore" id="publications">
+<hr class="projects-hr" />
+<div class="cytosplore" id="projects">
   <div class="content-wrapper">
     <div class="section">
       <br />
-      <div class="publications-section" id="publications-container"></div>
+      <div class="projects-section" id="projects-container"></div>
+    </div>
+    <div class=""section">
+    
     </div>
   </div>
 </div>
@@ -17,45 +20,45 @@
   <link rel="stylesheet" href="/assets/css/style-viewer.css" type="text/css" />
   <link
     rel="stylesheet"
-    href="/assets/css/style-publications.css"
+    href="/assets/css/style-projects.css"
     type="text/css"
   />
 </head>
 
 <script>
-  async function loadPublications() {
-    const container = document.getElementById("publications-container");
-    const totalPublications = 6;
+  async function loadprojects() {
+    const container = document.getElementById("projects-container");
+    const totalprojects = 6;
 
     // Clear container first
     container.innerHTML = "";
 
-    for (let i = totalPublications; i >= 1; i--) {
+    for (let i = totalprojects; i >= 1; i--) {
       try {
-        const response = await fetch(`/assets/publications/${i}.md`);
+        const response = await fetch(`/assets/projects/${i}.md`);
         if (!response.ok) {
-          console.warn(`Publication ${i}.md not found or failed to load`);
+          console.warn(`project ${i}.md not found or failed to load`);
           continue;
         }
 
         const markdown = await response.text();
-        const element = createPublicationElement(markdown, i);
+        const element = createprojectElement(markdown, i);
         if (element) {
           container.appendChild(element);
         }
       } catch (e) {
-        console.error(`Error loading publication ${i}:`, e);
+        console.error(`Error loading project ${i}:`, e);
       }
     }
 
-    // If no publications loaded, show message
+    // If no projects loaded, show message
     if (container.children.length === 0) {
       container.innerHTML =
-        "<p>No publications found. Please check the file paths.</p>";
+        "<p>No projects found. Please check the file paths.</p>";
     }
   }
 
-  function createPublicationElement(markdown, index) {
+  function createprojectElement(markdown, index) {
     const paperDiv = document.createElement("div");
     paperDiv.className = "paper";
 
@@ -63,7 +66,7 @@
       paperDiv.innerHTML = parseMarkdownToHtml(markdown, index);
       return paperDiv;
     } catch (e) {
-      console.error(`Error parsing publication ${index}:`, e);
+      console.error(`Error parsing project ${index}:`, e);
       return null;
     }
   }
@@ -115,7 +118,7 @@
         html += `</p>`;
       } else if (line.startsWith("- [")) {
         if (!sectionState.inLinks && !sectionState.inSupportingLinks) {
-          // Determine if we're in main paper or supporting publication
+          // Determine if we're in main paper or supporting project
           if (sectionState.inSupporting) {
             html += `<p class="supporting-metadata">`;
             sectionState.inSupportingLinks = true;
@@ -152,13 +155,13 @@
         html += closeOpenSections(sectionState);
         html += `<div class="paper-abstract"><p><b>Abstract:</b> `;
         sectionState.inAbstract = true;
-      } else if (line.startsWith("**Additional Publications:**")) {
+      } else if (line.startsWith("**Additional projects:**")) {
         html += closeOpenSections(sectionState);
-        html += `<div class="supporting-publications-container"><div class="supporting-publications">`;
+        html += `<div class="supporting-projects-container"><div class="supporting-projects">`;
         sectionState.inSupporting = true;
       } else if (sectionState.inSupporting && line.startsWith("### ")) {
         html += closeOpenSections(sectionState);
-        html += `<div class="supporting-publication"><h5>${line.substring(
+        html += `<div class="supporting-project"><h5>${line.substring(
           4
         )}</h5>`;
       } else if (sectionState.inAbstract) {
@@ -251,7 +254,7 @@
     }
 
     if (sectionState.inSupporting) {
-      html += `</div>`; // Close supporting-publication if open
+      html += `</div>`; // Close supporting-project if open
       sectionState.inSupporting = false;
     }
 
@@ -283,5 +286,5 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", loadPublications);
+  document.addEventListener("DOMContentLoaded", loadprojects);
 </script>

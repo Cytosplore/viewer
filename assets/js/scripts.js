@@ -227,6 +227,7 @@ function scroller() {
   var positions = [
     { id: "#nav-download", pos: $("#get").length ? $("#get").offset().top : -Infinity },
     { id: "#nav-publications", pos: $("#publications").length ? $("#publications").offset().top : -Infinity },
+    { id: "#nav-projects", pos: $("#projects").length ? $("#projects").offset().top : -Infinity },
     { id: "#nav-team", pos: $("#team").length ? $("#team").offset().top : -Infinity },
     { id: "#nav-cytosplore", pos: 0 },
   ];
