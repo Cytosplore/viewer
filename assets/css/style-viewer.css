@@ -1,238 +1,166 @@
-a, a:visited{
-	color: rgb(50, 110, 170);
+a,
+a:visited {
+  color: rgb(50, 110, 170);
 }
 
-.middle-blue, em{
-	color: rgb(50, 110, 170);
-	font-weight:400;
-	text-decoration: none;
+.middle-blue,
+em {
+  color: rgb(50, 110, 170);
+  font-weight: 400;
+  text-decoration: none;
 }
 
-.nav-item:hover, .nav-item.active{
-	color: rgb(50, 110, 170);
-	align:left;
-	text-align: left;
+.nav-item:hover,
+.nav-item.active {
+  color: rgb(50, 110, 170);
+  align: left;
+  text-align: left;
 }
 
-.nav-active-indicator{
-	color: rgb(50, 110, 170);
+.nav-active-indicator {
+  color: rgb(50, 110, 170);
   background-color: rgb(50, 110, 170);
 }
 
 .portrait {
-    border: 2.5px solid rgb(50, 110, 170);
+  border: 2.5px solid rgb(50, 110, 170);
 }
 
-.portrait-name{
-	color: rgb(50, 110, 170);
+.portrait-name {
+  color: rgb(50, 110, 170);
 }
 
-.portrait-text{
-	color: rgb(50, 110, 170);
+.portrait-text {
+  color: rgb(50, 110, 170);
 }
 
 .portrait .popover {
   border: 0.5px solid rgba(50, 110, 170, 0.15);
 }
 
-.portrait hr{
-	color: rgba(50, 110, 170, 0.25);
-	background-color: rgba(50, 110, 170, 0.25);
+.portrait hr {
+  color: rgba(50, 110, 170, 0.25);
+  background-color: rgba(50, 110, 170, 0.25);
 }
 
 #submitbt {
-    background-color: rgb(50, 110, 170);
+  background-color: rgb(50, 110, 170);
 }
 
-input[type=checkbox] {
-    background-color: rgb(50, 110, 170);
+input[type="checkbox"] {
+  background-color: rgb(50, 110, 170);
 }
 
-#nav-toggle span { position: absolute; left: 10px; top: 25px; }
-#nav-toggle span, #nav-toggle span:before, #nav-toggle span:after {
-	background: rgb(50, 110, 170);
+#nav-toggle span {
+  position: absolute;
+  left: 10px;
+  top: 25px;
+}
+#nav-toggle span,
+#nav-toggle span:before,
+#nav-toggle span:after {
+  background: rgb(50, 110, 170);
 }
 
-#cytosplore-logo{
+#cytosplore-logo {
   margin-bottom: -30px;
 }
 
-.paper-link a{
-	color: #222;
+.paper-link a {
+  color: #222;
 }
 
-.paper-link:hover, .paper-link a:hover{
-	color: rgb(50, 110, 170);
+.paper-link:hover,
+.paper-link a:hover {
+  color: rgb(50, 110, 170);
 }
 
 .nav-toggled {
   height: 280px;
 }
 
-#portrait-bvl{
-  background: url(../images/team/bvl.png) no-repeat;
-  background-size: 80px 80px
+.portrait {
+  width: 80px;
+  height: 80px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 80px 80px;
 }
-
-#portrait-sb{
-  background: url(../images/team/sb.jpg) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-cl{
-  background: url(../images/team/cl.jpg) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-alv{
-  background: url(../images/team/alv.jpg) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-tk{
-  background: url(../images/team/tk.jpg) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-am{
-  background: url(../images/team/am.jpg) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-el{
-  background: url(../images/team/el.png) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-jm{
-  background: url(../images/team/jm.png) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-tb{
-  background: url(../images/team/tb.png) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-rh{
-  background: url(../images/team/rh.png) no-repeat;
-  background-size: 80px 80px
-}
-
-#portrait-ta{
-  background: url(../images/team/ta.jpg) no-repeat;
-  background-size: 80px 80px
-}
-#portrait-mr{
-  background: url(../images/team/mr.jpg) no-repeat;
-  background-size: 80px 80px
-}
-#portrait-th{
-  background: url(../images/team/th.jpg) no-repeat;
-  background-size: 80px 80px
-}
-@media only screen and (max-width : 440px){
+@media only screen and (max-width: 440px) {
   .portrait {
     width: 60px;
     height: 60px;
     margin: 7px 7px;
     background-size: 60px 60px;
   }
-  #portrait-th{
-    background-size: 70px 70px;
-  }
+}
 
-  #portrait-np{
-    background: url(../images/team/np.jpg) no-repeat;
-    background-size: 62px 62px;
-  }
-
-  #portrait-av{
-    background-size: 60px 60px;
-  }
-
-  #portrait-je{
-    background-size: 60px 60px;
-  }
-
-  #portrait-bl{
-    background-size: 60px 60px;
-  }
-
-  #portrait-am{
-    background-size: 60px 60px;
-  }
-
-  #portrait-bvl{
-    background-size: 60px 60px;
-  }
-  #portrait-tk{
-    background-size: 60px 60px;
-  }
-  #portrait-sb{
-    background-size: 60px 60px;
-  }
-  #portrait-cl{
-    background-size: 60px 60px;
-  }
-  #portrait-alv{
-    background-size: 60px 60px;
+@media only screen and (min-width: 440px) {
+  .portrait {
+    margin: 5px 5px;
   }
 }
 
-@media only screen and (min-width : 440px){
-  .portrait { margin: 5px 5px; }
+@media only screen and (min-width: 550px) {
+  .portrait {
+    margin: 10px 15px;
+  }
 }
 
-@media only screen and (min-width : 550px){
-  .portrait { margin: 10px 15px; }
+@media only screen and (min-width: 710px) {
+  .portrait {
+    margin: 10px 25px;
+  }
 }
 
-@media only screen and (min-width : 710px){
-  .portrait { margin: 10px 25px; }
+@media only screen and (min-width: 860px) {
+  .portrait {
+    margin: 10px 40px;
+  }
 }
 
-@media only screen and (min-width : 860px){
-  .portrait { margin: 10px 40px; }
-}
-
-@media only screen and (min-width : 1024px){
-  .portrait { margin: 10px 10px; }
+@media only screen and (min-width: 1024px) {
+  .portrait {
+    margin: 10px 10px;
+  }
 }
 
 pre {
-	display: block;
-	word-break: break-all;
-	word-wrap: break-word;
-	width: 100%;
-	background-color: rgba(240, 240, 240, 0.5);
-	outline: 1px solid #ccc;
-	padding: 15px;
-	overflow: auto;
+  display: block;
+  word-break: break-all;
+  word-wrap: break-word;
+  width: 100%;
+  background-color: rgba(240, 240, 240, 0.5);
+  outline: 1px solid #ccc;
+  padding: 15px;
+  overflow: auto;
 }
 
 code {
-	font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-pre, xmp, plaintext, listing {
-    display: block;
-    font-family: monospace;
-    white-space: pre;
-    margin: 1em 0px;
+pre,
+xmp,
+plaintext,
+listing {
+  display: block;
+  font-family: monospace;
+  white-space: pre;
+  margin: 1em 0px;
 }
 
 .paper-img {
-    box-shadow: 0px 0px 3px 1px rgba(10, 10, 10, 0.25);
+  box-shadow: 0px 0px 3px 1px rgba(10, 10, 10, 0.25);
 }
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
   display: inline-block;
   font-size: 1.2em;
-	text-decoration: none;
-	font-weight: 200;
-	color: #666;
+  text-decoration: none;
+  font-weight: 200;
+  color: #666;
 }
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
@@ -242,7 +170,7 @@ pre, xmp, plaintext, listing {
   min-width: 400px;
   text-align: left;
   font-size: 1em;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
 /* Links inside the dropdown */
@@ -252,14 +180,13 @@ pre, xmp, plaintext, listing {
   text-decoration: none;
   display: block;
   font-size: 1em;
-	text-decoration: none;
-	font-weight: 200;
-	color: #666;
+  text-decoration: none;
+  font-weight: 200;
+  color: #666;
 }
 /* Change color of dropdown links on hover */
-.dropdown-content a:hover 
-{
-background-color: #f1f1f1;
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
 }
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
@@ -267,11 +194,11 @@ background-color: #f1f1f1;
 }
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover {
-  background-color:#f1f1f1;
+  background-color: #f1f1f1;
 }
 .btn-download-os {
   margin-top: 24px;
-  background: linear-gradient(to right, #4689C4, #123E6C);
+  background: linear-gradient(to right, #4689c4, #123e6c);
   padding: 14px;
   border: none;
   border-radius: 4px;
@@ -279,18 +206,18 @@ background-color: #f1f1f1;
   color: white;
   display: block;
   line-height: 24px;
-  opacity:0.90;
+  opacity: 0.9;
 }
 .btn-download-os a {
- text-decoration: none;
- color: white;
+  text-decoration: none;
+  color: white;
 }
 .icon {
   padding-left: 10px;
 }
 .btn-download-os:hover {
   transform: scale(1.05);
-  transition: all .5s;
+  transition: all 0.5s;
   opacity: 1;
 }
 .disabled-button {
@@ -299,16 +226,16 @@ background-color: #f1f1f1;
 }
 
 #download-available {
-		width: 220px;
-		padding-top: 30px;
-		margin-left: auto;
+  width: 220px;
+  padding-top: 30px;
+  margin-left: auto;
 }
 
 hrshort {
   border: 0;
   width: 25%;
-  color: #DDD;
-  background-color: #DDD;
+  color: #ddd;
+  background-color: #ddd;
   height: 1px;
   margin-bottom: -15px;
 }
