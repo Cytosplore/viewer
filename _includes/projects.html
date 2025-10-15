@@ -3,8 +3,7 @@
   <div class="content-wrapper">
     <div class="section">
       <br />
-      <div class="projects-grid" id="projects-container">
-      </div>
+      <div class="projects-grid" id="projects-container"></div>
     </div>
   </div>
 </div>
@@ -26,46 +25,55 @@
 <script>
   const PROJECT_GROUPS = [
     {
-      key: 'HMBA',
-      path: '/assets/projects/HMBA',
-      title: 'Human Mammalian Brain Atlas',
-      description: 'HMBA projects focus on large-scale mapping and interactive exploration of mammalian brain single-cell datasets.'
+      key: "HMBA",
+      path: "/assets/projects/HMBA",
+      title: "Human Mammalian Brain Atlas",
+      description:
+        "HMBA projects focus on large-scale mapping and interactive exploration of mammalian brain single-cell datasets.",
     },
     {
-      key: 'SimianEvo',
-      path: '/assets/projects/SimianEvo',
-      title: 'Cross-Species Analysis in Single-Cell Transcriptomics',
-      description: 'EvoViewer and Simian projects provide comparative and evolutionary visualizations across species.'
+      key: "SimianEvo",
+      path: "/assets/projects/SimianEvo",
+      title: "Cross-Species Analysis in Single-Cell Transcriptomics",
+      description:
+        "EvoViewer and Simian projects provide comparative and evolutionary visualizations across species.",
     },
     {
-      key: 'Cortical',
-      path: '/assets/projects/Cortical',
-      title: 'Studies of the Mammalian Cortex',
-      description: 'Cortex projects focus on cortical surface mapping, annotations, and region-based analyses.'
-    }
+      key: "Cortical",
+      path: "/assets/projects/Cortical",
+      title: "Studies of the Mammalian Cortex",
+      description:
+        "Cortex projects focus on cortical surface mapping, annotations, and region-based analyses.",
+    },
   ];
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     loadAllGroups();
   });
 
   async function loadAllGroups() {
-    const container = document.getElementById('projects-container');
-    container.innerHTML = '';
+    const container = document.getElementById("projects-container");
+    container.innerHTML = "";
 
     for (const group of PROJECT_GROUPS) {
-  const groupEl = document.createElement('section');
-  groupEl.className = 'project-group';
-  groupEl.innerHTML = `<h2 class="group-title">${group.title}</h2><p class="group-desc">${group.description || ''}</p><div class="group-list" id="group-${group.key}"><p class="loading">Loading...</p></div>`;
+      const groupEl = document.createElement("section");
+      groupEl.className = "project-group";
+      groupEl.innerHTML = `<h2 class="group-title">${
+        group.title
+      }</h2><p class="group-desc">${
+        group.description || ""
+      }</p><div class="group-list" id="group-${
+        group.key
+      }"><p class="loading">Loading...</p></div>`;
       container.appendChild(groupEl);
 
-      // load markdowns for this group
       try {
         await loadGroupMarkdowns(group.path, `group-${group.key}`);
       } catch (e) {
         console.error(e);
         const target = document.getElementById(`group-${group.key}`);
-        if (target) target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
+        if (target)
+          target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
       }
     }
   }
@@ -73,19 +81,15 @@
   async function loadGroupMarkdowns(folderPath, targetId) {
     const target = document.getElementById(targetId);
     if (!target) return;
-    target.innerHTML = '';
-    // Collect all .md files inside the folder. We can't reliably list directories on every host,
-    // so first try fetching the folder URL (some servers return an index HTML), parse any links
-    // to .md files. If that fails, fall back to probing common filename patterns.
+    target.innerHTML = "";
     let files = await listMdFiles(folderPath);
 
     if (!files || files.length === 0) {
-      target.innerHTML = '<p>No projects found in this group.</p>';
+      target.innerHTML = "<p>No projects found in this group.</p>";
       return;
     }
 
-    // Sort files by semantic version (highest first). Filenames like v3.2.1.md, 3.md, v1.4.md
-    files = Array.from(new Set(files)).sort((a,b) => compareVersions(b,a));
+    files = Array.from(new Set(files)).sort((a, b) => compareVersions(b, a));
 
     const cards = [];
     for (const f of files) {
@@ -96,17 +100,17 @@
         const parsed = parseProjectMarkdown(md, f);
         cards.push(parsed);
       } catch (e) {
-        console.warn('Could not load', f, e);
+        console.warn("Could not load", f, e);
       }
     }
 
     if (cards.length === 0) {
-      target.innerHTML = '<p>No project markdowns could be loaded.</p>';
+      target.innerHTML = "<p>No project markdowns could be loaded.</p>";
       return;
     }
 
-    const grid = document.createElement('div');
-    grid.className = 'projects-cards';
+    const grid = document.createElement("div");
+    grid.className = "projects-cards";
     for (let idx = 0; idx < cards.length; idx++) {
       grid.appendChild(renderCard(cards[idx], idx));
     }
@@ -115,39 +119,65 @@
 
   function parseProjectMarkdown(md, fname) {
     const lines = md.split(/\r?\n/);
-    const data = { title: '', image: '', description: '', authors: '', year: '', venue: '', links: [], fname };
+    const data = {
+      title: "",
+      image: "",
+      description: "",
+      authors: "",
+      year: "",
+      venue: "",
+      links: [],
+      fname,
+    };
     const desc = [];
 
     for (let i = 0; i < lines.length; i++) {
       const raw = lines[i];
       const line = raw.trim();
-      if (!data.title && line.startsWith('# ')) { data.title = line.replace(/^# /, '').trim(); continue; }
+      if (!data.title && line.startsWith("# ")) {
+        data.title = line.replace(/^# /, "").trim();
+        continue;
+      }
       const img = line.match(/!\[(.*?)\]\((.*?)\)/);
-      if (!data.image && img) { data.image = img[2]; continue; }
-      if (line.startsWith('**Authors:**')) { data.authors = line.replace('**Authors:**', '').trim(); continue; }
-      if (line.startsWith('**Year:**')) { data.year = line.replace('**Year:**', '').trim(); continue; }
-      if (line.startsWith('**Venue:**')) { data.venue = line.replace('**Venue:**', '').trim(); continue; }
+      if (!data.image && img) {
+        data.image = img[2];
+        continue;
+      }
+      if (line.startsWith("**Authors:**")) {
+        data.authors = line.replace("**Authors:**", "").trim();
+        continue;
+      }
+      if (line.startsWith("**Year:**")) {
+        data.year = line.replace("**Year:**", "").trim();
+        continue;
+      }
+      if (line.startsWith("**Venue:**")) {
+        data.venue = line.replace("**Venue:**", "").trim();
+        continue;
+      }
       const link = line.match(/- \[(.*?)\]\((.*?)\)/);
-      if (link) { data.links.push({ text: link[1], url: link[2] }); continue; }
-      if (line !== '' && !line.startsWith('**')) desc.push(raw);
+      if (link) {
+        data.links.push({ text: link[1], url: link[2] });
+        continue;
+      }
+      if (line !== "" && !line.startsWith("**")) desc.push(raw);
     }
 
-    data.description = desc.join('\n').trim();
+    data.description = desc.join("\n").trim();
     return data;
   }
 
-  // Try to list markdown files by fetching the folder URL and parsing links; fallback to probing.
   async function listMdFiles(folderPath) {
     const files = [];
     try {
-      const resp = await fetch(folderPath + '/');
+      const resp = await fetch(folderPath + "/");
       if (resp.ok) {
         const text = await resp.text();
         // Find hrefs to .md files
         const regex = /href=\"([^\"]+\.md)\"/gi;
         let m;
         while ((m = regex.exec(text)) !== null) {
-          const name = m[1].replace(/^\.\//, '');
+          const name = m[1].replace(/^\.\//, "");
           files.push(name);
         }
       }
@@ -157,11 +187,11 @@
 
     if (files.length > 0) return files;
 
-    // Fallback probe: try v{major}.{minor}.{patch}.md patterns and simple numbers
     const candidates = [];
     for (let major = 5; major >= 0; major--) {
       for (let minor = 10; minor >= 0; minor--) {
-        for (let patch = 10; patch >= 0; patch--) candidates.push(`v${major}.${minor}.${patch}.md`);
+        for (let patch = 10; patch >= 0; patch--)
+          candidates.push(`v${major}.${minor}.${patch}.md`);
         candidates.push(`v${major}.${minor}.md`);
       }
       for (let i = 20; i >= 1; i--) candidates.push(`${i}.md`);
@@ -178,15 +208,14 @@
         return null;
       });
       const res = await Promise.all(batch);
-      res.forEach(s => { if (s) found.push(s); });
-      // Stop early if we found many
+      res.forEach((s) => {
+        if (s) found.push(s);
+      });
       if (found.length > 20) break;
     }
 
     return found;
   }
-
-  // Compare two filenames by extracting numbers (vX.Y.Z or N) and performing numeric compare
   function compareVersions(a, b) {
     const pa = parseVersion(a);
     const pb = parseVersion(b);
@@ -199,40 +228,62 @@
   }
 
   function parseVersion(name) {
-    // strip extension
-    const base = name.replace(/\.md$/i, '').replace(/^v/i, '');
-    const parts = base.split(/[\.\-_]/).map(p => parseInt(p, 10)).filter(n => !isNaN(n));
-    // normalize to 4 parts
+    const base = name.replace(/\.md$/i, "").replace(/^v/i, "");
+    const parts = base
+      .split(/[\.\-_]/)
+      .map((p) => parseInt(p, 10))
+      .filter((n) => !isNaN(n));
     while (parts.length < 4) parts.push(0);
-    return parts.slice(0,4);
+    return parts.slice(0, 4);
   }
 
   function renderCard(data, index) {
-    const article = document.createElement('div');
-    article.className = 'paper';
+    const article = document.createElement("div");
+    article.className = "paper";
 
-    // alternate left/right based on index like publications
-    const align = (index % 2 === 0) ? 'left' : 'right';
-    const imgHtml = data.image ? `<div class="paper-image ${align}"><img src="${data.image}" alt="${escapeHtml(data.title)}" class="paper-img"/></div>` : '';
+    const align = index % 2 === 0 ? "left" : "right";
+    const imgHtml = data.image
+      ? `<div class="paper-image ${align}"><img src="${
+          data.image
+        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
+      : "";
 
-    let meta = '';
+    let meta = "";
     if (data.authors || data.year || data.venue) {
       meta += '<p class="paper-metadata">';
-      if (data.authors) meta += `<i class="fas fa-user"></i> ${escapeHtml(data.authors)}`;
-      if (data.year) meta += ` | <i class="fas fa-calendar-alt"></i> ${escapeHtml(data.year)}`;
-      if (data.venue) meta += ` | <i class="fas fa-map-marker-alt"></i> ${escapeHtml(data.venue)}`;
-      meta += '</p>';
+      if (data.authors)
+        meta += `<i class="fas fa-user"></i> ${escapeHtml(data.authors)}`;
+      if (data.year)
+        meta += ` | <i class="fas fa-calendar-alt"></i> ${escapeHtml(
+          data.year
+        )}`;
+      if (data.venue)
+        meta += ` | <i class="fas fa-map-marker-alt"></i> ${escapeHtml(
+          data.venue
+        )}`;
+      meta += "</p>";
     }
 
-    let links = '';
+    let links = "";
     if (data.links && data.links.length) {
-      links = '<p class="paper-metadata">' + data.links.map(l => {
-        const icon = getIconClass(l.text);
-        const isSame = l.text.toLowerCase().includes('tutorial') || l.text.toLowerCase().includes('viewer');
-        const targ = isSame ? '_self' : '_blank';
-        const rel = isSame ? '' : ' rel="noopener noreferrer"';
-        return ` <a href="${l.url}" target="${targ}"${rel}><i class="${icon}"></i> ${escapeHtml(l.text)}</a>`;
-      }).join(' | ') + '</p>';
+      links =
+        '<p class="paper-metadata">' +
+        data.links
+          .map((l) => {
+            const icon = getIconClass(l.text);
+            const isSame =
+              l.text.toLowerCase().includes("tutorial") ||
+              l.text.toLowerCase().includes("viewer");
+            const targ = isSame ? "_self" : "_blank";
+            const rel = isSame ? "" : ' rel="noopener noreferrer"';
+            return ` <a href="${
+              l.url
+            }" target="${targ}"${rel}><i class="${icon}"></i> ${escapeHtml(
+              l.text
+            )}</a>`;
+          })
+          .join(" | ") +
+        "</p>";
     }
 
     article.innerHTML = `
@@ -240,7 +291,9 @@
         ${imgHtml}
         <h3>${escapeHtml(data.title)}</h3>
         ${meta}
-        <div class="paper-abstract"><p>${escapeHtml(truncateText(data.description, 350))}</p></div>
+        <div class="paper-abstract"><p>${escapeHtml(
+          truncateText(data.description, 350)
+        )}</p></div>
         ${links}
       </div>
     `;
@@ -248,21 +301,33 @@
     return article;
   }
 
-  function truncateText(t, n) { if (!t) return ''; return t.length > n ? t.substring(0,n) + '...' : t; }
-  function escapeHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function truncateText(t, n) {
+    if (!t) return "";
+    return t.length > n ? t.substring(0, n) + "..." : t;
+  }
+  function escapeHtml(s) {
+    if (!s) return "";
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
 
   function getIconClass(linkText) {
-    const text = (linkText||'').toLowerCase();
-    if (text.includes('video')) return 'fas fa-video';
-    if (text.includes('github')) return 'fab fa-github';
-    if (text.includes('pdf')) return 'fas fa-file-pdf';
-    if (text.includes('slides')) return 'fas fa-file-powerpoint';
-    if (text.includes('code')) return 'fas fa-code';
-    if (text.includes('paper')||text.includes('preprint')) return 'fas fa-file-alt';
-    if (text.includes('website')) return 'fas fa-globe';
-    if (text.includes('article')) return 'fas fa-newspaper';
-    if (text.includes('tutorial')) return 'fas fa-chalkboard-teacher';
-    if (text.includes('classic viewer')||text.includes('combined viewer')) return 'fas fa-download';
-    return 'fas fa-link';
+    const text = (linkText || "").toLowerCase();
+    if (text.includes("video")) return "fas fa-video";
+    if (text.includes("github")) return "fab fa-github";
+    if (text.includes("pdf")) return "fas fa-file-pdf";
+    if (text.includes("slides")) return "fas fa-file-powerpoint";
+    if (text.includes("code")) return "fas fa-code";
+    if (
+      text.includes("paper") ||
+      text.includes("preprint") ||
+      text.includes("publication")
+    )
+      return "fas fa-file-alt";
+    if (text.includes("website")) return "fas fa-globe";
+    if (text.includes("article")) return "fas fa-newspaper";
+    if (text.includes("tutorial")) return "fas fa-chalkboard-teacher";
+    if (text.includes("classic viewer") || text.includes("combined viewer"))
+      return "fas fa-download";
+    return "fas fa-link";
   }
 </script>
