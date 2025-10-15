@@ -79,6 +79,16 @@ input[type=checkbox] {
   background-size: 80px 80px
 }
 
+#portrait-cl{
+  background: url(../images/team/cl.jpg) no-repeat;
+  background-size: 80px 80px
+}
+
+#portrait-alv{
+  background: url(../images/team/alv.jpg) no-repeat;
+  background-size: 80px 80px
+}
+
 #portrait-tk{
   background: url(../images/team/tk.jpg) no-repeat;
   background-size: 80px 80px
@@ -115,6 +125,10 @@ input[type=checkbox] {
 }
 #portrait-mr{
   background: url(../images/team/mr.jpg) no-repeat;
+  background-size: 80px 80px
+}
+#portrait-th{
+  background: url(../images/team/th.jpg) no-repeat;
   background-size: 80px 80px
 }
 @media only screen and (max-width : 440px){
@@ -156,6 +170,12 @@ input[type=checkbox] {
     background-size: 60px 60px;
   }
   #portrait-sb{
+    background-size: 60px 60px;
+  }
+  #portrait-cl{
+    background-size: 60px 60px;
+  }
+  #portrait-alv{
     background-size: 60px 60px;
   }
 }

@@ -117,9 +117,73 @@
 						</span>
 					</div>
 				</a>
-
+				<a href="https://lkeb.github.io/people/chang_li.html" target="_blank">
+					<div class="portrait" id="portrait-cl">
+						<span class="popover above">
+							<span class="portrait-name">
+								Chang Li
+							</span>
+							<hr />
+							<span class="portrait-text">
+								LUMC <br /> Development
+							</span>
+						</span>
+					</div>
+				</a>
+				<a href="https://lkeb.github.io/people/julian_thijsen.html" target="_blank">
+					<div class="portrait" id="portrait-jt">
+						<span class="popover above">
+							<span class="portrait-name">
+								Julian Thijsen
+							</span>
+							<hr />
+							<span class="portrait-text">
+								LUMC <br /> Development
+							</span>
+						</span>
+					</div>
+				</a>				
+				<a href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/intelligent-systems/computer-graphics-and-visualization/people/alexander-vieth" target="_blank">
+					<div class="portrait" id="portrait-alv">
+						<span class="popover above">
+							<span class="portrait-name">
+							Alexander Vieth
+							</span>
+							<hr />
+							<span class="portrait-text">
+								LUMC <br /> Development
+							</span>
+						</span>
+					</div>
+				</a>	
 				<span class="stretch"></span>
 			</div>
+			    <div style="text-align:right;margin-bottom:6px;margin-top:-6px;">
+                <small style="color:#666;font-size:0.75em;font-style:italic;opacity:0.65;">
+                    • Team order is randomized on each page load.
+                </small>
+            </div>
+			<script>
+                // Shuffle portrait order on each page load
+                document.addEventListener('DOMContentLoaded', function () {
+                    const container = document.getElementById('portrait-container');
+                    if (!container) return;
+                    const stretch = container.querySelector('.stretch');
+
+                    // Collect children except the stretch spacer
+                    const nodes = Array.from(container.children).filter(n => n !== stretch);
+
+                    // Fisher–Yates shuffle
+                    for (let i = nodes.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [nodes[i], nodes[j]] = [nodes[j], nodes[i]];
+                    }
+
+                    // Re-append in shuffled order and keep stretch last
+                    nodes.forEach(n => container.appendChild(n));
+                    if (stretch) container.appendChild(stretch);
+                });
+            </script>
 			<p>
 				Cytosplore Viewer is being developed by a team consisting of members from the
 				<a href="https://lkeb.github.io/" target="new">Leiden Computational Biology Center</a>, the
