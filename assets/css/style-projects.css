@@ -83,6 +83,8 @@
 
 .project-group {
   background: transparent;
+  padding: 18px 0 6px 0;
+  border-top: 2px solid rgba(43, 93, 134, 0.12);
 }
 
 .group-title {
@@ -102,8 +104,14 @@
 }
 
 .group-list .paper {
-  padding: 0 0 15px 0;
+  padding: 8px 0 12px 0;
   background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.group-list .paper:last-child {
+  border-bottom: none;
+  padding-bottom: 6px;
 }
 
 .group-list .paper .paper-image {
@@ -124,6 +132,22 @@
 .group-list .paper:nth-child(even) .paper-image {
   float: right;
   margin: 0 0 0 12px;
+}
+
+.projects-hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(43, 93, 134, 0.18),
+    rgba(43, 93, 134, 0.06)
+  );
+  margin: 24px 0;
+}
+
+.projects-hr:first-child,
+.projects-hr:last-child {
+  display: none;
 }
 
 @media (max-width: 1200px) {
