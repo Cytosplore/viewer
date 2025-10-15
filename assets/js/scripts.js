@@ -219,25 +219,27 @@ function scroller() {
   var url = window.location.href;
   if (url.indexOf("documentation") >= 0) {
     setActiveNav("#nav-documentation");
-  } else {
-    var scrollPosition = $(window).scrollTop() + 100;
-    var positions = [
-      { id: "#nav-download", pos: $("#get").length ? $("#get").offset().top : Number.MAX_SAFE_INTEGER },
-      { id: "#nav-publications", pos: $("#publications").length ? $("#publications").offset().top : Number.MAX_SAFE_INTEGER },
-      { id: "#nav-team", pos: $("#team").length ? $("#team").offset().top : Number.MAX_SAFE_INTEGER },
-      { id: "#nav-cytosplore", pos: 0 },
-    ];
+    return;
+  }
 
-    for (let i = 0; i < positions.length; i++) {
-      if (
-        scrollPosition > positions[i].pos ||
-        (i === 0 &&
-          $(window).scrollTop() + $(window).height() >
-            $(document).height() - 100)
-      ) {
-        setActiveNav(positions[i].id);
-        break;
-      }
+  var scrollPosition = $(window).scrollTop() + 100;
+
+  var positions = [
+    { id: "#nav-download", pos: $("#get").length ? $("#get").offset().top : -Infinity },
+    { id: "#nav-publications", pos: $("#publications").length ? $("#publications").offset().top : -Infinity },
+    { id: "#nav-team", pos: $("#team").length ? $("#team").offset().top : -Infinity },
+    { id: "#nav-cytosplore", pos: 0 },
+  ];
+
+  positions.sort((a, b) => b.pos - a.pos);
+
+  var atBottom = $(window).scrollTop() + $(window).height() >= $(document).height() - 10;
+
+  for (let i = 0; i < positions.length; i++) {
+    if (positions[i].pos === -Infinity) continue; 
+    if (scrollPosition >= positions[i].pos || (atBottom && i === 0)) {
+      setActiveNav(positions[i].id);
+      break;
     }
   }
 }
