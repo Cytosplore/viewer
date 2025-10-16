@@ -110,9 +110,15 @@ function setupDownloadLink(
   var element = $("#" + elementId);
   if (element.length) {
     let userAgent = navigator.userAgent.toLowerCase();
-    let isMac = userAgent.indexOf("mac") !== -1;
-    let isLinux = userAgent.indexOf("linux") !== -1;
-    let isWindows = userAgent.indexOf("win") !== -1;
+    let isMac =
+      userAgent.indexOf("mac") !== -1 || userAgent.indexOf("darwin") !== -1;
+    let isLinux =
+      userAgent.indexOf("linux") !== -1 && userAgent.indexOf("android") === -1;
+    let isWindows =
+      userAgent.indexOf("windows") !== -1 ||
+      userAgent.indexOf("win32") !== -1 ||
+      userAgent.indexOf("win64") !== -1 ||
+      userAgent.indexOf("wow64") !== -1;
 
     let link = isMac ? macLink : isLinux ? linLink : isWindows ? winLink : "";
     let icon = isMac
