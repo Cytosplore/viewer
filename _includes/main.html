@@ -37,17 +37,21 @@
 			</p>
 		</div>
 		<div class="section">
-			<img id="actionvideo-gif" src="/assets/papers/HMBAViewers/multispeciesrnaseq.gif" alt="Cytosplore Viewer demo" width="80%" style="max-width:100%;height:auto;display:block;margin:0 auto;" loading="lazy" />
+			<div class="actionvideo-wrapper">
+				<img id="actionvideo-gif" src="/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif" alt="Cytosplore Viewer demo" loading="lazy" />
+				<div class="action-caption" id="actionvideo-caption">RNASeq MultiSpecies</div>
+			</div>
 			<script>
 			(function(){
 				var list = [
-					"/assets/papers/simianviewer.gif",
-					"/assets/papers/evoviewer.gif",
-					"/assets/papers/HMBAViewers/gradient_surfer.gif",
-					"/assets/papers/HMBAViewers/multispeciesrnaseq.gif",
-					"/assets/papers/HMBAViewers/patch1.png",
-					"/assets/papers/HMBAViewers/patch2.png",
-					"/assets/papers/HMBAViewers/atacseq.png"
+					{caption: "Simian Viewer", src: "/assets/papers/Simian_Viewer.gif"},
+					{caption: "Evo Viewer", src: "/assets/papers/Evo_Viewer.gif"},
+					{caption: "Spatial MultiSpecies Basal Ganglia", src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif"},
+					{caption: "ATACSeq Marmoset Subcortex", src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif"},
+					{caption: "RNASeq MultiSpecies Basal Ganglia", src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif"},
+					{caption: "PatchSeq Human Neocortex", src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif"},
+					{caption: "PatchSeq Macaque Basal Ganglia", src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif"},
+					{caption: "Classic MTG Viewer", src: "/assets/papers/MTG_Viewer.gif"}
 				];
 
 				function unbiasedIndex(n){
@@ -66,9 +70,12 @@
 
 				document.addEventListener('DOMContentLoaded', function(){
 					var img = document.getElementById('actionvideo-gif');
+					var caption = document.getElementById('actionvideo-caption');
 					if(!img) return;
 					if(list && list.length){
-						img.src = list[unbiasedIndex(list.length)];
+						var sel = list[unbiasedIndex(list.length)];
+						img.src = sel.src || sel;
+						if(caption) caption.textContent = sel.caption || '';
 						img.dataset.randomized = 1;
 					}
 				});
