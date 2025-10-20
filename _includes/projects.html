@@ -261,6 +261,7 @@
         }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
       : "";
 
+    const textAlign = align === "left" ? "left" : "right";
     let meta = "";
     if (data.authors || data.year || data.venue) {
       meta += '<p class="paper-metadata">';
@@ -300,9 +301,9 @@
     }
 
     article.innerHTML = `
-      <div class="paper-content-wrapper">
+      <div class="paper-content-wrapper" style="text-align: ${textAlign};">
         ${imgHtml}
-        <h3>${escapeHtml(data.title)}</h3>
+        <h4>${escapeHtml(data.title)}</h4>
         ${meta}
         <div class="paper-abstract"><p>${escapeHtml(
           truncateText(data.description, 350)
