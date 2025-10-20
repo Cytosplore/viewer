@@ -37,50 +37,28 @@
 			</p>
 		</div>
 		<div class="section">
-			<div class="actionvideo-wrapper">
-				<img id="actionvideo-gif" src="/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif" alt="Cytosplore Viewer demo" loading="lazy" />
-				<div class="action-caption" id="actionvideo-caption">RNASeq MultiSpecies</div>
-			</div>
-			<script>
-			(function(){
-				var list = [
-					{caption: "Simian Viewer", src: "/assets/papers/Simian_Viewer.gif"},
-					{caption: "Evo Viewer", src: "/assets/papers/Evo_Viewer.gif"},
-					{caption: "Spatial MultiSpecies Basal Ganglia", src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif"},
-					{caption: "ATACSeq Marmoset Subcortex", src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif"},
-					{caption: "RNASeq MultiSpecies Basal Ganglia", src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif"},
-					{caption: "PatchSeq Human Neocortex", src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif"},
-					{caption: "PatchSeq Macaque Basal Ganglia", src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif"},
-					{caption: "Classic MTG Viewer", src: "/assets/papers/MTG_Viewer.gif"}
-				];
+				<div class="actionvideo-wrapper gallery" id="action-gallery">
+					<div class="gallery-main">
+						<button class="gallery-btn prev" id="gallery-prev" aria-label="Previous" title="Previous">
+							<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+						</button>
+						<img id="gallery-image" src="/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif" alt="Cytosplore Viewer demo" loading="lazy" />
+						<button class="gallery-btn next" id="gallery-next" aria-label="Next" title="Next">
+							<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+						</button>
 
-				function unbiasedIndex(n){
-					if(n<=0) return 0;
+                        
+					</div>
+					<div class="action-caption" id="gallery-caption">RNASeq MultiSpecies</div>
 
-					if(window.crypto && crypto.getRandomValues){
-						var max = Math.floor(0xFFFFFFFF / n) * n; 
-						var uint32 = new Uint32Array(1);
-						do {
-							crypto.getRandomValues(uint32);
-						} while(uint32[0] >= max);
-						return uint32[0] % n;
-					}
-					return Math.floor(Math.random()*n);
-				}
+					<div class="gallery-thumbs" id="gallery-thumbs" role="list">
+                        
+					</div>
+				</div>
 
-				document.addEventListener('DOMContentLoaded', function(){
-					var img = document.getElementById('actionvideo-gif');
-					var caption = document.getElementById('actionvideo-caption');
-					if(!img) return;
-					if(list && list.length){
-						var sel = list[unbiasedIndex(list.length)];
-						img.src = sel.src || sel;
-						if(caption) caption.textContent = sel.caption || '';
-						img.dataset.randomized = 1;
-					}
-				});
-			})();
-			</script>
+				<link rel="stylesheet" href="/assets/css/gallery.css">
+				<div id="gallery-live" class="sr-only" aria-live="polite"></div>
+				<script src="/assets/js/gallery.js"></script>
 		</div>
 	</div>
 </div>
