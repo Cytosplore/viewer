@@ -2,28 +2,45 @@
   var Gallery = function (root) {
     this.root = root;
     this.list = [
-      { caption: "Classic MTG Viewer", src: "/assets/papers/MTG_Viewer.gif" },
-      { caption: "Simian Viewer", src: "/assets/papers/Simian_Viewer.gif" },
-      { caption: "Evo Viewer", src: "/assets/papers/Evo_Viewer.gif" },
+      {
+        caption: "Classic MTG Viewer",
+        src: "/assets/papers/MTG_Viewer.gif",
+        id: "cortex-mtg-multi-species",
+      },
+      {
+        caption: "Simian Viewer",
+        src: "/assets/papers/Simian_Viewer.gif",
+        id: "simianevo-simian-viewer",
+      },
+      {
+        caption: "Evo Viewer",
+        src: "/assets/papers/Evo_Viewer.gif",
+        id: "simianevo-evo-viewer",
+      },
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
+        id: "hmba-spatial-multi-species-basal-ganglia",
       },
       {
         caption: "ATACSeq Marmoset Subcortex",
         src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif",
+        id: "hmba-atacseq-marmoset-subcortex",
       },
       {
         caption: "RNASeq MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
+        id: "hmba-rnaseq-multi-species-basal-ganglia",
       },
       {
         caption: "PatchSeq Human Neocortex",
         src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
+        id: "hmba-patchseq-human-neocortex",
       },
       {
         caption: "PatchSeq Macaque Basal Ganglia",
         src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
+        id: "hmba-patchseq-macaque-basal-ganglia",
       },
     ];
 
