@@ -59,19 +59,19 @@ function setupDownloadLinks() {
       winLink:
         "https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe",
       linLink: "",
-      tooltip: "Download Classic Cytosplore Viewer",
+      tooltip: "Download Classic Viewer",
       container: "#get-classic-cytosplore-installer .download-buttons",
     },
     {
       id: "download-combined",
       version: "1.0.0",
-      label: "Combined Viewer",
+      label: "Cytosplore Viewer",
       macLink:
         "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/HMBA/Cytosplore_Viewer_Mac.dmg",
       winLink:
         "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/HMBA/Cytosplore_Viewer_Windows.exe",
       linLink: "",
-      tooltip: "Download Combined Cytosplore Viewer",
+      tooltip: "Download Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
     },
   ];

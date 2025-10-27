@@ -1,4 +1,5 @@
 <hr class="projects-hr" />
+
 <div class="cytosplore" id="projects">
   <div class="content-wrapper">
     <div class="section">
@@ -24,16 +25,28 @@
 
 <head>
   <link
-    rel="stylesheet"
+    rel="preload"
     href="/assets/css/fontawesome-all.css"
-    type="text/css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
   />
-  <link rel="stylesheet" href="/assets/css/style-viewer.css" type="text/css" />
   <link
-    rel="stylesheet"
-    href="/assets/css/style-projects.css"
-    type="text/css"
+    rel="preload"
+    href="/assets/css/style-viewer.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
   />
+  <link
+    rel="preload"
+    href="/assets/css/style-projects.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link rel="stylesheet" href="/assets/css/fontawesome-all.css" />
+    <link rel="stylesheet" href="/assets/css/style-viewer.css" />
+    <link rel="stylesheet" href="/assets/css/style-projects.css" />
+  </noscript>
 </head>
 
 <script>
@@ -61,75 +74,77 @@
     },
   ];
 
-  document.addEventListener("DOMContentLoaded", () => {
-    loadAllGroups();
-  });
+  document.addEventListener("DOMContentLoaded", () => loadAllGroups());
 
   async function loadAllGroups() {
     const container = document.getElementById("projects-container");
     container.innerHTML = "";
 
+    const fragment = document.createDocumentFragment();
     for (const group of PROJECT_GROUPS) {
       const groupEl = document.createElement("section");
       groupEl.className = "project-group";
-      groupEl.innerHTML = `<h2 class="group-title">${
-        group.title
-      }</h2><p class="group-desc">${
-        group.description || ""
-      }</p><div class="group-list" id="group-${
-        group.key
-      }"><p class="loading">Loading...</p></div>`;
-      container.appendChild(groupEl);
+      groupEl.innerHTML = `
+      <h2 class="group-title">${group.title}</h2>
+      <p class="group-desc">${group.description || ""}</p>
+      <div class="group-list" id="group-${group.key}">
+        <p class="loading">Loading...</p>
+      </div>`;
+      fragment.appendChild(groupEl);
     }
+    container.appendChild(fragment);
 
-    const loadPromises = PROJECT_GROUPS.map((group) =>
-      loadGroupMarkdowns(group.path, `group-${group.key}`).catch((e) => {
-        console.error(e);
-        const target = document.getElementById(`group-${group.key}`);
-        if (target)
-          target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
-      })
+    await Promise.allSettled(
+      PROJECT_GROUPS.map((group) =>
+        loadGroupMarkdowns(group.path, `group-${group.key}`).catch((e) => {
+          console.error(e);
+          const target = document.getElementById(`group-${group.key}`);
+          if (target)
+            target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
+        })
+      )
     );
-
-    await Promise.all(loadPromises);
   }
 
   async function loadGroupMarkdowns(folderPath, targetId) {
     const target = document.getElementById(targetId);
     if (!target) return;
     target.innerHTML = "";
-    let files = await listMdFiles(folderPath);
 
-    if (!files || files.length === 0) {
+    let files = await listMdFiles(folderPath);
+    if (!files?.length) {
       target.innerHTML = "<p>No projects found in this group.</p>";
       return;
     }
 
-    files = Array.from(new Set(files)).sort((a, b) => compareVersions(b, a));
+    files = [...new Set(files)].sort((a, b) => compareVersions(b, a));
+    const cards = await Promise.allSettled(
+      files.map(async (f) => {
+        try {
+          const r = await fetch(`${folderPath}/${f}`);
+          if (!r.ok) return null;
+          const md = await r.text();
+          return parseProjectMarkdown(md, f);
+        } catch {
+          return null;
+        }
+      })
+    );
 
-    const cards = [];
-    for (const f of files) {
-      try {
-        const r = await fetch(`${folderPath}/${f}`);
-        if (!r.ok) continue;
-        const md = await r.text();
-        const parsed = parseProjectMarkdown(md, f);
-        cards.push(parsed);
-      } catch (e) {
-        console.warn("Could not load", f, e);
-      }
-    }
+    const validCards = cards
+      .map((r) => (r.status === "fulfilled" ? r.value : null))
+      .filter(Boolean);
 
-    if (cards.length === 0) {
+    if (!validCards.length) {
       target.innerHTML = "<p>No project markdowns could be loaded.</p>";
       return;
     }
 
     const grid = document.createElement("div");
     grid.className = "projects-cards";
-    for (let idx = 0; idx < cards.length; idx++) {
-      grid.appendChild(renderCard(cards[idx], idx));
-    }
+    const frag = document.createDocumentFragment();
+    validCards.forEach((c, i) => frag.appendChild(renderCard(c, i)));
+    grid.appendChild(frag);
     target.appendChild(grid);
   }
 
@@ -139,16 +154,14 @@
       title: "",
       image: "",
       description: "",
-      authors: "",
-      year: "",
-      venue: "",
+      project: "",
+      contact: "",
       links: [],
       fname,
     };
     const desc = [];
 
-    for (let i = 0; i < lines.length; i++) {
-      const raw = lines[i];
+    for (const raw of lines) {
       const line = raw.trim();
       if (!data.title && line.startsWith("# ")) {
         data.title = line.replace(/^# /, "").trim();
@@ -159,16 +172,19 @@
         data.image = img[2];
         continue;
       }
-      if (line.startsWith("**Authors:**")) {
-        data.authors = line.replace("**Authors:**", "").trim();
+      const projectMatch = line.match(/^\*\*\s*Project:\s*\*\*(.*)/i);
+      if (projectMatch) {
+        data.project = projectMatch[1].trim();
         continue;
       }
-      if (line.startsWith("**Year:**")) {
-        data.year = line.replace("**Year:**", "").trim();
+      const contactMatch = line.match(/^\*\*\s*Contact:\s*\*\*(.*)/i);
+      if (contactMatch) {
+        data.contact = contactMatch[1].trim();
         continue;
       }
-      if (line.startsWith("**Venue:**")) {
-        data.venue = line.replace("**Venue:**", "").trim();
+      const descMatch = line.match(/^\*\*\s*(Description):\s*\*\*(.*)/i);
+      if (descMatch) {
+        data.description = (descMatch[2] || "").trim();
         continue;
       }
       const link = line.match(/- \[(.*?)\]\((.*?)\)/);
@@ -176,11 +192,47 @@
         data.links.push({ text: link[1], url: link[2] });
         continue;
       }
-      if (line !== "" && !line.startsWith("**")) desc.push(raw);
+      if (line && !line.startsWith("**")) desc.push(raw);
     }
 
-    data.description = desc.join("\n").trim();
+    if (!data.description && desc.length)
+      data.description = desc.join("\n").trim();
     return data;
+  }
+
+  // Escape attribute values for safe insertion into href
+  function escapeAttr(s) {
+    return (s || "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  // Convert inline markdown links [text](url) into safe anchor tags while
+  // escaping surrounding text. Same-site links (starting with "/" or "#")
+  // open in the same tab; external links open in a new tab with noopener.
+  function convertMarkdownLinks(s) {
+    if (!s) return "";
+    const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let lastIndex = 0;
+    let out = "";
+    let m;
+    while ((m = regex.exec(s)) !== null) {
+      out += escapeHtml(s.slice(lastIndex, m.index));
+      const text = m[1];
+      const url = m[2];
+      const isSame = /^\s*(\/|#)/.test(url) || /tutorial|viewer/i.test(text);
+      const target = isSame ? "_self" : "_blank";
+      const rel = isSame ? "" : ' rel="noopener noreferrer"';
+      out += `<a href="${escapeAttr(
+        url
+      )}" target="${target}"${rel}>${escapeHtml(text)}</a>`;
+      lastIndex = regex.lastIndex;
+    }
+    out += escapeHtml(s.slice(lastIndex));
+    return out;
   }
 
   async function listMdFiles(folderPath) {
@@ -189,19 +241,13 @@
       const resp = await fetch(folderPath + "/");
       if (resp.ok) {
         const text = await resp.text();
-        // Find hrefs to .md files
-        const regex = /href=\"([^\"]+\.md)\"/gi;
-        let m;
-        while ((m = regex.exec(text)) !== null) {
-          const name = m[1].replace(/^\.\//, "");
-          files.push(name);
-        }
+        const regex = /href=["']([^"']+\.md)["']/gi;
+        for (const m of text.matchAll(regex))
+          files.push(m[1].replace(/^\.\//, ""));
       }
-    } catch (e) {
-      // ignore
-    }
+    } catch {}
 
-    if (files.length > 0) return files;
+    if (files.length) return files;
 
     const candidates = [];
     for (let major = 5; major >= 0; major--) {
@@ -213,11 +259,10 @@
       for (let i = 10; i >= 1; i--) candidates.push(`${i}.md`);
     }
 
-    const concurrency = 6;
     const found = [];
+    const concurrency = 6;
     for (let i = 0; i < candidates.length; i += concurrency) {
-      const batchNames = candidates.slice(i, i + concurrency);
-      const batch = batchNames.map((name) =>
+      const batch = candidates.slice(i, i + concurrency).map((name) =>
         fetch(`${folderPath}/${name}`)
           .then((r) => (r.ok ? name : null))
           .catch(() => null)
@@ -227,22 +272,24 @@
       if (found.length > 20) break;
     }
 
-    return found;
+    return [...new Set(found)];
   }
+
   function compareVersions(a, b) {
     const pa = parseVersion(a);
     const pb = parseVersion(b);
     for (let i = 0; i < 4; i++) {
-      const na = pa[i] || 0;
-      const nb = pb[i] || 0;
+      const na = pa[i] || 0,
+        nb = pb[i] || 0;
       if (na !== nb) return na - nb;
     }
     return 0;
   }
 
   function parseVersion(name) {
-    const base = name.replace(/\.md$/i, "").replace(/^v/i, "");
-    const parts = base
+    const parts = name
+      .replace(/\.md$/i, "")
+      .replace(/^v/i, "")
       .split(/[\.\-_]/)
       .map((p) => parseInt(p, 10))
       .filter((n) => !isNaN(n));
@@ -253,44 +300,37 @@
   function renderCard(data, index) {
     const article = document.createElement("div");
     article.className = "paper";
-
     const align = index % 2 === 0 ? "left" : "right";
+
     const imgHtml = data.image
-      ? `<div class="paper-image ${align}"><img src="${
-          data.image
-        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
+      ? `<div class="paper-image ${align}">
+         <img src="${data.image}" alt="${escapeHtml(
+          data.title
+        )}" class="paper-img"/>
+       </div>`
       : "";
 
-    const textAlign = align === "left" ? "left" : "right";
     let meta = "";
-    if (data.authors || data.year || data.venue) {
-      meta += '<p class="paper-metadata">';
-      if (data.authors)
-        meta += `<i class="fas fa-user"></i> ${escapeHtml(data.authors)}`;
-      if (data.year)
-        meta += ` | <i class="fas fa-calendar-alt"></i> ${escapeHtml(
-          data.year
-        )}`;
-      if (data.venue)
-        meta += ` | <i class="fas fa-map-marker-alt"></i> ${escapeHtml(
-          data.venue
-        )}`;
-      meta += "</p>";
-    }
+    if (data.project)
+      meta += `<p class="paper-metadata paper-project"><i class="fas fa-file"></i> Project: <span class="meta-value">${convertMarkdownLinks(
+        data.project
+      )}</span></p>`;
+    if (data.contact)
+      meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Contact: <span class="meta-value">${convertMarkdownLinks(
+        data.contact
+      )}</span></p>`;
 
     let links = "";
-    if (data.links && data.links.length) {
+    if (data.links?.length) {
       links =
-        '<p class="paper-metadata">' +
+        `<p class="paper-metadata">` +
         data.links
           .map((l) => {
             const icon = getIconClass(l.text);
-            const isSame =
-              l.text.toLowerCase().includes("tutorial") ||
-              l.text.toLowerCase().includes("viewer");
+            const isSame = /tutorial|viewer/i.test(l.text);
             const targ = isSame ? "_self" : "_blank";
             const rel = isSame ? "" : ' rel="noopener noreferrer"';
-            return ` <a href="${
+            return `<a href="${
               l.url
             }" target="${targ}"${rel}><i class="${icon}"></i> ${escapeHtml(
               l.text
@@ -301,27 +341,33 @@
     }
 
     article.innerHTML = `
-      <div class="paper-content-wrapper" style="text-align: ${textAlign};">
-        ${imgHtml}
-        <h4>${escapeHtml(data.title)}</h4>
+    <div class="paper-content-wrapper">
+      ${imgHtml}
+      <div class="paper-text">
+        <div class="paper-title">${escapeHtml(data.title)}</div>
         ${meta}
-        <div class="paper-abstract"><p>${escapeHtml(
-          truncateText(data.description, 350)
-        )}</p></div>
+        <div class="paper-abstract">
+          <div class="paper-description">${(() => {
+            let d = data.description || "";
+            d = d.length > 380 ? d.slice(0, 380) + "..." : d;
+            return convertMarkdownLinks(d);
+          })()}</div>
+        </div>
         ${links}
       </div>
-    `;
+    </div>
+  `;
 
     return article;
   }
 
-  function truncateText(t, n) {
-    if (!t) return "";
-    return t.length > n ? t.substring(0, n) + "..." : t;
-  }
   function escapeHtml(s) {
-    if (!s) return "";
-    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return s
+      ? s.replace(
+          /[&<>]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])
+        )
+      : "";
   }
 
   function getIconClass(linkText) {
@@ -341,7 +387,7 @@
     if (text.includes("article")) return "fas fa-newspaper";
     if (text.includes("tutorial")) return "fas fa-chalkboard-teacher";
     if (text.includes("project")) return "fas fa-file-archive";
-    if (text.includes("classic viewer") || text.includes("combined viewer"))
+    if (text.includes("viewer") || text.includes("download"))
       return "fas fa-download";
     return "fas fa-link";
   }

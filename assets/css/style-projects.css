@@ -1,29 +1,37 @@
+:root {
+  --clr-accent: #2b5d86;
+  --clr-accent-light: rgba(43, 93, 134, 0.12);
+  --clr-text: #333;
+  --clr-muted: #555;
+  --clr-muted-light: #556677;
+  --font-size-base: 15px;
+  --transition-base: 0.25s ease;
+}
+
+/* ================================
+   Paper Card Layout
+=================================== */
 .paper {
   margin-bottom: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding-bottom: 15px;
-}
-
-.paper:last-child {
-  border-bottom: none;
+  will-change: transform;
+  overflow: auto; /* allows float wrapping */
 }
 
 .paper-content-wrapper {
-  overflow: hidden;
+  overflow: hidden; /* contains floats */
   position: relative;
-}
-
-.paper-image {
-  width: 25%;
-  margin-bottom: 15px;
 }
 
 .paper-image.left {
   float: left;
+  margin-right: 16px;
 }
 
 .paper-image.right {
   float: right;
+  margin-left: 16px; /* ensures text hugs right-aligned image */
 }
 
 .paper-img {
@@ -31,31 +39,100 @@
   max-width: 100%;
   height: auto;
   object-fit: contain;
+  display: block;
 }
 
-.paper h3 {
-  margin: 0 0 5px 0;
+.paper-text {
+  /* Allow the text block to flow alongside floated images. Previously
+     `overflow: hidden` prevented inline text from wrapping beside floats
+     in some browsers; using the content-wrapper as the float-containment
+     (it already has `overflow: hidden`) keeps layout stable while allowing
+     `.paper-text` content to wrap beside the image. */
+  overflow: visible;
+  display: block;
+}
+
+/* Title */
+.paper-title {
   font-size: 18px;
-  line-height: 1.3;
+  font-weight: 700;
+  color: #1f4868;
+  margin-bottom: 8px;
+  line-height: 1.2;
 }
 
+/* When an image is floated to the left, keep the accent border on the left
+   of the adjacent text block; when the image is on the right, mirror the
+   border and padding on the right and right-align the text so it sits next
+   to the image. This applies to the whole text block, not only the title. */
+.paper-image.left + .paper-text {
+  padding-left: 10px;
+  border-left: 4px solid rgba(43, 93, 134, 0.12);
+}
+
+.paper-image.right + .paper-text {
+  padding-right: 10px;
+  border-right: 4px solid rgba(43, 93, 134, 0.12);
+  text-align: right;
+}
+
+/* Ensure inner elements reflect the parent-side alignment explicitly
+   (some elements like .paper-description previously forced justify). */
+.paper-image.left + .paper-text .paper-title,
+.paper-image.left + .paper-text .paper-description,
+.paper-image.left + .paper-text .paper-metadata {
+  text-align: left;
+}
+
+.paper-image.right + .paper-text .paper-title,
+.paper-image.right + .paper-text .paper-description,
+.paper-image.right + .paper-text .paper-metadata {
+  text-align: right;
+}
+
+/* Mirror small pill margins/padding so they push away from the image side.
+   Default (left image): pills have right margin so they don't touch the
+   image. For right images we flip that to left margin. */
+.paper-image.left + .paper-text .paper-project,
+.paper-image.left + .paper-text .paper-contact {
+  margin: 0 12px 0 0; /* top right bottom left */
+  padding: 0; /* remove pill padding */
+}
+
+.paper-image.right + .paper-text .paper-project,
+.paper-image.right + .paper-text .paper-contact {
+  margin: 0 0 0 12px; /* push away from image on the left */
+  padding: 0;
+}
+
+/* Metadata */
 .paper-metadata {
-  font-size: 16px;
-  color: #555;
-  margin: 3px 0 3px 0;
+  font-size: 14px;
+  color: #556677;
+  margin: 3px 0;
   line-height: 1.4;
 }
 
-.paper-metadata a {
-  color: rgb(50, 110, 170);
-  text-decoration: none;
-  font-size: inherit;
+.paper-project,
+.paper-contact {
+  display: block; /* ensure each appears on its own line */
+  background: transparent; /* no pill/background */
+  color: var(--clr-muted);
+  padding: 0;
+  border-radius: 0;
+  font-size: 14px;
+  margin: 6px 0; /* vertical spacing between meta lines */
+  font-weight: 400;
 }
 
-.paper-metadata a:hover {
-  text-decoration: underline;
+/* Highlight the value itself while keeping the surrounding label normal */
+.paper-project .meta-value,
+.paper-contact .meta-value {
+  color: var(--clr-accent);
+  font-weight: 700;
 }
 
+/* Abstract */
 .paper-abstract {
   margin: 8px 0;
   line-height: 1.4;
@@ -63,18 +140,44 @@
   clear: none;
 }
 
-.paper-abstract p {
+.paper-description {
   margin: 0;
+  color: #333;
+  font-size: 15px;
+  hyphens: auto;
+  /* default alignment; overridden by side-specific rules */
+  text-align: left;
 }
 
+/* Responsive fixes */
 @media (max-width: 1200px) {
-  .paper-image {
+  .paper-image,
+  .group-list .paper .paper-image {
     width: 100%;
     float: none !important;
     margin: 0 0 20px 0 !important;
   }
+  .group-list .paper {
+    overflow: visible;
+  }
+  .group-list .paper .paper-img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Remove the side accent/border when images stack above text on smaller
+     screens so the layout is clean and consistent. */
+  .paper-image.left + .paper-text,
+  .paper-image.right + .paper-text {
+    padding: 0;
+    border: none;
+    text-align: left;
+  }
 }
 
+/* ================================
+   Project Grid & Groups
+=================================== */
 .projects-grid {
   display: flex;
   flex-direction: column;
@@ -83,18 +186,18 @@
 
 .project-group {
   background: transparent;
-  padding: 18px 0 6px 0;
-  border-top: 2px solid rgba(43, 93, 134, 0.12);
+  padding: 18px 0 6px;
+  border-top: 2px solid var(--clr-accent-light);
 }
 
 .group-title {
   font-size: 20px;
-  margin: 6px 0 12px 0;
-  color: #2b5d86;
+  margin: 6px 0 12px;
+  color: var(--clr-accent);
 }
 
 .group-desc {
-  margin: 0 0 14px 0;
+  margin: 0 0 14px;
   color: #444;
   font-size: 15px;
 }
@@ -104,7 +207,7 @@
 }
 
 .group-list .paper {
-  padding: 8px 0 12px 0;
+  padding: 8px 0 12px;
   background: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
@@ -129,11 +232,15 @@
   max-height: 300px;
 }
 
+/* Alternate float direction for even cards */
 .group-list .paper:nth-child(even) .paper-image {
   float: right;
   margin: 0 0 0 12px;
 }
 
+/* ================================
+   Horizontal Divider
+=================================== */
 .projects-hr {
   border: none;
   height: 1px;
@@ -150,23 +257,43 @@
   display: none;
 }
 
+/* ================================
+   Loading / Error states
+=================================== */
+.group-list p.loading,
+.group-list p.error {
+  margin: 6px 0 10px;
+  color: #666;
+}
+
+/* ================================
+   Responsive Breakpoints
+=================================== */
 @media (max-width: 1200px) {
-  .group-list .paper {
-    overflow: visible;
-  }
+  .paper-image,
   .group-list .paper .paper-image {
     width: 100%;
     float: none !important;
-    margin: 0 0 12px 0 !important;
+    margin: 0 0 20px 0 !important;
   }
+
+  .group-list .paper {
+    overflow: visible;
+  }
+
   .group-list .paper .paper-img {
     width: 100%;
     height: auto;
   }
 }
 
-.group-list p.loading,
-.group-list p.error {
-  margin: 6px 0 10px 0;
-  color: #666;
+@media (max-width: 900px) {
+  .paper-content-wrapper > div:first-of-type {
+    font-size: 16px;
+    padding-left: 6px;
+    border-left-width: 3px;
+  }
+  .paper-description {
+    font-size: 14px;
+  }
 }
