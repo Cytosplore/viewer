@@ -200,7 +200,7 @@
     return data;
   }
 
-  // Escape attribute values for safe insertion into href
+  // Escape values for safe use inside href attributes
   function escapeAttr(s) {
     return (s || "")
       .replace(/&/g, "&amp;")
@@ -210,9 +210,9 @@
       .replace(/>/g, "&gt;");
   }
 
-  // Convert inline markdown links [text](url) into safe anchor tags while
-  // escaping surrounding text. Same-site links (starting with "/" or "#")
-  // open in the same tab; external links open in a new tab with noopener.
+  // Convert inline markdown links [text](url) to safe anchor tags.
+  // Same-site links ("/" or "#") open in the same tab; external links
+  // open in a new tab with 'noopener noreferrer'.
   function convertMarkdownLinks(s) {
     if (!s) return "";
     const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -233,6 +233,25 @@
     }
     out += escapeHtml(s.slice(lastIndex));
     return out;
+  }
+
+  // Wrap obfuscated email fragments (using [at]/[dot]) in spans for styling.
+  function highlightObfuscatedEmail(html) {
+    if (!html) return "";
+    return html.replace(/(\(?[^()]*\[at\][^()]*\)?)/gi, function (m) {
+      const inner = m.replace(
+        /(\[dot\]|\[at\])/gi,
+        '<span class="obf-delim">$1</span>'
+      );
+      return '<span class="obf-email">' + inner + "</span>";
+    });
+  }
+
+  // Format metadata: convert markdown links and highlight obfuscated emails.
+  function formatMetaHtml(s) {
+    if (!s) return "";
+    const r = convertMarkdownLinks(s);
+    return highlightObfuscatedEmail(r);
   }
 
   async function listMdFiles(folderPath) {
@@ -312,11 +331,11 @@
 
     let meta = "";
     if (data.project)
-      meta += `<p class="paper-metadata paper-project"><i class="fas fa-file"></i> Project: <span class="meta-value">${convertMarkdownLinks(
+      meta += `<p class="paper-metadata paper-project"><i class="fas fa-file"></i> Project File: <span class="meta-value">${formatMetaHtml(
         data.project
       )}</span></p>`;
     if (data.contact)
-      meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Contact: <span class="meta-value">${convertMarkdownLinks(
+      meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Project Contact: <span class="meta-value">${formatMetaHtml(
         data.contact
       )}</span></p>`;
 

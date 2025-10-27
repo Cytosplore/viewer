@@ -8,9 +8,7 @@
   --transition-base: 0.25s ease;
 }
 
-/* ================================
-   Paper Card Layout
-=================================== */
+/* Paper card layout */
 .paper {
   margin-bottom: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -28,10 +26,9 @@
   float: left;
   margin-right: 16px;
 }
-
 .paper-image.right {
   float: right;
-  margin-left: 16px; /* ensures text hugs right-aligned image */
+  margin-left: 16px;
 }
 
 .paper-img {
@@ -42,17 +39,12 @@
   display: block;
 }
 
+/* Let text flow beside floated images */
 .paper-text {
-  /* Allow the text block to flow alongside floated images. Previously
-     `overflow: hidden` prevented inline text from wrapping beside floats
-     in some browsers; using the content-wrapper as the float-containment
-     (it already has `overflow: hidden`) keeps layout stable while allowing
-     `.paper-text` content to wrap beside the image. */
   overflow: visible;
   display: block;
 }
 
-/* Title */
 .paper-title {
   font-size: 18px;
   font-weight: 700;
@@ -61,23 +53,18 @@
   line-height: 1.2;
 }
 
-/* When an image is floated to the left, keep the accent border on the left
-   of the adjacent text block; when the image is on the right, mirror the
-   border and padding on the right and right-align the text so it sits next
-   to the image. This applies to the whole text block, not only the title. */
+/* Accent border and padding based on image side */
 .paper-image.left + .paper-text {
   padding-left: 10px;
   border-left: 4px solid rgba(43, 93, 134, 0.12);
 }
-
 .paper-image.right + .paper-text {
   padding-right: 10px;
   border-right: 4px solid rgba(43, 93, 134, 0.12);
   text-align: right;
 }
 
-/* Ensure inner elements reflect the parent-side alignment explicitly
-   (some elements like .paper-description previously forced justify). */
+/* Ensure inner elements follow parent alignment */
 .paper-image.left + .paper-text .paper-title,
 .paper-image.left + .paper-text .paper-description,
 .paper-image.left + .paper-text .paper-metadata {
@@ -90,22 +77,19 @@
   text-align: right;
 }
 
-/* Mirror small pill margins/padding so they push away from the image side.
-   Default (left image): pills have right margin so they don't touch the
-   image. For right images we flip that to left margin. */
+/* Margin rules for small metadata pills (keep away from image) */
 .paper-image.left + .paper-text .paper-project,
 .paper-image.left + .paper-text .paper-contact {
-  margin: 0 12px 0 0; /* top right bottom left */
-  padding: 0; /* remove pill padding */
+  margin: 0 12px 0 0;
+  padding: 0;
 }
 
 .paper-image.right + .paper-text .paper-project,
 .paper-image.right + .paper-text .paper-contact {
-  margin: 0 0 0 12px; /* push away from image on the left */
+  margin: 0 0 0 12px;
   padding: 0;
 }
 
-/* Metadata */
 .paper-metadata {
   font-size: 14px;
   color: #556677;
@@ -115,24 +99,48 @@
 
 .paper-project,
 .paper-contact {
-  display: block; /* ensure each appears on its own line */
-  background: transparent; /* no pill/background */
-  color: var(--clr-muted);
+  display: block;
+  background: transparent;
+  color: var(--clr-text);
   padding: 0;
   border-radius: 0;
   font-size: 14px;
-  margin: 6px 0; /* vertical spacing between meta lines */
+  margin: 6px 0;
   font-weight: 400;
 }
 
-/* Highlight the value itself while keeping the surrounding label normal */
+/* Meta values inherit surrounding text color */
 .paper-project .meta-value,
 .paper-contact .meta-value {
-  color: var(--clr-accent);
-  font-weight: 700;
+  color: inherit;
+  font-weight: 400;
 }
 
-/* Abstract */
+/* Links inside meta use accent color */
+.paper-project a,
+.paper-contact a {
+  color: var(--clr-accent);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+/* Obfuscated email styling */
+.obf-email {
+  color: var(--clr-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
+    "Courier New", monospace;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.obf-email .obf-delim {
+  color: var(--clr-text);
+  font-size: 0.6em;
+  font-weight: 300;
+  vertical-align: baseline;
+  margin: 0 1px;
+}
+
 .paper-abstract {
   margin: 8px 0;
   line-height: 1.4;
@@ -145,11 +153,10 @@
   color: #333;
   font-size: 15px;
   hyphens: auto;
-  /* default alignment; overridden by side-specific rules */
   text-align: left;
 }
 
-/* Responsive fixes */
+/* Responsive: stack images above text */
 @media (max-width: 1200px) {
   .paper-image,
   .group-list .paper .paper-image {
@@ -165,8 +172,7 @@
     height: auto;
   }
 
-  /* Remove the side accent/border when images stack above text on smaller
-     screens so the layout is clean and consistent. */
+  /* Remove side accents when stacked */
   .paper-image.left + .paper-text,
   .paper-image.right + .paper-text {
     padding: 0;
@@ -175,9 +181,7 @@
   }
 }
 
-/* ================================
-   Project Grid & Groups
-=================================== */
+/* Project grid and groups */
 .projects-grid {
   display: flex;
   flex-direction: column;
@@ -189,19 +193,16 @@
   padding: 18px 0 6px;
   border-top: 2px solid var(--clr-accent-light);
 }
-
 .group-title {
   font-size: 20px;
   margin: 6px 0 12px;
   color: var(--clr-accent);
 }
-
 .group-desc {
   margin: 0 0 14px;
   color: #444;
   font-size: 15px;
 }
-
 .projects-cards {
   display: block;
 }
@@ -211,7 +212,6 @@
   background: transparent;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
-
 .group-list .paper:last-child {
   border-bottom: none;
   padding-bottom: 6px;
@@ -222,7 +222,6 @@
   margin: 0 16px 0 0;
   float: left;
 }
-
 .group-list .paper .paper-img {
   width: 100%;
   height: auto;
@@ -238,9 +237,7 @@
   margin: 0 0 0 12px;
 }
 
-/* ================================
-   Horizontal Divider
-=================================== */
+/* Horizontal divider */
 .projects-hr {
   border: none;
   height: 1px;
@@ -251,24 +248,19 @@
   );
   margin: 24px 0;
 }
-
 .projects-hr:first-child,
 .projects-hr:last-child {
   display: none;
 }
 
-/* ================================
-   Loading / Error states
-=================================== */
+/* Loading / error messages */
 .group-list p.loading,
 .group-list p.error {
   margin: 6px 0 10px;
   color: #666;
 }
 
-/* ================================
-   Responsive Breakpoints
-=================================== */
+/* Repeated responsive rules (kept for legacy support) */
 @media (max-width: 1200px) {
   .paper-image,
   .group-list .paper .paper-image {
@@ -276,11 +268,9 @@
     float: none !important;
     margin: 0 0 20px 0 !important;
   }
-
   .group-list .paper {
     overflow: visible;
   }
-
   .group-list .paper .paper-img {
     width: 100%;
     height: auto;
