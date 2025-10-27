@@ -3,21 +3,6 @@
     this.root = root;
     this.list = [
       {
-        caption: "Classic MTG Viewer",
-        src: "/assets/papers/MTG_Viewer.gif",
-        id: "cortex-mtg-multi-species",
-      },
-      {
-        caption: "Simian Viewer",
-        src: "/assets/papers/Simian_Viewer.gif",
-        id: "simianevo-simian-viewer",
-      },
-      {
-        caption: "Evo Viewer",
-        src: "/assets/papers/Evo_Viewer.gif",
-        id: "simianevo-evo-viewer",
-      },
-      {
         caption: "Spatial MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
         id: "hmba-spatial-multi-species-basal-ganglia",
@@ -41,6 +26,21 @@
         caption: "PatchSeq Macaque Basal Ganglia",
         src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
         id: "hmba-patchseq-macaque-basal-ganglia",
+      },
+      {
+        caption: "Evo Viewer",
+        src: "/assets/papers/Evo_Viewer.gif",
+        id: "simianevo-evo-viewer",
+      },
+      {
+        caption: "Simian Viewer",
+        src: "/assets/papers/Simian_Viewer.gif",
+        id: "simianevo-simian-viewer",
+      },
+      {
+        caption: "Classic MTG Viewer",
+        src: "/assets/papers/MTG_Viewer.gif",
+        id: "cortex-mtg-multi-species",
       },
     ];
 
