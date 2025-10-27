@@ -327,20 +327,22 @@
     try {
       const rawId =
         data.id || (data.fname || "").replace(/\.md$/i, "") || data.title || "";
-      const sane = String(rawId || "")
+      var sane = String(rawId || "")
         .trim()
         .replace(/\s+/g, "-")
         .replace(/[^A-Za-z0-9_\-:.]/g, "-")
         .replace(/^-+|-+$/g, "")
         .toLowerCase();
-      if (sane) article.id = `project-${sane}`;
+      if (!sane) sane = "";
     } catch (e) {}
     const align = index % 2 === 0 ? "left" : "right";
 
     const imgHtml = data.image
       ? `<div class="paper-image ${align}"><img src="${
           data.image
-        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
+        }" alt="${escapeHtml(data.title)}" class="paper-img" ${
+          sane ? `id="project-${sane}"` : ""
+        }/></div>`
       : "";
 
     let meta = "";
@@ -372,6 +374,8 @@
           .join(" | ") +
         "</p>";
     }
+
+    if (!data.image && sane) article.id = `project-${sane}`;
 
     article.innerHTML = `
     <div class="paper-content-wrapper">
