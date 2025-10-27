@@ -340,9 +340,7 @@
     const imgHtml = data.image
       ? `<div class="paper-image ${align}"><img src="${
           data.image
-        }" alt="${escapeHtml(data.title)}" class="paper-img" ${
-          sane ? `id="project-${sane}"` : ""
-        }/></div>`
+        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
       : "";
 
     let meta = "";
@@ -375,7 +373,7 @@
         "</p>";
     }
 
-    if (!data.image && sane) article.id = `project-${sane}`;
+    if (sane) article.id = `project-${sane}`;
 
     article.innerHTML = `
     <div class="paper-content-wrapper">
