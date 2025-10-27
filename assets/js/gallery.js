@@ -2,6 +2,7 @@
   var Gallery = function (root) {
     this.root = root;
     this.list = [
+      { caption: "Classic MTG Viewer", src: "/assets/papers/MTG_Viewer.gif" },
       { caption: "Simian Viewer", src: "/assets/papers/Simian_Viewer.gif" },
       { caption: "Evo Viewer", src: "/assets/papers/Evo_Viewer.gif" },
       {
@@ -9,12 +10,12 @@
         src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
       },
       {
-        caption: "ATACSeq Marmoset Subcortex",
-        src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif",
-      },
-      {
         caption: "RNASeq MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
+      },
+      {
+        caption: "ATACSeq Marmoset Subcortex",
+        src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif",
       },
       {
         caption: "PatchSeq Human Neocortex",
@@ -24,7 +25,6 @@
         caption: "PatchSeq Macaque Basal Ganglia",
         src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
       },
-      { caption: "Classic MTG Viewer", src: "/assets/papers/MTG_Viewer.gif" },
     ];
 
     this.idx = 4;
@@ -37,7 +37,7 @@
     this.nextBtn = root.querySelector("#gallery-next");
     this.prevBtn = root.querySelector("#gallery-prev");
     this.live = root.querySelector("#gallery-live");
-    // flag to avoid scrolling thumbnails on the very first show (initial page load)
+    // avoid scrolling thumbnails on the very first show
     this._initialLoad = true;
   };
 
@@ -59,7 +59,7 @@
 
     if (this.caption) this.caption.textContent = this.list[i].caption || "";
 
-    // update thumbs
+    // update thumbnail states
     if (this.thumbs) {
       var children = this.thumbs.querySelectorAll("img");
       children.forEach(function (t) {
@@ -69,15 +69,10 @@
       if (children[i]) {
         children[i].setAttribute("aria-current", "true");
         children[i].classList.add("active");
-        // ensure active thumbnail is visible/centered in the scroller
-        // Only scroll thumbnails into view after the initial load. On some pages
-        // invoking scrollIntoView during DOMContentLoaded causes the whole
-        // page to jump to the gallery (similar to navigating to a fragment
-        // like #teaser). Skip this behavior on the first automatic show()
-        // but keep it for user navigation afterwards.
+        // center the active thumb in the scroller (skip on initial load)
         if (!self._initialLoad) {
           try {
-            // prefer modern scrollIntoView options
+            // modern API
             children[i].scrollIntoView({
               behavior: "smooth",
               inline: "center",
@@ -117,12 +112,14 @@
     var imgs = this.thumbs.querySelectorAll("img");
     if (!imgs[index]) return;
     try {
+      // modern API
       imgs[index].scrollIntoView({
         behavior: "smooth",
         inline: "center",
         block: "nearest",
       });
     } catch (e) {
+      // fallback: compute center scroll
       var container = this.thumbs;
       var thumb = imgs[index];
       var containerRect = container.getBoundingClientRect();
@@ -146,7 +143,7 @@
   Gallery.prototype.buildThumbs = function () {
     var self = this;
     if (!this.thumbs) return;
-    // create an inner row container so CSS can center thumbnails when they don't overflow
+    // inner row for centering thumbnails
     this.thumbs.innerHTML = "";
     var row = document.createElement("div");
     row.className = "thumb-row";
@@ -161,11 +158,11 @@
       });
       row.appendChild(t);
     });
-    // cache the inner row for use in fallback scrolling
+    // cache for fallback scrolling
     this.thumbRow = row;
     this.thumbs.appendChild(row);
 
-    // lazy load thumbnails after short delay
+    // lazy-load thumbnails
     setTimeout(function () {
       var imgs = self.thumbs.querySelectorAll("img");
       imgs.forEach(function (im) {
@@ -186,7 +183,7 @@
 
   Gallery.prototype.updateControlsForViewport = function () {
     var small = this.isSmallScreen();
-    // If small, remove/hide prev/next controls
+    // hide prev/next on small screens
     if (small) {
       if (this.prevBtn) {
         this.prevBtn.style.display = "none";
@@ -197,8 +194,7 @@
         this.nextBtn.setAttribute("aria-hidden", "true");
       }
     } else {
-      // large screens: ensure controls are visible according to playing state
-      // show prev/next on large screens
+      // show prev/next on larger screens
       if (this.prevBtn) {
         this.prevBtn.style.display = "inline-block";
         this.prevBtn.setAttribute("aria-hidden", "false");
@@ -222,7 +218,7 @@
         e.preventDefault();
         self.prev();
       });
-    // play/pause buttons removed; prev/next keep using pause behavior for keyboard
+    // play/pause removed; prev/next retained for keyboard nav
 
     // keyboard support
     if (this.root)
@@ -235,7 +231,7 @@
         }
       });
 
-    // build thumbs and show default
+    // build thumbnails and show initial slide
     this.buildThumbs();
     // ensure default UI state and prev/next visibility
     if (this.prevBtn) {
@@ -253,7 +249,7 @@
     if (window.matchMedia) {
       try {
         var mq = window.matchMedia("(max-width: 520px)");
-        // handler to re-evaluate controls when breakpoint changes
+        // re-evaluate controls when breakpoint changes
         var mqHandler = function () {
           self.updateControlsForViewport();
         };
@@ -265,7 +261,7 @@
       }
     }
 
-    // randomly choose an initial slide on page load
+    // pick a random initial slide
     try {
       if (this.list && this.list.length > 0) {
         this.idx = Math.floor(Math.random() * this.list.length);
@@ -273,12 +269,12 @@
     } catch (e) {
       // ignore and fall back to configured default
     }
-    // show initial slide but avoid scrolling thumbs into view on this first call
+    // show initial slide but skip scrolling thumbs this first time
     this.show(this.idx);
     this._initialLoad = false;
   };
 
-  // auto-init all galleries on DOMContentLoaded
+  // init galleries on DOMContentLoaded
   document.addEventListener("DOMContentLoaded", function () {
     var roots = document.querySelectorAll(".actionvideo-wrapper.gallery");
     roots.forEach(function (r) {
