@@ -46,15 +46,12 @@
 
     this.idx = 4;
 
-    // elements
     this.img = root.querySelector("#gallery-image");
     this.caption = root.querySelector("#gallery-caption");
     this.thumbs = root.querySelector("#gallery-thumbs");
-
     this.nextBtn = root.querySelector("#gallery-next");
     this.prevBtn = root.querySelector("#gallery-prev");
     this.live = root.querySelector("#gallery-live");
-    // avoid scrolling thumbnails on the very first show
     this._initialLoad = true;
   };
 
@@ -64,7 +61,6 @@
     this.idx = i;
     var self = this;
 
-    // fade out, change src, fade in
     if (this.img) {
       this.img.classList.add("gallery-img--hidden");
       setTimeout(function () {
@@ -74,7 +70,22 @@
       }, 220);
     }
 
-    if (this.caption) this.caption.textContent = this.list[i].caption || "";
+    if (this.caption) {
+      this.caption.textContent = this.list[i].caption || "";
+      // store target project id for navigation
+      if (this.list[i] && this.list[i].id) {
+        this.caption.dataset.projectId = this.list[i].id;
+        this.caption.setAttribute("role", "link");
+        this.caption.setAttribute("tabindex", "0");
+        this.caption.style.cursor = "pointer";
+      } else {
+        // remove any previously set navigation attributes
+        this.caption.removeAttribute("data-project-id");
+        this.caption.removeAttribute("role");
+        this.caption.removeAttribute("tabindex");
+        this.caption.style.cursor = "";
+      }
+    }
 
     // update thumbnail states
     if (this.thumbs) {
@@ -86,17 +97,14 @@
       if (children[i]) {
         children[i].setAttribute("aria-current", "true");
         children[i].classList.add("active");
-        // center the active thumb in the scroller (skip on initial load)
         if (!self._initialLoad) {
           try {
-            // modern API
             children[i].scrollIntoView({
               behavior: "smooth",
               inline: "center",
               block: "nearest",
             });
           } catch (err) {
-            // fallback: compute center scroll
             if (self.thumbRow && self.thumbs) {
               var thumb = children[i];
               var container = self.thumbs;
@@ -114,14 +122,13 @@
       }
     }
 
-    if (this.live) {
+    if (this.live)
       this.live.textContent =
         (this.list[i].caption || "") +
         " — slide " +
         (i + 1) +
         " of " +
         this.list.length;
-    }
   };
 
   Gallery.prototype.scrollThumbIntoView = function (index) {
@@ -129,14 +136,12 @@
     var imgs = this.thumbs.querySelectorAll("img");
     if (!imgs[index]) return;
     try {
-      // modern API
       imgs[index].scrollIntoView({
         behavior: "smooth",
         inline: "center",
         block: "nearest",
       });
     } catch (e) {
-      // fallback: compute center scroll
       var container = this.thumbs;
       var thumb = imgs[index];
       var containerRect = container.getBoundingClientRect();
@@ -160,7 +165,6 @@
   Gallery.prototype.buildThumbs = function () {
     var self = this;
     if (!this.thumbs) return;
-    // inner row for centering thumbnails
     this.thumbs.innerHTML = "";
     var row = document.createElement("div");
     row.className = "thumb-row";
@@ -175,11 +179,8 @@
       });
       row.appendChild(t);
     });
-    // cache for fallback scrolling
     this.thumbRow = row;
     this.thumbs.appendChild(row);
-
-    // lazy-load thumbnails
     setTimeout(function () {
       var imgs = self.thumbs.querySelectorAll("img");
       imgs.forEach(function (im) {
@@ -200,7 +201,6 @@
 
   Gallery.prototype.updateControlsForViewport = function () {
     var small = this.isSmallScreen();
-    // hide prev/next on small screens
     if (small) {
       if (this.prevBtn) {
         this.prevBtn.style.display = "none";
@@ -211,7 +211,6 @@
         this.nextBtn.setAttribute("aria-hidden", "true");
       }
     } else {
-      // show prev/next on larger screens
       if (this.prevBtn) {
         this.prevBtn.style.display = "inline-block";
         this.prevBtn.setAttribute("aria-hidden", "false");
@@ -248,9 +247,23 @@
         }
       });
 
+    // make caption clickable / keyboard-activatable to open project page
+    if (this.caption) {
+      this.caption.addEventListener("click", function (e) {
+        var id = self.caption.dataset.projectId;
+        if (id) window.location.href = "/projects/#" + id;
+      });
+      this.caption.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+          e.preventDefault();
+          var id = self.caption.dataset.projectId;
+          if (id) window.location.href = "/projects/#" + id;
+        }
+      });
+    }
+
     // build thumbnails and show initial slide
     this.buildThumbs();
-    // ensure default UI state and prev/next visibility
     if (this.prevBtn) {
       this.prevBtn.style.display = "inline-block";
       this.prevBtn.setAttribute("aria-hidden", "false");
@@ -259,7 +272,6 @@
       this.nextBtn.style.display = "inline-block";
       this.nextBtn.setAttribute("aria-hidden", "false");
     }
-
     this.updateControlsForViewport();
 
     // listen for viewport changes and update controls when crossing the breakpoint
@@ -280,9 +292,8 @@
 
     // pick a random initial slide
     try {
-      if (this.list && this.list.length > 0) {
+      if (this.list && this.list.length > 0)
         this.idx = Math.floor(Math.random() * this.list.length);
-      }
     } catch (e) {
       // ignore and fall back to configured default
     }

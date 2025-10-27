@@ -2,54 +2,41 @@ a,
 a:visited {
   color: rgb(50, 110, 170);
 }
-
 .middle-blue,
 em {
   color: rgb(50, 110, 170);
   font-weight: 400;
   text-decoration: none;
 }
-
 .nav-item:hover,
 .nav-item.active {
   color: rgb(50, 110, 170);
   text-align: left;
 }
-
 .nav-active-indicator {
   color: rgb(50, 110, 170);
   background-color: rgb(50, 110, 170);
 }
-
 .portrait {
   border: 2.5px solid rgb(50, 110, 170);
 }
-
-.portrait-name {
-  color: rgb(50, 110, 170);
-}
-
+.portrait-name,
 .portrait-text {
   color: rgb(50, 110, 170);
 }
-
 .portrait .popover {
   border: 0.5px solid rgba(50, 110, 170, 0.15);
 }
-
 .portrait hr {
   color: rgba(50, 110, 170, 0.25);
   background-color: rgba(50, 110, 170, 0.25);
 }
-
 #submitbt {
   background-color: rgb(50, 110, 170);
 }
-
 input[type="checkbox"] {
   background-color: rgb(50, 110, 170);
 }
-
 #nav-toggle span {
   position: absolute;
   left: 10px;
@@ -60,24 +47,19 @@ input[type="checkbox"] {
 #nav-toggle span:after {
   background: rgb(50, 110, 170);
 }
-
 #cytosplore-logo {
   margin-bottom: -30px;
 }
-
 .paper-link a {
   color: #222;
 }
-
 .paper-link:hover,
 .paper-link a:hover {
   color: rgb(50, 110, 170);
 }
-
 .nav-toggled {
   height: 280px;
 }
-
 .portrait {
   width: 80px;
   height: 80px;
@@ -93,37 +75,31 @@ input[type="checkbox"] {
     background-size: 60px 60px;
   }
 }
-
 @media only screen and (min-width: 440px) {
   .portrait {
     margin: 5px 5px;
   }
 }
-
 @media only screen and (min-width: 550px) {
   .portrait {
     margin: 10px 15px;
   }
 }
-
 @media only screen and (min-width: 710px) {
   .portrait {
     margin: 10px 25px;
   }
 }
-
 @media only screen and (min-width: 860px) {
   .portrait {
     margin: 10px 40px;
   }
 }
-
 @media only screen and (min-width: 1024px) {
   .portrait {
     margin: 10px 10px;
   }
 }
-
 pre {
   display: block;
   word-break: break-all;
@@ -134,11 +110,9 @@ pre {
   padding: 15px;
   overflow: auto;
 }
-
 code {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
-
 pre,
 xmp,
 plaintext,
@@ -148,11 +122,9 @@ listing {
   white-space: pre;
   margin: 1em 0px;
 }
-
 .paper-img {
   box-shadow: 0px 0px 3px 1px rgba(10, 10, 10, 0.25);
 }
-/* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -161,7 +133,6 @@ listing {
   font-weight: 200;
   color: #666;
 }
-/* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -172,10 +143,7 @@ listing {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-/* Links inside the dropdown */
 .dropdown-content a {
-  /*color: black;
-  padding: 4px 5px;*/
   text-decoration: none;
   display: block;
   font-size: 1em;
@@ -183,15 +151,12 @@ listing {
   font-weight: 200;
   color: #666;
 }
-/* Change color of dropdown links on hover */
 .dropdown-content a:hover {
   background-color: #f1f1f1;
 }
-/* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
   display: block;
 }
-/* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover {
   background-color: #f1f1f1;
 }
@@ -223,13 +188,11 @@ listing {
   background: linear-gradient(to right, #ccc, #ddd) !important;
   pointer-events: none !important;
 }
-
 #download-available {
   width: 220px;
   padding-top: 30px;
   margin-left: auto;
 }
-
 hrshort {
   border: 0;
   width: 25%;
@@ -238,27 +201,25 @@ hrshort {
   height: 1px;
   margin-bottom: -15px;
 }
-
-/* Styles for the action video gif and caption */
-.actionvideo-wrapper{
+.actionvideo-wrapper {
   position: relative;
   width: 80%;
   max-width: 100%;
   margin: 0 auto;
   display: block;
 }
-.actionvideo-wrapper img#actionvideo-gif{
+.actionvideo-wrapper img#actionvideo-gif {
   display: block;
   width: 100%;
   height: auto;
   max-width: 100%;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
-.action-caption{
+.action-caption {
   position: absolute;
   top: 8px;
   right: 12px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #fff;
   padding: 6px 10px;
   font-size: 0.95em;
@@ -267,7 +228,20 @@ hrshort {
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
-
-@media only screen and (max-width: 520px){
-  .action-caption{ font-size: 0.85em; top:6px; right:8px; }
+.action-caption[role="link"],
+.action-caption[data-project-id] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+.action-caption[role="link"]:focus {
+  outline: 3px solid rgba(102, 159, 178, 0.9);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(102, 159, 178, 0.12);
+}
+@media only screen and (max-width: 520px) {
+  .action-caption {
+    font-size: 0.85em;
+    top: 6px;
+    right: 8px;
+  }
 }

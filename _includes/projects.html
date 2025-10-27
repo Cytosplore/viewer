@@ -104,6 +104,10 @@
         })
       )
     );
+
+    try {
+      scrollToHashOnLoad();
+    } catch (e) {}
   }
 
   async function loadGroupMarkdowns(folderPath, targetId) {
@@ -151,6 +155,7 @@
   function parseProjectMarkdown(md, fname) {
     const lines = md.split(/\r?\n/);
     const data = {
+      id: "",
       title: "",
       image: "",
       description: "",
@@ -172,6 +177,12 @@
         data.image = img[2];
         continue;
       }
+      const idMatch = line.match(/^\*\*\s*ID\s*(?:[:\.]?)\s*\*\*\s*(.*)/i);
+      if (idMatch) {
+        data.id = (idMatch[1] || "").trim();
+        continue;
+      }
+
       const projectMatch = line.match(/^\*\*\s*Project:\s*\*\*(.*)/i);
       if (projectMatch) {
         data.project = projectMatch[1].trim();
@@ -200,19 +211,15 @@
     return data;
   }
 
-  // Escape values for safe use inside href attributes
   function escapeAttr(s) {
     return (s || "")
       .replace(/&/g, "&amp;")
-      .replace(/"/g, "&quot;")
+      .replace(/\"/g, "&quot;")
       .replace(/'/g, "&#39;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   }
 
-  // Convert inline markdown links [text](url) to safe anchor tags.
-  // Same-site links ("/" or "#") open in the same tab; external links
-  // open in a new tab with 'noopener noreferrer'.
   function convertMarkdownLinks(s) {
     if (!s) return "";
     const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
@@ -235,7 +242,6 @@
     return out;
   }
 
-  // Wrap obfuscated email fragments (using [at]/[dot]) in spans for styling.
   function highlightObfuscatedEmail(html) {
     if (!html) return "";
     return html.replace(/(\(?[^()]*\[at\][^()]*\)?)/gi, function (m) {
@@ -247,7 +253,6 @@
     });
   }
 
-  // Format metadata: convert markdown links and highlight obfuscated emails.
   function formatMetaHtml(s) {
     if (!s) return "";
     const r = convertMarkdownLinks(s);
@@ -319,14 +324,23 @@
   function renderCard(data, index) {
     const article = document.createElement("div");
     article.className = "paper";
+    try {
+      const rawId =
+        data.id || (data.fname || "").replace(/\.md$/i, "") || data.title || "";
+      const sane = String(rawId || "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^A-Za-z0-9_\-:.]/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+      if (sane) article.id = `project-${sane}`;
+    } catch (e) {}
     const align = index % 2 === 0 ? "left" : "right";
 
     const imgHtml = data.image
-      ? `<div class="paper-image ${align}">
-         <img src="${data.image}" alt="${escapeHtml(
-          data.title
-        )}" class="paper-img"/>
-       </div>`
+      ? `<div class="paper-image ${align}"><img src="${
+          data.image
+        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
       : "";
 
     let meta = "";
@@ -410,4 +424,90 @@
       return "fas fa-download";
     return "fas fa-link";
   }
+
+  function scrollToHashOnLoad(retries = 12, delay = 150) {
+    var h = window.location.hash;
+    if (!h) return;
+    var id = decodeURIComponent(h.replace(/^#/, ""));
+    var attempts = 0;
+    var tryScroll = function () {
+      attempts++;
+      var el = document.getElementById(id);
+      if (!el) el = document.getElementById("project-" + id);
+      if (!el) {
+        try {
+          var norm = String(id)
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/[^A-Za-z0-9_\-:.]/g, "-")
+            .replace(/^-+|-+$/g, "");
+          if (norm)
+            el =
+              document.getElementById(norm) ||
+              document.getElementById("project-" + norm);
+        } catch (e) {}
+      }
+
+      if (el) {
+        try {
+          el.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+            inline: "nearest",
+          });
+        } catch (e) {
+          try {
+            el.scrollIntoView();
+          } catch (e) {}
+        }
+        try {
+          el.focus && el.focus({ preventScroll: true });
+        } catch (e) {}
+        return;
+      }
+      if (attempts < retries) setTimeout(tryScroll, delay);
+    };
+    setTimeout(tryScroll, 50);
+  }
+
+  document.addEventListener("click", function (ev) {
+    try {
+      const a = ev.target.closest && ev.target.closest("a");
+      if (!a) return;
+      const href = a.getAttribute("href") || "";
+      if (!href.startsWith("#")) return;
+      if (!a.closest || !a.closest("#projects")) return;
+
+      const rawId = decodeURIComponent(href.replace(/^#/, ""));
+      const findEl = (id) => document.getElementById(id);
+
+      let el = findEl(rawId) || findEl("project-" + rawId);
+      if (!el) {
+        const norm = String(rawId || "")
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/[^A-Za-z0-9_\-:.]/g, "-")
+          .replace(/^-+|-+$/g, "")
+          .toLowerCase();
+        if (norm) el = findEl(norm) || findEl("project-" + norm);
+      }
+
+      if (el) {
+        ev.preventDefault();
+        try {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (e) {
+          try {
+            el.scrollIntoView();
+          } catch (e) {}
+        }
+        try {
+          el.focus && el.focus({ preventScroll: true });
+        } catch (e) {}
+        try {
+          history.replaceState(null, "", "#" + rawId);
+        } catch (e) {}
+      }
+    } catch (e) {}
+  });
 </script>
