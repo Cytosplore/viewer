@@ -10,12 +10,12 @@
         src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
       },
       {
-        caption: "RNASeq MultiSpecies Basal Ganglia",
-        src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
-      },
-      {
         caption: "ATACSeq Marmoset Subcortex",
         src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif",
+      },
+      {
+        caption: "RNASeq MultiSpecies Basal Ganglia",
+        src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
       },
       {
         caption: "PatchSeq Human Neocortex",
