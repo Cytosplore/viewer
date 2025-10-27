@@ -46,11 +46,10 @@
 }
 
 .paper-title {
+  /* Swapped: use previous group-title visual style */
   font-size: 18px;
-  font-weight: 700;
-  color: #1f4868;
-  margin-bottom: 8px;
-  line-height: 1.2;
+  margin: 6px 0 12px;
+  color: var(--clr-accent);
 }
 
 /* Accent border and padding based on image side */
@@ -194,9 +193,11 @@
   border-top: 2px solid var(--clr-accent-light);
 }
 .group-title {
-  font-size: 20px;
-  margin: 6px 0 12px;
-  color: var(--clr-accent);
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f4868;
+  margin-bottom: 8px;
+  line-height: 1.2;
 }
 .group-desc {
   margin: 0 0 14px;
