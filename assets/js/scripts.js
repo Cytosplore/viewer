@@ -51,18 +51,6 @@ function setupDownloadLinks() {
 
   const buttons = [
     {
-      id: "download-classic",
-      version: "3.4.0",
-      label: "Classic Viewer",
-      macLink:
-        "https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg",
-      winLink:
-        "https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe",
-      linLink: "",
-      tooltip: "Download Classic Viewer",
-      container: "#get-classic-cytosplore-installer .download-buttons",
-    },
-    {
       id: "download-combined",
       version: "1.0.0",
       label: "Cytosplore Viewer",
