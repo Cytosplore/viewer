@@ -161,6 +161,7 @@
       description: "",
       project: "",
       contact: "",
+      email: "",
       links: [],
       fname,
     };
@@ -191,6 +192,11 @@
       const contactMatch = line.match(/^\*\*\s*Contact:\s*\*\*(.*)/i);
       if (contactMatch) {
         data.contact = contactMatch[1].trim();
+        continue;
+      }
+      const emailMatch = line.match(/^\*\*\s*Email:\s*\*\*(.*)/i);
+      if (emailMatch) {
+        data.email = (emailMatch[1] || "").trim();
         continue;
       }
       const descMatch = line.match(/^\*\*\s*(Description):\s*\*\*(.*)/i);
@@ -242,21 +248,9 @@
     return out;
   }
 
-  function highlightObfuscatedEmail(html) {
-    if (!html) return "";
-    return html.replace(/(\(?[^()]*\[at\][^()]*\)?)/gi, function (m) {
-      const inner = m.replace(
-        /(\[dot\]|\[at\])/gi,
-        '<span class="obf-delim">$1</span>'
-      );
-      return '<span class="obf-email">' + inner + "</span>";
-    });
-  }
-
   function formatMetaHtml(s) {
     if (!s) return "";
-    const r = convertMarkdownLinks(s);
-    return highlightObfuscatedEmail(r);
+    return convertMarkdownLinks(s);
   }
 
   async function listMdFiles(folderPath) {
@@ -348,10 +342,17 @@
       meta += `<p class="paper-metadata paper-project"><i class="fas fa-file"></i> Project File: <span class="meta-value">${formatMetaHtml(
         data.project
       )}</span></p>`;
-    if (data.contact)
-      meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Project Contact: <span class="meta-value">${formatMetaHtml(
-        data.contact
-      )}</span></p>`;
+    if (data.contact) {
+      if (data.email) {
+        const mail = escapeAttr(data.email);
+        const name = escapeHtml(data.contact);
+        meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Project Contact: <span class="meta-value"><a class="contact-mail" href="mailto:${mail}">${name}</a></span></p>`;
+      } else {
+        meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Project Contact: <span class="meta-value">${formatMetaHtml(
+          data.contact
+        )}</span></p>`;
+      }
+    }
 
     let links = "";
     if (data.links?.length) {

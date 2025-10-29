@@ -116,29 +116,22 @@
   font-weight: 400;
 }
 
+/* Contact names clickable and show pointer; use accent color */
+.paper-contact .meta-value a.contact-mail {
+  cursor: pointer;
+  color: var(--clr-accent);
+  text-decoration: none;
+}
+.paper-contact .meta-value a.contact-mail:hover {
+  text-decoration: underline;
+}
+
 /* Links inside meta use accent color */
 .paper-project a,
 .paper-contact a {
   color: var(--clr-accent);
   font-weight: 400;
   text-decoration: none;
-}
-
-/* Obfuscated email styling */
-.obf-email {
-  color: var(--clr-accent);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono",
-    "Courier New", monospace;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.obf-email .obf-delim {
-  color: var(--clr-text);
-  font-size: 0.6em;
-  font-weight: 300;
-  vertical-align: baseline;
-  margin: 0 1px;
 }
 
 .paper-abstract {
