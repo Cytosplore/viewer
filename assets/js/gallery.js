@@ -17,16 +17,16 @@
         src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
         id: "hmba-rnaseq-multi-species-basal-ganglia",
       },
-      {
-        caption: "PatchSeq Human Neocortex",
-        src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
-        id: "hmba-patchseq-human-neocortex",
-      },
-      {
-        caption: "PatchSeq Macaque Basal Ganglia",
-        src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
-        id: "hmba-patchseq-macaque-basal-ganglia",
-      },
+      //{
+      //caption: "PatchSeq Human Neocortex",
+      //src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
+      //id: "hmba-patchseq-human-neocortex",
+      //},
+      //{
+      //caption: "PatchSeq Macaque Basal Ganglia",
+      //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
+      //id: "hmba-patchseq-macaque-basal-ganglia",
+      //},
       {
         caption: "Evo Viewer",
         src: "/assets/papers/Evo_Viewer.gif",
