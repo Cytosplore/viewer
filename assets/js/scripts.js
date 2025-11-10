@@ -40,7 +40,7 @@ function setupNavigation() {
   $("#nav-toggle").on("click", toggleResponsiveNav);
 
   $(".nav-item").on("click", function () {
-    if ($(window).width() < 710) {
+    if ($(window).width() < 750) {
       toggleResponsiveNav();
     }
   });
@@ -164,7 +164,7 @@ function setupStyles() {
 
   $(".download-buttons").css("gap", "10px");
 
-  if ($(window).width() < 710) {
+  if ($(window).width() < 750) {
     $(".download-buttons").css({
       "flex-direction": "column",
       "align-items": "center",
@@ -188,14 +188,14 @@ function resetResponsiveNav() {
 
 function sizeContent() {
   var w = $(".main-wrapper").width() - 65;
-  if ($(window).width() >= 710) w -= 35;
+  if ($(window).width() >= 750) w -= 35;
   $("#actionvideo")
     .width(w)
     .height((w * 9) / 16);
 
   resetResponsiveNav();
 
-  if ($(window).width() < 710) {
+  if ($(window).width() < 750) {
     $("#nav-hamburger")
       .css("left", $(window).width() * 0.95 - 45 + "px")
       .show();
