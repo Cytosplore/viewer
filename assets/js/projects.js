@@ -9,16 +9,16 @@ const PROJECT_GROUPS = [
   {
     key: "SimianEvo",
     path: "/assets/projects/SimianEvo",
-    title: "Cross-Species Analysis Studies in Single-Cell Transcriptomics",
+    title: "Cross-Species Analysis in Single-Cell Transcriptomics Studies",
     description:
       "EvoViewer and Simian projects provide comparative and evolutionary visualizations across species.",
   },
   {
-    key: "Cortical",
-    path: "/assets/projects/Cortical",
-    title: "Studies of the Mammalian Cortex",
+    key: "Classic",
+    path: "/assets/projects/Classic",
+    title: "Classic Viewer Studies",
     description:
-      "Cortex projects focus on cortical surface mapping, annotations, and region-based analyses.",
+      "Classic Viewer projects focus on mappings, annotations, and region-based analyses, showcasing key datasets and studies that compare and benchmark transcriptomics and cellular features across species and brain regions.",
   },
 ];
 

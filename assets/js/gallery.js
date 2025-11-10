@@ -38,9 +38,9 @@
         id: "simianevo-simian-viewer",
       },
       {
-        caption: "Classic MTG Viewer",
-        src: "/assets/papers/MTG_Viewer.gif",
-        id: "cortex-mtg-multi-species",
+        caption: "Classic Viewer",
+        src: "/assets/papers/Classic_Viewer.gif",
+        id: "classic-viewer",
       },
     ];
 
