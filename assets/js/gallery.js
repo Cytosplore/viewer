@@ -2,6 +2,16 @@
   var Gallery = function (root) {
     this.root = root;
     this.list = [
+      //{
+      //caption: "PatchSeq Human Neocortex",
+      //src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
+      //id: "hmba-patchseq-human-neocortex",
+      //},
+      //{
+      //caption: "PatchSeq Macaque Basal Ganglia",
+      //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
+      //id: "hmba-patchseq-macaque-basal-ganglia",
+      //},
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
@@ -17,16 +27,6 @@
         src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
         id: "hmba-rnaseq-multi-species-basal-ganglia",
       },
-      //{
-      //caption: "PatchSeq Human Neocortex",
-      //src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
-      //id: "hmba-patchseq-human-neocortex",
-      //},
-      //{
-      //caption: "PatchSeq Macaque Basal Ganglia",
-      //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
-      //id: "hmba-patchseq-macaque-basal-ganglia",
-      //},
       {
         caption: "Evo Viewer",
         src: "/assets/papers/Evo_Viewer.gif",
@@ -38,9 +38,24 @@
         id: "simianevo-simian-viewer",
       },
       {
-        caption: "Classic MTG Viewer",
-        src: "/assets/papers/Classic_Viewer.gif",
+        caption: "Classic SpaceTx Viewer",
+        src: "/assets/papers/ClassicViewers/spacetx.gif",
+        id: "classic-spacetx-viewer",
+      },
+      {
+        caption: "Human Mouse Marmoset Motorcortex Viewer",
+        src: "/assets/papers/ClassicViewers/hmm.gif",
+        id: "classic-hmm-motorcortex-viewer",
+      },
+      {
+        caption: "Classic Middle Temporal Gyrus Viewer",
+        src: "/assets/papers/ClassicViewers/mtg.gif",
         id: "classic-mtg-viewer",
+      },
+      {
+        caption: "Classic Mouse Neocortex Viewer",
+        src: "/assets/papers/ClassicViewers/mouse.gif",
+        id: "classic-mouse-neocortex-viewer",
       },
     ];
 
