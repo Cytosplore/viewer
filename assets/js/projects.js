@@ -364,7 +364,7 @@ function renderCard(data, index) {
         <div class="paper-abstract">
           <div class="paper-description">${(() => {
             let d = data.description || "";
-            d = d.length > 380 ? d.slice(0, 380) + "..." : d;
+            d = d.length > 500 ? d.slice(0, 500) + "..." : d;
             return convertMarkdownLinks(d);
           })()}</div>
         </div>
