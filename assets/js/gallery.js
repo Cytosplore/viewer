@@ -38,9 +38,9 @@
         id: "simianevo-simian-viewer",
       },
       {
-        caption: "Classic Viewer",
+        caption: "Classic MTG Viewer",
         src: "/assets/papers/Classic_Viewer.gif",
-        id: "classic-viewer",
+        id: "classic-mtg-viewer",
       },
     ];
 
