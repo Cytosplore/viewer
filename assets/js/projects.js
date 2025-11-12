@@ -310,10 +310,18 @@ function renderCard(data, index) {
   } catch (e) {}
   const align = index % 2 === 0 ? "left" : "right";
 
+  const isVideo = data.image && data.image.toLowerCase().endsWith(".webm");
+
   const imgHtml = data.image
-    ? `<div class="paper-image ${align}"><img src="${
-        data.image
-      }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
+    ? isVideo
+      ? `<div class="paper-image ${align}"><video src="${
+          data.image
+        }" alt="${escapeHtml(
+          data.title
+        )}" class="paper-img paper-video" autoplay loop muted playsinline></video></div>`
+      : `<div class="paper-image ${align}"><img src="${
+          data.image
+        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
     : "";
 
   let meta = "";

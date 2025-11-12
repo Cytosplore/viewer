@@ -40,6 +40,14 @@
   display: block;
 }
 
+.paper-video {
+  width: 350px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
 /* Let text flow beside floated images */
 .paper-text {
   overflow: visible;
@@ -160,7 +168,8 @@
   .group-list .paper {
     overflow: visible;
   }
-  .group-list .paper .paper-img {
+  .group-list .paper .paper-img,
+  .group-list .paper .paper-video {
     width: 100%;
     height: auto;
   }
@@ -217,7 +226,8 @@
   margin: 0 16px 0 0;
   float: left;
 }
-.group-list .paper .paper-img {
+.group-list .paper .paper-img,
+.group-list .paper .paper-video {
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -266,7 +276,8 @@
   .group-list .paper {
     overflow: visible;
   }
-  .group-list .paper .paper-img {
+  .group-list .paper .paper-img,
+  .group-list .paper .paper-video {
     width: 100%;
     height: auto;
   }

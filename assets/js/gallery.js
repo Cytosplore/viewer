@@ -4,67 +4,67 @@
     this.list = [
       //{
       //caption: "PatchSeq Human Neocortex",
-      //src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
+      //src: "/assets/papers/HMBAViewers/PatchSeq_Human.webm",
       //icn: "/assets/papers/HMBAViewers/PatchSeq_Human_icon.png",
       //id: "hmba-patchseq-human-neocortex",
       //},
       //{
       //caption: "PatchSeq Macaque Basal Ganglia",
-      //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
+      //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.webm",
       //icn: "/assets/papers/HMBAViewers/PatchSeq_Macaque_icon.png",
       //id: "hmba-patchseq-macaque-basal-ganglia",
       //},
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
-        src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
+        src: "/assets/papers/HMBAViewers/Gradient_Surfer.webm",
         icn: "/assets/papers/HMBAViewers/Gradient_Surfer_icon.png",
         id: "hmba-spatial-multi-species-basal-ganglia",
       },
       {
         caption: "ATACSeq Marmoset Subcortex",
-        src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif",
+        src: "/assets/papers/HMBAViewers/ATAC_Viewer.webm",
         icn: "/assets/papers/HMBAViewers/ATAC_Viewer_icon.png",
         id: "hmba-atacseq-marmoset-subcortex",
       },
       {
         caption: "RNASeq MultiSpecies Basal Ganglia",
-        src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
+        src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.webm",
         icn: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies_icon.png",
         id: "hmba-rnaseq-multi-species-basal-ganglia",
       },
       {
         caption: "Evo Viewer",
-        src: "/assets/papers/CrossSpecies/Evo_Viewer.gif",
+        src: "/assets/papers/CrossSpecies/Evo_Viewer.webm",
         icn: "/assets/papers/CrossSpecies/Evo_Viewer_icon.png",
         id: "simianevo-evo-viewer",
       },
       {
         caption: "Simian Viewer",
-        src: "/assets/papers/CrossSpecies/Simian_Viewer.gif",
+        src: "/assets/papers/CrossSpecies/Simian_Viewer.webm",
         icn: "/assets/papers/CrossSpecies/Simian_Viewer_icon.png",
         id: "simianevo-simian-viewer",
       },
       {
         caption: "Classic SpaceTx Viewer",
-        src: "/assets/papers/ClassicViewers/spacetx.gif",
+        src: "/assets/papers/ClassicViewers/spacetx.webm",
         icn: "/assets/papers/ClassicViewers/spacetx_icon.png",
         id: "classic-spacetx-viewer",
       },
       {
         caption: "Human Mouse Marmoset Motorcortex Viewer",
-        src: "/assets/papers/ClassicViewers/hmm.gif",
+        src: "/assets/papers/ClassicViewers/hmm.webm",
         icn: "/assets/papers/ClassicViewers/hmm_icon.png",
         id: "classic-hmm-motorcortex-viewer",
       },
       {
         caption: "Classic Middle Temporal Gyrus Viewer",
-        src: "/assets/papers/ClassicViewers/mtg.gif",
+        src: "/assets/papers/ClassicViewers/mtg.webm",
         icn: "/assets/papers/ClassicViewers/mtg_icon.png",
         id: "classic-mtg-viewer",
       },
       {
         caption: "Classic Mouse Neocortex Viewer",
-        src: "/assets/papers/ClassicViewers/mouse.gif",
+        src: "/assets/papers/ClassicViewers/mouse.webm",
         icn: "/assets/papers/ClassicViewers/mouse_icon.png",
         id: "classic-mouse-neocortex-viewer",
       },
@@ -72,7 +72,7 @@
 
     this.idx = 4;
 
-    this.img = root.querySelector("#gallery-image");
+    this.video = root.querySelector("#gallery-video");
     this.caption = root.querySelector("#gallery-caption");
     this.thumbs = root.querySelector("#gallery-thumbs");
     this.nextBtn = root.querySelector("#gallery-next");
@@ -87,12 +87,15 @@
     this.idx = i;
     var self = this;
 
-    if (this.img) {
-      this.img.classList.add("gallery-img--hidden");
+    if (this.video) {
+      this.video.classList.add("gallery-video--hidden");
       setTimeout(function () {
-        self.img.src = self.list[i].src;
-        self.img.alt = self.list[i].caption || "";
-        self.img.classList.remove("gallery-img--hidden");
+        self.video.src = self.list[i].src;
+        self.video.load();
+        self.video.play().catch(function (error) {
+          console.log("Video autoplay prevented:", error);
+        });
+        self.video.classList.remove("gallery-video--hidden");
       }, 220);
     }
 

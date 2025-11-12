@@ -26,6 +26,14 @@
   align-items: center;
   justify-content: center;
 }
+.gallery-main video {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+  opacity: 1;
+  transition: opacity 360ms ease-in-out;
+}
 .gallery-main img {
   max-width: 100%;
   height: auto;
@@ -33,6 +41,9 @@
   display: block;
   opacity: 1;
   transition: opacity 360ms ease-in-out;
+}
+.gallery-video--hidden {
+  opacity: 0;
 }
 .gallery-img--hidden {
   opacity: 0;
