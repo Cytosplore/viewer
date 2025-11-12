@@ -199,6 +199,8 @@
       var t = document.createElement("img");
       t.dataset.src = item.icn || item.src;
       t.alt = item.caption || "thumb " + (i + 1);
+      t.title = item.caption || "";
+      t.setAttribute("aria-label", item.caption || t.alt);
       t.setAttribute("role", "listitem");
       t.addEventListener("click", function () {
         self.show(i);
