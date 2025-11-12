@@ -5,56 +5,67 @@
       //{
       //caption: "PatchSeq Human Neocortex",
       //src: "/assets/papers/HMBAViewers/PatchSeq_Human.gif",
+      //icn: "/assets/papers/HMBAViewers/PatchSeq_Human_icon.png",
       //id: "hmba-patchseq-human-neocortex",
       //},
       //{
       //caption: "PatchSeq Macaque Basal Ganglia",
       //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.gif",
+      //icn: "/assets/papers/HMBAViewers/PatchSeq_Macaque_icon.png",
       //id: "hmba-patchseq-macaque-basal-ganglia",
       //},
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/Gradient_Surfer.gif",
+        icn: "/assets/papers/HMBAViewers/Gradient_Surfer_icon.png",
         id: "hmba-spatial-multi-species-basal-ganglia",
       },
       {
         caption: "ATACSeq Marmoset Subcortex",
         src: "/assets/papers/HMBAViewers/ATAC_Viewer.gif",
+        icn: "/assets/papers/HMBAViewers/ATAC_Viewer_icon.png",
         id: "hmba-atacseq-marmoset-subcortex",
       },
       {
         caption: "RNASeq MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.gif",
+        icn: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies_icon.png",
         id: "hmba-rnaseq-multi-species-basal-ganglia",
       },
       {
         caption: "Evo Viewer",
         src: "/assets/papers/CrossSpecies/Evo_Viewer.gif",
+        icn: "/assets/papers/CrossSpecies/Evo_Viewer_icon.png",
         id: "simianevo-evo-viewer",
       },
       {
         caption: "Simian Viewer",
         src: "/assets/papers/CrossSpecies/Simian_Viewer.gif",
+        icn: "/assets/papers/CrossSpecies/Simian_Viewer_icon.png",
         id: "simianevo-simian-viewer",
       },
       {
         caption: "Classic SpaceTx Viewer",
         src: "/assets/papers/ClassicViewers/spacetx.gif",
+        icn: "/assets/papers/ClassicViewers/spacetx_icon.png",
         id: "classic-spacetx-viewer",
       },
       {
         caption: "Human Mouse Marmoset Motorcortex Viewer",
         src: "/assets/papers/ClassicViewers/hmm.gif",
+        icn: "/assets/papers/ClassicViewers/hmm_icon.png",
         id: "classic-hmm-motorcortex-viewer",
       },
       {
         caption: "Classic Middle Temporal Gyrus Viewer",
         src: "/assets/papers/ClassicViewers/mtg.gif",
+        icn: "/assets/papers/ClassicViewers/mtg_icon.png",
         id: "classic-mtg-viewer",
       },
       {
         caption: "Classic Mouse Neocortex Viewer",
         src: "/assets/papers/ClassicViewers/mouse.gif",
+        icn: "/assets/papers/ClassicViewers/mouse_icon.png",
         id: "classic-mouse-neocortex-viewer",
       },
     ];
@@ -186,7 +197,7 @@
     row.setAttribute("role", "list");
     this.list.forEach(function (item, i) {
       var t = document.createElement("img");
-      t.dataset.src = item.src;
+      t.dataset.src = item.icn || item.src;
       t.alt = item.caption || "thumb " + (i + 1);
       t.setAttribute("role", "listitem");
       t.addEventListener("click", function () {
