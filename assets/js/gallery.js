@@ -29,12 +29,12 @@
       },
       {
         caption: "Evo Viewer",
-        src: "/assets/papers/Evo_Viewer.gif",
+        src: "/assets/papers/CrossSpecies/Evo_Viewer.gif",
         id: "simianevo-evo-viewer",
       },
       {
         caption: "Simian Viewer",
-        src: "/assets/papers/Simian_Viewer.gif",
+        src: "/assets/papers/CrossSpecies/Simian_Viewer.gif",
         id: "simianevo-simian-viewer",
       },
       {
