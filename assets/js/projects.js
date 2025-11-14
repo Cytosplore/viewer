@@ -5,6 +5,13 @@ const PROJECT_GROUPS = [
     title: "The Human and Mammalian Brain Atlas (HMBA) Studies",
     description:
       "HMBA projects focus on large-scale mapping and interactive exploration of mammalian brain single-cell datasets.",
+    files: [
+      "v5.0.0.md",
+      "v4.0.0.md",
+      "v3.0.0.md",
+      "v2.0.0.md",
+      "v1.0.0.md",
+    ],
   },
   {
     key: "SimianEvo",
@@ -12,6 +19,7 @@ const PROJECT_GROUPS = [
     title: "Cross-Species Analysis in Single-Cell Transcriptomics Studies",
     description:
       "EvoViewer and Simian projects provide comparative and evolutionary visualizations across species.",
+    files: ["v2.0.0.md", "v1.0.0.md"],
   },
   {
     key: "Classic",
@@ -19,6 +27,12 @@ const PROJECT_GROUPS = [
     title: "Classic Viewer Studies",
     description:
       "Classic Viewer projects focus on mappings, annotations, and region-based analyses, showcasing key datasets and studies that compare and benchmark transcriptomics and cellular features across species and brain regions.",
+    files: [
+      "v4.0.0.md",
+      "v3.0.0.md",
+      "v2.0.0.md",
+      "v1.0.0.md",
+    ],
   },
 ];
 
@@ -44,7 +58,7 @@ async function loadAllGroups() {
 
   await Promise.allSettled(
     PROJECT_GROUPS.map((group) =>
-      loadGroupMarkdowns(group.path, `group-${group.key}`).catch((e) => {
+      loadGroupMarkdowns(group, `group-${group.key}`).catch((e) => {
         console.error(e);
         const target = document.getElementById(`group-${group.key}`);
         if (target)
@@ -58,12 +72,18 @@ async function loadAllGroups() {
   } catch (e) {}
 }
 
-async function loadGroupMarkdowns(folderPath, targetId) {
+async function loadGroupMarkdowns(group, targetId) {
+  const folderPath = group && group.path ? group.path : null;
   const target = document.getElementById(targetId);
   if (!target) return;
   target.innerHTML = "";
 
-  let files = await listMdFiles(folderPath);
+  let files = [];
+  if (Array.isArray(group.files) && group.files.length) {
+    files = [...group.files];
+  } else if (folderPath) {
+    files = await listMdFiles(folderPath);
+  }
   if (!files?.length) {
     target.innerHTML = "<p>No projects found in this group.</p>";
     return;
