@@ -51,7 +51,7 @@
         id: "classic-spacetx-viewer",
       },
       {
-        caption: "Human Mouse Marmoset Motorcortex Viewer",
+        caption: "Classic Human Mouse Marmoset Motorcortex Viewer",
         src: "/assets/papers/ClassicViewers/hmm.webm",
         icn: "/assets/papers/ClassicViewers/hmm_icon.png",
         id: "classic-hmm-motorcortex-viewer",
@@ -80,8 +80,7 @@
         this.video.style.width = "100%";
         this.video.style.height = "auto";
         this.video.style.objectFit = "cover";
-      } catch (e) {
-      }
+      } catch (e) {}
     }
     this.caption = root.querySelector("#gallery-caption");
     this.thumbs = root.querySelector("#gallery-thumbs");
