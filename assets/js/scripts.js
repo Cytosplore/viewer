@@ -52,12 +52,12 @@ function setupDownloadLinks() {
   const buttons = [
     {
       id: "download-combined",
-      version: "1.0.0",
+      version: "5.0.0",
       label: "Cytosplore Viewer",
       macLink:
-        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/HMBA/Cytosplore_Viewer_Mac.dmg",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_mac/cytosplore_viewer_5.0.0_mac.dmg",
       winLink:
-        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/HMBA/Cytosplore_Viewer_Windows.exe",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_windows/cytosplore_viewer_5.0.0_windows.exe",
       linLink: "",
       tooltip: "Download Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
