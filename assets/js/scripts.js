@@ -40,7 +40,7 @@ function setupNavigation() {
   $("#nav-toggle").on("click", toggleResponsiveNav);
 
   $(".nav-item").on("click", function () {
-    if ($(window).width() < 710) {
+    if ($(window).width() < 750) {
       toggleResponsiveNav();
     }
   });
@@ -51,28 +51,15 @@ function setupDownloadLinks() {
 
   const buttons = [
     {
-      id: "download-classic",
-      version: "3.4.0",
-      label: "Classic Viewer",
-      macLink:
-        "https://sec.lumc.nl/mtg-viewer/viewer/mac/CytosploreViewer.3.4.0.dmg",
-      winLink:
-        "https://sec.lumc.nl/mtg-viewer/viewer/win/3.4.0/install_cytosplore_viewer.exe",
-      linLink: "",
-      tooltip: "Download Classic Cytosplore Viewer",
-      container: "#get-classic-cytosplore-installer .download-buttons",
-    },
-    {
       id: "download-combined",
-      version: "1.0.0",
-      label: "Combined Viewer",
+      version: "5.0.0",
+      label: "Cytosplore Viewer",
       macLink:
-        //  "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Mac.dmg",
-        "",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_mac/cytosplore_viewer_5.0.0_mac.dmg",
       winLink:
-        "https://sec.lumc.nl/mtg-viewer/MV_data/CytosploreViewer/Installers/Cytosplore_Viewer_Windows.exe",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_windows/cytosplore_viewer_5.0.0_windows.exe",
       linLink: "",
-      tooltip: "Download Combined Cytosplore Viewer",
+      tooltip: "Download Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
     },
   ];
@@ -111,9 +98,15 @@ function setupDownloadLink(
   var element = $("#" + elementId);
   if (element.length) {
     let userAgent = navigator.userAgent.toLowerCase();
-    let isMac = userAgent.indexOf("mac") !== -1;
-    let isLinux = userAgent.indexOf("linux") !== -1;
-    let isWindows = userAgent.indexOf("win") !== -1;
+    let isMac =
+      userAgent.indexOf("mac") !== -1 || userAgent.indexOf("darwin") !== -1;
+    let isLinux =
+      userAgent.indexOf("linux") !== -1 && userAgent.indexOf("android") === -1;
+    let isWindows =
+      userAgent.indexOf("windows") !== -1 ||
+      userAgent.indexOf("win32") !== -1 ||
+      userAgent.indexOf("win64") !== -1 ||
+      userAgent.indexOf("wow64") !== -1;
 
     let link = isMac ? macLink : isLinux ? linLink : isWindows ? winLink : "";
     let icon = isMac
@@ -171,7 +164,7 @@ function setupStyles() {
 
   $(".download-buttons").css("gap", "10px");
 
-  if ($(window).width() < 710) {
+  if ($(window).width() < 750) {
     $(".download-buttons").css({
       "flex-direction": "column",
       "align-items": "center",
@@ -195,14 +188,14 @@ function resetResponsiveNav() {
 
 function sizeContent() {
   var w = $(".main-wrapper").width() - 65;
-  if ($(window).width() >= 710) w -= 35;
+  if ($(window).width() >= 750) w -= 35;
   $("#actionvideo")
     .width(w)
     .height((w * 9) / 16);
 
   resetResponsiveNav();
 
-  if ($(window).width() < 710) {
+  if ($(window).width() < 750) {
     $("#nav-hamburger")
       .css("left", $(window).width() * 0.95 - 45 + "px")
       .show();
@@ -219,25 +212,43 @@ function scroller() {
   var url = window.location.href;
   if (url.indexOf("documentation") >= 0) {
     setActiveNav("#nav-documentation");
-  } else {
-    var scrollPosition = $(window).scrollTop() + 100;
-    var positions = [
-      { id: "#nav-download", pos: $("#get").offset().top },
-      { id: "#nav-publications", pos: $("#publications").offset().top },
-      { id: "#nav-team", pos: $("#team").offset().top },
-      { id: "#nav-cytosplore", pos: 0 },
-    ];
+    return;
+  }
 
-    for (let i = 0; i < positions.length; i++) {
-      if (
-        scrollPosition > positions[i].pos ||
-        (i === 0 &&
-          $(window).scrollTop() + $(window).height() >
-            $(document).height() - 100)
-      ) {
-        setActiveNav(positions[i].id);
-        break;
-      }
+  var scrollPosition = $(window).scrollTop() + 100;
+
+  var positions = [
+    {
+      id: "#nav-download",
+      pos: $("#get").length ? $("#get").offset().top : -Infinity,
+    },
+    {
+      id: "#nav-publications",
+      pos: $("#publications").length
+        ? $("#publications").offset().top
+        : -Infinity,
+    },
+    {
+      id: "#nav-projects",
+      pos: $("#projects").length ? $("#projects").offset().top : -Infinity,
+    },
+    {
+      id: "#nav-team",
+      pos: $("#team").length ? $("#team").offset().top : -Infinity,
+    },
+    { id: "#nav-cytosplore", pos: 0 },
+  ];
+
+  positions.sort((a, b) => b.pos - a.pos);
+
+  var atBottom =
+    $(window).scrollTop() + $(window).height() >= $(document).height() - 10;
+
+  for (let i = 0; i < positions.length; i++) {
+    if (positions[i].pos === -Infinity) continue;
+    if (scrollPosition >= positions[i].pos || (atBottom && i === 0)) {
+      setActiveNav(positions[i].id);
+      break;
     }
   }
 }

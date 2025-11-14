@@ -11,44 +11,57 @@
 		<h1>Cytosplore Viewer</h1>
 		<div class="section">
 			<p>
-				Cytosplore Viewer is an interactive visual analysis system for the exploration of single cell data
-				published in the <a href="http://celltypes.brain-map.org/" target="new">Allen Cell Types Database</a>
-				and for a number of the single cell data resources of the <a href="https://www.biccn.org">Brain
-					Initiative Cell Census Network (BICCN)</a>, and the Brain Initiative Cell Atlas Network (BICAN).
+				Cytosplore Viewer is an interactive visual analytics system for the exploration of single cell and spatial transcriptomics data published in the 
+				<a href="http://celltypes.brain-map.org/" target="new">Allen Cell Types Database</a>
+				and for a number of the curated, authoritative data resources of the <a href="https://www.portal.brain-bican.org/" target="_blank">Brain Initiative Cell Atlas Network (BICAN)</a>, in particular the <a href="https://www.portal.brain-bican.org/teams/hmba" target="_blank">Human and Mammalian Brain Atlas (HMBA)</a>.
 				<br /><br />
-				Currently supported datasets include the October 2019 data releases in the Allen Cell Types Database of
-				the Allen Institute for Brain Science: nuclear sequencing data of several areas of the human cortex, and
-				single cell sequencing data of the mouse cortex and hippocampus.
-				<br /><br />
-				Also supported are special modes for:
+				Launched in 2019, Cytosplore Viewer is designed to leverage fast local compute and compressed data access for the linked exploration of multi-modal spatial and single cell datasets. Specific focus is multi-resolution detail analyses across multiple datasets, for instance:
 				<ul>
-					<li>cross-species comparison of cell types in the motor cortex between human, marmoset and mouse of
-						BICCN (see <i>Comparative cellular analysis of motor cortex in human, marmoset, and mouse</i>
-						below).</li>
-					<li>comparing different spatial transcriptomics techniques of the SpaceTx Consortium (see <i>
-							SpaceTx: A Roadmap for Benchmarking Spatial Transcriptomics Exploration of the Brain</i>
-						below).</li>
+					<li><b>On-the-fly visual cross-species comparative visualization</b> of cell types and their convergent and divergent features across  species.</li>
+					<li><b>On-the-fly multi-omics integration</b> of ATAC-seq, Patch-seq, spatial and single-cell transcriptomics by leveraging standardized taxonomy mapping to cross-modal searches (e.g. spatial co-expression of ATAC and RNA seq data.</li>
+					<li><b>Deepdives in single-cell and spatial data</b> for in-depth re-analysis of subsets of cells. Specific niche functionalities are on-the-fly re-embedding using a complementary dimensionality reduction to UMAP, local gene expression gradients detection, differential expression analysis and manual annotation / correction facilities.</li>
 				</ul>
-				<br />
+
 				Cytosplore Viewer allows an interactive exploration of hierarchies of cell types. One can visualize
 				transcriptome-wide gene expression in combination with metadata of individual cells, perform
 				differential analyses and statistics between manual selections of cells, or between pre-defined clusters
 				throughout the cellular hierarchy and more.
-				Cytosplore Viewer is based on <a href="https://www.cytosplore.org" style="color:rgb(90,50,90);">Cytosplore</a> and provides many of the analysis tools presented in the
-				<a href="https://www.cytosplore.org/#publications" style="color:rgb(90,50,90);">previous Cytosplore
+				Cytosplore Viewer is built in the <a href="https://manivaultstudio.github.io/" target="_blank"><span style="color:rgb(102,159,178);">ManiVault</span> <span style="color:rgb(162,141,208);">Studio</span></a> application building toolkit, and provides many of the analysis tools and state-of-the-art visualization research outputs presented in the <a href="https://www.cytosplore.org/#publications" target="_blank" style="color:rgb(90,50,90);">previous Cytosplore
 					publications</a>.
-				<br /><br />
-				<em>To gain insights into the cell type and gene expression differences and similarities between humans
-					and 4 different species of primates there is now a special version:
-				<a href="#get"> Cytosplore Simian Viewer </a> which was developed in for the <a href="#science23">Comparative transcriptomics reveals human-specific cortical features </a> journal article published in <a href="https://www.science.org/toc/science/382/6667">Science, Volume 382, Issue 6667</a>.</em>
+			</p>
+			<p>
+				Visit the <a href="/projects">Projects</a> page to see more details about the Cytosplore Viewer projects.
 			</p>
 			<p class="download-p">
 				<a href="#get"><img src="/assets/images/to-download-viewer.png" alt="Download" id="download-top"></a>
 			</p>
 		</div>
 		<div class="section">
-			<iframe id="actionvideo" src="https://player.vimeo.com/video/273182940?byline=0&amp;portrait=0" width="80%"
-				frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen=""></iframe>
+				<div class="actionvideo-wrapper gallery" id="action-gallery">
+					<div class="gallery-main">
+						<button class="gallery-btn prev" id="gallery-prev" aria-label="Previous" title="Previous">
+							<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+						</button>
+						<video id="gallery-video" autoplay loop muted playsinline>
+							<source src="/assets/papers/simple_loading.webm" type="video/webm">
+							Your browser does not support the video tag.
+						</video>
+						<button class="gallery-btn next" id="gallery-next" aria-label="Next" title="Next">
+							<svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+						</button>
+
+                        
+					</div>
+					<div class="action-caption" id="gallery-caption">RNASeq MultiSpecies</div>
+
+					<div class="gallery-thumbs" id="gallery-thumbs" role="list">
+                        
+					</div>
+				</div>
+
+				<link rel="stylesheet" href="/assets/css/gallery.css">
+				<div id="gallery-live" class="sr-only" aria-live="polite"></div>
+				<script src="/assets/js/gallery.js"></script>
 		</div>
 	</div>
 </div>

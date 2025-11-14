@@ -6,120 +6,45 @@
 			<br />
 			<div id="portrait-container">
 
-				<a href="https://lkeb.github.io/people/jeroen_eggermont" target="_blank">
-					<div class="portrait" id="portrait-je">
+			{%- assign team_pages = site.pages | where: "team_member", true -%}
+			{%- for member in team_pages -%}
+				<a href='{{ member["link"] }}' target="_blank">
+					<div class="portrait" id='{{ member["id"] }}' style='background: url("{{ member["image"] }}") no-repeat; background-size: 80px 80px'>
 						<span class="popover above">
-							<span class="portrait-name">
-								Jeroen Eggermont
+	                            <span class="portrait-name">
+                                {{ member.display_name }}
 							</span>
 							<hr />
-							<span class="portrait-text">
-								LUMC <br /> Development
-							</span>
+							<span class="portrait-text">{{ member["affiliation"] }} <br /> {{ member["role"] }}</span>
 						</span>
 					</div>
 				</a>
-
-				<a href="https://lkeb.github.io/people/soumyadeep_basu.html" target="_blank">
-					<div class="portrait" id="portrait-sb">
-						<span class="popover above">
-							<span class="portrait-name">
-								Soumyadeep Basu
-							</span>
-							<hr />
-							<span class="portrait-text">
-								LUMC / TU Delft <br /> Development
-							</span>
-						</span>
-					</div>
-				</a>
-
-				<a href="https://lkeb.github.io/people/thomas_kroes.html" target="_blank">
-					<div class="portrait" id="portrait-tk">
-						<span class="popover above">
-							<span class="portrait-name">
-								Thomas Kroes
-							</span>
-							<hr />
-							<span class="portrait-text">
-								LUMC <br /> Development
-							</span>
-						</span>
-					</div>
-				</a>
-
-				<a href="https://lkeb.github.io/people/baldur_van_lew.html"  target="_blank">
-					<div class="portrait" id="portrait-bvl">
-						<span class="popover above">
-							<span class="portrait-name">
-								Baldur van Lew
-							</span>
-							<hr />
-							<span class="portrait-text">
-								LUMC <br /> Development
-							</span>
-						</span>
-					</div>
-				</a>
-<!---
-				<a href="https://nicola17.github.io" target="_blank">
-					<div class="portrait" id="portrait-np">
-						<span class="popover above">
-							<span class="portrait-name">
-								Nicola Pezzotti
-							</span>
-							<hr />
-							<span class="portrait-text">
-								TU Delft <br /> Algorithms Research
-							</span>
-						</span>
-					</div>
-				</a>
--->
-				<a href="https://www.tudelft.nl/ewi/over-de-faculteit/afdelingen/intelligent-systems/computer-graphics-and-visualization/people/anna-vilanova" target="_blank">
-					<div class="portrait" id="portrait-av">
-						<span class="popover above">
-							<span class="portrait-name">
-								Anna Vilanova
-							</span>
-							<hr />
-							<span class="portrait-text">
-								TU Delft <br /> PI VAnPIRe
-							</span>
-						</span>
-					</div>
-				</a>
-
-				<a href="http://www.thomashollt.com" target="_blank_">
-					<div class="portrait" id="portrait-th">
-						<span class="popover above">
-							<span class="portrait-name">
-								Thomas H&ouml;llt
-							</span>
-							<hr>
-							<span class="portrait-text">
-								TU Delft / LUMC <br /> Project Lead Cytosplore
-							</span>
-						</span>
-					</div>
-				</a>
-
-				<a href="https://lkeb.github.io/people/boudewijn_lelieveldt.html" target="_blank">
-					<div class="portrait" id="portrait-bl">
-						<span class="popover above">
-							<span class="portrait-name">
-								Boudewijn P.F. Lelieveldt
-							</span>
-							<hr />
-							<span class="portrait-text">
-								LUMC <br /> PI LKEB
-							</span>
-						</span>
-					</div>
-				</a>
-
-				<span class="stretch"></span>
+			{%- endfor -%}
+			<span class="stretch"></span>
 			</div>
+			    <div style="text-align:right;margin-bottom:6px;margin-top:-6px;">
+                <small style="color:#666;font-size:0.75em;font-style:italic;opacity:0.65;">
+                    • Order randomized on page load.
+                </small>
+            </div>
+			<script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const container = document.getElementById('portrait-container');
+                    if (!container) return;
+                    const stretch = container.querySelector('.stretch');
+
+                    const nodes = Array.from(container.children).filter(n => n !== stretch);
+
+                    // Shuffle
+                    for (let i = nodes.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [nodes[i], nodes[j]] = [nodes[j], nodes[i]];
+                    }
+
+                    nodes.forEach(n => container.appendChild(n));
+                    if (stretch) container.appendChild(stretch);
+                });
+            </script>
 			<p>
 				Cytosplore Viewer is being developed by a team consisting of members from the
 				<a href="https://lkeb.github.io/" target="new">Leiden Computational Biology Center</a>, the

@@ -124,7 +124,7 @@
 	display: none;
 }
 
-@media only screen and (min-width: 725px){
+@media only screen and (min-width: 750px){
 
 	.bx-wrapper .bx-controls-direction a {
 		margin-top: -16px;
@@ -133,7 +133,7 @@
 	}
 }
 
-@media only screen and (max-width : 725px){
+@media only screen and (max-width : 750px){
 
 	.bx-wrapper .bx-controls-direction a {
 		width: 0px;

@@ -1,0 +1,502 @@
+const PROJECT_GROUPS = [
+  {
+    key: "HMBA",
+    path: "/assets/projects/HMBA",
+    title: "The Human and Mammalian Brain Atlas (HMBA) Studies",
+    description:
+      "HMBA projects focus on large-scale mapping and interactive exploration of mammalian brain single-cell datasets.",
+  },
+  {
+    key: "SimianEvo",
+    path: "/assets/projects/SimianEvo",
+    title: "Cross-Species Analysis in Single-Cell Transcriptomics Studies",
+    description:
+      "EvoViewer and Simian projects provide comparative and evolutionary visualizations across species.",
+  },
+  {
+    key: "Classic",
+    path: "/assets/projects/Classic",
+    title: "Classic Viewer Studies",
+    description:
+      "Classic Viewer projects focus on mappings, annotations, and region-based analyses, showcasing key datasets and studies that compare and benchmark transcriptomics and cellular features across species and brain regions.",
+  },
+];
+
+document.addEventListener("DOMContentLoaded", () => loadAllGroups());
+
+async function loadAllGroups() {
+  const container = document.getElementById("projects-container");
+  container.innerHTML = "";
+
+  const fragment = document.createDocumentFragment();
+  for (const group of PROJECT_GROUPS) {
+    const groupEl = document.createElement("section");
+    groupEl.className = "project-group";
+    groupEl.innerHTML = `
+      <h2 class="group-title">${group.title}</h2>
+      <p class="group-desc">${group.description || ""}</p>
+      <div class="group-list" id="group-${group.key}">
+        <p class="loading">Loading...</p>
+      </div>`;
+    fragment.appendChild(groupEl);
+  }
+  container.appendChild(fragment);
+
+  await Promise.allSettled(
+    PROJECT_GROUPS.map((group) =>
+      loadGroupMarkdowns(group.path, `group-${group.key}`).catch((e) => {
+        console.error(e);
+        const target = document.getElementById(`group-${group.key}`);
+        if (target)
+          target.innerHTML = `<p class="error">Failed to load projects for ${group.title}</p>`;
+      })
+    )
+  );
+
+  try {
+    scrollToHashOnLoad();
+  } catch (e) {}
+}
+
+async function loadGroupMarkdowns(folderPath, targetId) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  target.innerHTML = "";
+
+  let files = await listMdFiles(folderPath);
+  if (!files?.length) {
+    target.innerHTML = "<p>No projects found in this group.</p>";
+    return;
+  }
+
+  files = [...new Set(files)].sort((a, b) => compareVersions(b, a));
+  const cards = await Promise.allSettled(
+    files.map(async (f) => {
+      try {
+        const r = await fetch(`${folderPath}/${f}`);
+        if (!r.ok) return null;
+        const md = await r.text();
+        return parseProjectMarkdown(md, f);
+      } catch {
+        return null;
+      }
+    })
+  );
+
+  const validCards = cards
+    .map((r) => (r.status === "fulfilled" ? r.value : null))
+    .filter(Boolean)
+    .filter((c) => c && c.publish !== false);
+
+  if (!validCards.length) {
+    target.innerHTML = "<p>No project markdowns could be loaded.</p>";
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "projects-cards";
+  const frag = document.createDocumentFragment();
+  validCards.forEach((c, i) => frag.appendChild(renderCard(c, i)));
+  grid.appendChild(frag);
+  target.appendChild(grid);
+}
+
+function parseProjectMarkdown(md, fname) {
+  const data = {
+    id: "",
+    title: "",
+    image: "",
+    description: "",
+    project: "",
+    contact: "",
+    email: "",
+    links: [],
+    publish: true,
+    fname,
+  };
+  try {
+    const fm = md.match(/^---\s*[\r\n]+([\s\S]*?)\r?\n---\s*\r?\n?/);
+    let publishRaw = null;
+    if (fm) {
+      const fmText = fm[1] || "";
+      const pubMatch = fmText.match(/^\s*publish\s*:\s*(.+)\s*$/im);
+      if (pubMatch) publishRaw = pubMatch[1];
+      md = md.slice(fm[0].length);
+    }
+
+    if (publishRaw == null) {
+      const headerMatch = md.match(
+        /^\s*##\s*publish\s*:\s*(.+)\s*(?:\r?\n|$)/i
+      );
+      if (headerMatch) {
+        publishRaw = headerMatch[1];
+        md = md.slice(headerMatch[0].length);
+      }
+    }
+
+    if (publishRaw != null) {
+      const raw = String(publishRaw || "")
+        .trim()
+        .replace(/^['"]|['"]$/g, "");
+      const low = raw.toLowerCase();
+      data.publish = !(low === "false" || low === "no" || low === "0");
+    }
+  } catch (e) {}
+
+  const lines = md.split(/\r?\n/);
+  const desc = [];
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!data.title && line.startsWith("# ")) {
+      data.title = line.replace(/^# /, "").trim();
+      continue;
+    }
+    const img = line.match(/!\[(.*?)\]\((.*?)\)/);
+    if (!data.image && img) {
+      data.image = img[2];
+      continue;
+    }
+    const idMatch = line.match(/^\*\*\s*ID\s*(?:[:\.]?)\s*\*\*\s*(.*)/i);
+    if (idMatch) {
+      data.id = (idMatch[1] || "").trim();
+      continue;
+    }
+
+    const projectMatch = line.match(/^\*\*\s*Project:\s*\*\*(.*)/i);
+    if (projectMatch) {
+      data.project = projectMatch[1].trim();
+      continue;
+    }
+    const contactMatch = line.match(/^\*\*\s*Contact:\s*\*\*(.*)/i);
+    if (contactMatch) {
+      data.contact = contactMatch[1].trim();
+      continue;
+    }
+    const emailMatch = line.match(/^\*\*\s*Email:\s*\*\*(.*)/i);
+    if (emailMatch) {
+      data.email = (emailMatch[1] || "").trim();
+      continue;
+    }
+    const descMatch = line.match(/^\*\*\s*(Description):\s*\*\*(.*)/i);
+    if (descMatch) {
+      data.description = (descMatch[2] || "").trim();
+      continue;
+    }
+    const link = line.match(/- \[(.*?)\]\((.*?)\)/);
+    if (link) {
+      data.links.push({ text: link[1], url: link[2] });
+      continue;
+    }
+    if (line && !line.startsWith("**")) desc.push(raw);
+  }
+
+  if (!data.description && desc.length)
+    data.description = desc.join("\n").trim();
+  return data;
+}
+
+function escapeAttr(s) {
+  return (s || "")
+    .replace(/&/g, "&amp;")
+    .replace(/\"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function convertMarkdownLinks(s) {
+  if (!s) return "";
+  const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let lastIndex = 0;
+  let out = "";
+  let m;
+  while ((m = regex.exec(s)) !== null) {
+    out += escapeHtml(s.slice(lastIndex, m.index));
+    const text = m[1];
+    const url = m[2];
+    const isSame = /^\s*(\/|#)/.test(url) || /tutorial|viewer/i.test(text);
+    const target = isSame ? "_self" : "_blank";
+    const rel = isSame ? "" : ' rel="noopener noreferrer"';
+    out += `<a href="${escapeAttr(url)}" target="${target}"${rel}>${escapeHtml(
+      text
+    )}</a>`;
+    lastIndex = regex.lastIndex;
+  }
+  out += escapeHtml(s.slice(lastIndex));
+  return out;
+}
+
+function formatMetaHtml(s) {
+  if (!s) return "";
+  return convertMarkdownLinks(s);
+}
+
+async function listMdFiles(folderPath) {
+  const files = [];
+  try {
+    const resp = await fetch(folderPath + "/");
+    if (resp.ok) {
+      const text = await resp.text();
+      const regex = /href=["']([^"']+\.md)["']/gi;
+      for (const m of text.matchAll(regex))
+        files.push(m[1].replace(/^\.\//, ""));
+    }
+  } catch {}
+
+  if (files.length) return files;
+
+  const candidates = [];
+  for (let major = 5; major >= 0; major--) {
+    for (let minor = 10; minor >= 0; minor--) {
+      candidates.push(`v${major}.${minor}.md`);
+      for (let patch = 3; patch >= 0; patch--)
+        candidates.push(`v${major}.${minor}.${patch}.md`);
+    }
+    for (let i = 10; i >= 1; i--) candidates.push(`${i}.md`);
+  }
+
+  const found = [];
+  const concurrency = 6;
+  for (let i = 0; i < candidates.length; i += concurrency) {
+    const batch = candidates.slice(i, i + concurrency).map((name) =>
+      fetch(`${folderPath}/${name}`)
+        .then((r) => (r.ok ? name : null))
+        .catch(() => null)
+    );
+    const res = await Promise.all(batch);
+    for (const s of res) if (s) found.push(s);
+    if (found.length > 20) break;
+  }
+
+  return [...new Set(found)];
+}
+
+function compareVersions(a, b) {
+  const pa = parseVersion(a);
+  const pb = parseVersion(b);
+  for (let i = 0; i < 4; i++) {
+    const na = pa[i] || 0,
+      nb = pb[i] || 0;
+    if (na !== nb) return na - nb;
+  }
+  return 0;
+}
+
+function parseVersion(name) {
+  const parts = name
+    .replace(/\.md$/i, "")
+    .replace(/^v/i, "")
+    .split(/[\.\-_]/)
+    .map((p) => parseInt(p, 10))
+    .filter((n) => !isNaN(n));
+  while (parts.length < 4) parts.push(0);
+  return parts.slice(0, 4);
+}
+
+function renderCard(data, index) {
+  const article = document.createElement("div");
+  article.className = "paper";
+  try {
+    const rawId =
+      data.id || (data.fname || "").replace(/\.md$/i, "") || data.title || "";
+    var sane = String(rawId || "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^A-Za-z0-9_\-:.]/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .toLowerCase();
+    if (!sane) sane = "";
+  } catch (e) {}
+  const align = index % 2 === 0 ? "left" : "right";
+
+  const isVideo = data.image && data.image.toLowerCase().endsWith(".webm");
+
+  const imgHtml = data.image
+    ? isVideo
+      ? `<div class="paper-image ${align}"><video src="${
+          data.image
+        }" alt="${escapeHtml(
+          data.title
+        )}" class="paper-img paper-video" autoplay loop muted playsinline></video></div>`
+      : `<div class="paper-image ${align}"><img src="${
+          data.image
+        }" alt="${escapeHtml(data.title)}" class="paper-img"/></div>`
+    : "";
+
+  let meta = "";
+  if (data.project)
+    meta += `<p class="paper-metadata paper-project"><i class="fas fa-file"></i> Project File: <span class="meta-value">${formatMetaHtml(
+      data.project
+    )}</span></p>`;
+  if (data.contact) {
+    if (data.email) {
+      const mail = escapeAttr(data.email);
+      const name = escapeHtml(data.contact);
+      meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Project Contact: <span class="meta-value"><a class="contact-mail" href="mailto:${mail}">${name}</a></span></p>`;
+    } else {
+      meta += `<p class="paper-metadata paper-contact"><i class="fas fa-user"></i> Project Contact: <span class="meta-value">${formatMetaHtml(
+        data.contact
+      )}</span></p>`;
+    }
+  }
+
+  let links = "";
+  if (data.links?.length) {
+    links =
+      `<p class="paper-metadata">` +
+      data.links
+        .map((l) => {
+          const icon = getIconClass(l.text);
+          const isSame = /tutorial|viewer/i.test(l.text);
+          const targ = isSame ? "_self" : "_blank";
+          const rel = isSame ? "" : ' rel="noopener noreferrer"';
+          return `<a href="${
+            l.url
+          }" target="${targ}"${rel}><i class="${icon}"></i> ${escapeHtml(
+            l.text
+          )}</a>`;
+        })
+        .join(" | ") +
+      "</p>";
+  }
+
+  if (sane) article.id = `project-${sane}`;
+
+  article.innerHTML = `
+    <div class="paper-content-wrapper">
+      ${imgHtml}
+      <div class="paper-text">
+        <div class="paper-title">${escapeHtml(data.title)}</div>
+        ${meta}
+        <div class="paper-abstract">
+          <div class="paper-description">${(() => {
+            let d = data.description || "";
+            d = d.length > 500 ? d.slice(0, 500) + "..." : d;
+            return convertMarkdownLinks(d);
+          })()}</div>
+        </div>
+        ${links}
+      </div>
+    </div>
+  `;
+
+  return article;
+}
+
+function escapeHtml(s) {
+  return s
+    ? s.replace(
+        /[&<>]/g,
+        (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])
+      )
+    : "";
+}
+
+function getIconClass(linkText) {
+  const text = (linkText || "").toLowerCase();
+  if (text.includes("video")) return "fas fa-video";
+  if (text.includes("github")) return "fab fa-github";
+  if (text.includes("pdf")) return "fas fa-file-pdf";
+  if (text.includes("slides")) return "fas fa-file-powerpoint";
+  if (text.includes("code")) return "fas fa-code";
+  if (
+    text.includes("paper") ||
+    text.includes("preprint") ||
+    text.includes("publication")
+  )
+    return "fas fa-file-alt";
+  if (text.includes("website")) return "fas fa-globe";
+  if (text.includes("article")) return "fas fa-newspaper";
+  if (text.includes("tutorial")) return "fas fa-chalkboard-teacher";
+  if (text.includes("project")) return "fas fa-file-archive";
+  if (text.includes("viewer") || text.includes("download"))
+    return "fas fa-download";
+  return "fas fa-link";
+}
+
+function scrollToHashOnLoad(retries = 12, delay = 150) {
+  var h = window.location.hash;
+  if (!h) return;
+  var id = decodeURIComponent(h.replace(/^#/, ""));
+  var attempts = 0;
+  var tryScroll = function () {
+    attempts++;
+    var el = document.getElementById(id);
+    if (!el) el = document.getElementById("project-" + id);
+    if (!el) {
+      try {
+        var norm = String(id)
+          .trim()
+          .replace(/\s+/g, "-")
+          .replace(/[^A-Za-z0-9_\-:.]/g, "-")
+          .replace(/^-+|-+$/g, "");
+        if (norm)
+          el =
+            document.getElementById(norm) ||
+            document.getElementById("project-" + norm);
+      } catch (e) {}
+    }
+
+    if (el) {
+      try {
+        el.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+      } catch (e) {
+        try {
+          el.scrollIntoView();
+        } catch (e) {}
+      }
+      try {
+        el.focus && el.focus({ preventScroll: true });
+      } catch (e) {}
+      return;
+    }
+    if (attempts < retries) setTimeout(tryScroll, delay);
+  };
+  setTimeout(tryScroll, 50);
+}
+
+document.addEventListener("click", function (ev) {
+  try {
+    const a = ev.target.closest && ev.target.closest("a");
+    if (!a) return;
+    const href = a.getAttribute("href") || "";
+    if (!href.startsWith("#")) return;
+    if (!a.closest || !a.closest("#projects")) return;
+
+    const rawId = decodeURIComponent(href.replace(/^#/, ""));
+    const findEl = (id) => document.getElementById(id);
+
+    let el = findEl(rawId) || findEl("project-" + rawId);
+    if (!el) {
+      const norm = String(rawId || "")
+        .trim()
+        .replace(/\s+/g, "-")
+        .replace(/[^A-Za-z0-9_\-:.]/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+      if (norm) el = findEl(norm) || findEl("project-" + norm);
+    }
+
+    if (el) {
+      ev.preventDefault();
+      try {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } catch (e) {
+        try {
+          el.scrollIntoView();
+        } catch (e) {}
+      }
+      try {
+        el.focus && el.focus({ preventScroll: true });
+      } catch (e) {}
+      try {
+        history.replaceState(null, "", "#" + rawId);
+      } catch (e) {}
+    }
+  } catch (e) {}
+});

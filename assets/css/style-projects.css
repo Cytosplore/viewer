@@ -1,0 +1,295 @@
+:root {
+  --clr-accent: #2b5d86;
+  --clr-accent-light: rgba(43, 93, 134, 0.12);
+  --clr-text: #333;
+  --clr-muted: #555;
+  --clr-muted-light: #556677;
+  --font-size-base: 15px;
+  --transition-base: 0.25s ease;
+}
+
+/* Paper card layout */
+.paper {
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding-bottom: 15px;
+  will-change: transform;
+  overflow: auto; /* allows float wrapping */
+  scroll-margin-top: 80px;
+}
+
+.paper-content-wrapper {
+  overflow: hidden; /* contains floats */
+  position: relative;
+}
+
+.paper-image.left {
+  float: left;
+  margin-right: 16px;
+}
+.paper-image.right {
+  float: right;
+  margin-left: 16px;
+}
+
+.paper-img {
+  width: 350px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.paper-video {
+  width: 350px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Let text flow beside floated images */
+.paper-text {
+  overflow: visible;
+  display: block;
+}
+
+.paper-title {
+  /* Swapped: use previous group-title visual style */
+  font-size: 18px;
+  margin: 6px 0 12px;
+  color: var(--clr-accent);
+}
+
+/* Accent border and padding based on image side */
+.paper-image.left + .paper-text {
+  padding-left: 10px;
+  border-left: 4px solid rgba(43, 93, 134, 0.12);
+}
+.paper-image.right + .paper-text {
+  padding-right: 10px;
+  border-right: 4px solid rgba(43, 93, 134, 0.12);
+  text-align: right;
+}
+
+/* Ensure inner elements follow parent alignment */
+.paper-image.left + .paper-text .paper-title,
+.paper-image.left + .paper-text .paper-description,
+.paper-image.left + .paper-text .paper-metadata {
+  text-align: left;
+}
+
+.paper-image.right + .paper-text .paper-title,
+.paper-image.right + .paper-text .paper-description,
+.paper-image.right + .paper-text .paper-metadata {
+  text-align: right;
+}
+
+/* Margin rules for small metadata pills (keep away from image) */
+.paper-image.left + .paper-text .paper-project,
+.paper-image.left + .paper-text .paper-contact {
+  margin: 0 12px 0 0;
+  padding: 0;
+}
+
+.paper-image.right + .paper-text .paper-project,
+.paper-image.right + .paper-text .paper-contact {
+  margin: 0 0 0 12px;
+  padding: 0;
+}
+
+.paper-metadata {
+  font-size: 14px;
+  color: #556677;
+  margin: 3px 0;
+  line-height: 1.4;
+}
+
+.paper-project,
+.paper-contact {
+  display: block;
+  background: transparent;
+  color: var(--clr-text);
+  padding: 0;
+  border-radius: 0;
+  font-size: 14px;
+  margin: 6px 0;
+  font-weight: 400;
+}
+
+/* Meta values inherit surrounding text color */
+.paper-project .meta-value,
+.paper-contact .meta-value {
+  color: inherit;
+  font-weight: 400;
+}
+
+/* Contact names clickable and show pointer; use accent color */
+.paper-contact .meta-value a.contact-mail {
+  cursor: pointer;
+  color: var(--clr-accent);
+  text-decoration: none;
+}
+.paper-contact .meta-value a.contact-mail:hover {
+  text-decoration: underline;
+}
+
+/* Links inside meta use accent color */
+.paper-project a,
+.paper-contact a {
+  color: var(--clr-accent);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.paper-abstract {
+  margin: 8px 0;
+  line-height: 1.4;
+  text-align: justify;
+  clear: none;
+}
+
+.paper-description {
+  margin: 0;
+  color: #333;
+  font-size: 15px;
+  hyphens: auto;
+  text-align: left;
+}
+
+/* Responsive: stack images above text */
+@media (max-width: 1200px) {
+  .paper-image,
+  .group-list .paper .paper-image {
+    width: 100%;
+    float: none !important;
+    margin: 0 0 20px 0 !important;
+  }
+  .group-list .paper {
+    overflow: visible;
+  }
+  .group-list .paper .paper-img,
+  .group-list .paper .paper-video {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Remove side accents when stacked */
+  .paper-image.left + .paper-text,
+  .paper-image.right + .paper-text {
+    padding: 0;
+    border: none;
+    text-align: left;
+  }
+}
+
+/* Project grid and groups */
+.projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.project-group {
+  background: transparent;
+  padding: 18px 0 6px;
+  border-top: 2px solid var(--clr-accent-light);
+}
+.group-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f4868;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.group-desc {
+  margin: 0 0 14px;
+  color: #444;
+  font-size: 15px;
+}
+.projects-cards {
+  display: block;
+}
+
+.group-list .paper {
+  padding: 8px 0 12px;
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+.group-list .paper:last-child {
+  border-bottom: none;
+  padding-bottom: 6px;
+}
+
+.group-list .paper .paper-image {
+  width: 50%;
+  margin: 0 16px 0 0;
+  float: left;
+}
+.group-list .paper .paper-img,
+.group-list .paper .paper-video {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: none;
+  max-height: 300px;
+}
+
+/* Alternate float direction for even cards */
+.group-list .paper:nth-child(even) .paper-image {
+  float: right;
+  margin: 0 0 0 12px;
+}
+
+/* Horizontal divider */
+.projects-hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(43, 93, 134, 0.18),
+    rgba(43, 93, 134, 0.06)
+  );
+  margin: 24px 0;
+}
+.projects-hr:first-child,
+.projects-hr:last-child {
+  display: none;
+}
+
+/* Loading / error messages */
+.group-list p.loading,
+.group-list p.error {
+  margin: 6px 0 10px;
+  color: #666;
+}
+
+/* Repeated responsive rules (kept for legacy support) */
+@media (max-width: 1200px) {
+  .paper-image,
+  .group-list .paper .paper-image {
+    width: 100%;
+    float: none !important;
+    margin: 0 0 20px 0 !important;
+  }
+  .group-list .paper {
+    overflow: visible;
+  }
+  .group-list .paper .paper-img,
+  .group-list .paper .paper-video {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .paper-content-wrapper > div:first-of-type {
+    font-size: 16px;
+    padding-left: 6px;
+    border-left-width: 3px;
+  }
+  .paper-description {
+    font-size: 14px;
+  }
+}
