@@ -16,8 +16,8 @@
       //},
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
-        src: "/assets/papers/HMBAViewers/Gradient_Surfer.webm",
-        icn: "/assets/papers/HMBAViewers/Gradient_Surfer_icon.png",
+        src: "/assets/papers/HMBAViewers/gradient_surfer.webm",
+        icn: "/assets/papers/HMBAViewers/gradient_surfer_icon.png",
         id: "hmba-spatial-multi-species-basal-ganglia",
       },
       {
