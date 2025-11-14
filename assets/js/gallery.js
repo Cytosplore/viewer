@@ -73,6 +73,16 @@
     this.idx = 4;
 
     this.video = root.querySelector("#gallery-video");
+    if (this.video) {
+      try {
+        this.video.setAttribute("width", "954");
+        this.video.setAttribute("height", "493");
+        this.video.style.width = "100%";
+        this.video.style.height = "auto";
+        this.video.style.objectFit = "cover";
+      } catch (e) {
+      }
+    }
     this.caption = root.querySelector("#gallery-caption");
     this.thumbs = root.querySelector("#gallery-thumbs");
     this.nextBtn = root.querySelector("#gallery-next");

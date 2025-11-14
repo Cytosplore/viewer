@@ -28,7 +28,10 @@
 }
 .gallery-main video {
   max-width: 100%;
+  width: 100%;
   height: auto;
+  aspect-ratio: 954 / 493;
+  object-fit: cover;
   border-radius: 4px;
   display: block;
   opacity: 1;
@@ -36,7 +39,10 @@
 }
 .gallery-main img {
   max-width: 100%;
+  width: 100%;
   height: auto;
+  aspect-ratio: 954 / 493;
+  object-fit: cover;
   border-radius: 4px;
   display: block;
   opacity: 1;
