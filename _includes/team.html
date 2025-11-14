@@ -9,7 +9,7 @@
 			{%- assign team_pages = site.pages | where: "team_member", true -%}
 			{%- for member in team_pages -%}
 				<a href='{{ member["link"] }}' target="_blank">
-					<div class="portrait" id='{{ member["id"] }}' style='background: url("{{ member["image"] }}") no-repeat; background-size: 80px 80px'>
+					<div class="portrait" id='{{ member["id"] }}' style='background-image: url("{{ member["image"] }}"); background-repeat: no-repeat; background-size: cover; background-position: center;'>
 						<span class="popover above">
 	                            <span class="portrait-name">
                                 {{ member.display_name }}
