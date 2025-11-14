@@ -6,5 +6,5 @@ display_name: Thomas Höllt
 link: "http://www.thomashollt.com"
 affiliation: "TU Delft / LUMC"
 role: "Project Lead Cytosplore"
-image: "/assets/images/team/th.jpg"
+image: "/assets/images/team/th.png"
 ---

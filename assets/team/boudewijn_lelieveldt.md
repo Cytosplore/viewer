@@ -5,5 +5,5 @@ display_name: Boudewijn P.F. Lelieveldt
 link: "https://lkeb.github.io/people/boudewijn_lelieveldt.html"
 affiliation: "LUMC"
 role: "PI LKEB"
-image: "/assets/images/team/bl.jpg"
+image: "/assets/images/team/bl.png"
 ---
