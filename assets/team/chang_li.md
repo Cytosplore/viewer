@@ -6,5 +6,5 @@ display_name: Chang Li
 link: "https://lkeb.github.io/people/chang_li.html"
 affiliation: "LUMC"
 role: "Development"
-image: "/assets/images/team/cl.jpg"
+image: "/assets/images/team/cl.png"
 ---
