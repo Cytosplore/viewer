@@ -2,18 +2,18 @@
   var Gallery = function (root) {
     this.root = root;
     this.list = [
-      //{
-      //caption: "PatchSeq Human Neocortex",
-      //src: "/assets/papers/HMBAViewers/PatchSeq_Human.webm",
-      //icn: "/assets/papers/HMBAViewers/PatchSeq_Human_icon.png",
-      //id: "hmba-patchseq-human-neocortex",
-      //},
-      //{
-      //caption: "PatchSeq Macaque Basal Ganglia",
-      //src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.webm",
-      //icn: "/assets/papers/HMBAViewers/PatchSeq_Macaque_icon.png",
-      //id: "hmba-patchseq-macaque-basal-ganglia",
-      //},
+      {
+        caption: "PatchSeq Human Neocortex",
+        src: "/assets/papers/HMBAViewers/PatchSeq_Human.webm",
+        icn: "/assets/papers/HMBAViewers/PatchSeq_Human_icon.png",
+        id: "hmba-patchseq-human-neocortex",
+      },
+      {
+        caption: "PatchSeq Macaque Basal Ganglia",
+        src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.webm",
+        icn: "/assets/papers/HMBAViewers/PatchSeq_Macaque_icon.png",
+        id: "hmba-patchseq-macaque-basal-ganglia",
+      },
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/gradient_surfer.webm",
