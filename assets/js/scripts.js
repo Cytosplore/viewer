@@ -57,7 +57,7 @@ function setupDownloadLinks() {
       macLink:
         "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_mac/cytosplore_viewer_5.0.0_mac.dmg",
       winLink:
-        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_windows/cytosplore_viewer_5.0.0_windows.exe",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0_offline_Windows/cytosplore_viewer_5.0_offline.exe",
       linLink: "",
       tooltip: "Download Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
