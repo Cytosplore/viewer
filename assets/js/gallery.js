@@ -2,18 +2,24 @@
   var Gallery = function (root) {
     this.root = root;
     this.list = [
-      // {
-      //   caption: "PatchSeq Human Neocortex",
-      //   src: "/assets/papers/HMBAViewers/PatchSeq_Human.webm",
-      //   icn: "/assets/papers/HMBAViewers/PatchSeq_Human_icon.png",
-      //   id: "hmba-patchseq-human-neocortex",
-      // },
-      // {
-      //   caption: "PatchSeq Macaque Basal Ganglia",
-      //   src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.webm",
-      //   icn: "/assets/papers/HMBAViewers/PatchSeq_Macaque_icon.png",
-      //   id: "hmba-patchseq-macaque-basal-ganglia",
-      // },
+      {
+        caption: "RNASeq MultiSpecies Basal Ganglia",
+        src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.webm",
+        icn: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies_icon.png",
+        id: "hmba-rnaseq-multi-species-basal-ganglia",
+      },
+      {
+        caption: "PatchSeq Human Neocortex",
+        src: "/assets/papers/HMBAViewers/PatchSeq_Human.webm",
+        icn: "/assets/papers/HMBAViewers/PatchSeq_Human_icon.png",
+        id: "hmba-patchseq-human-neocortex",
+      },
+      {
+        caption: "PatchSeq Macaque Basal Ganglia",
+        src: "/assets/papers/HMBAViewers/PatchSeq_Macaque.webm",
+        icn: "/assets/papers/HMBAViewers/PatchSeq_Macaque_icon.png",
+        id: "hmba-patchseq-macaque-basal-ganglia",
+      },
       {
         caption: "Spatial MultiSpecies Basal Ganglia",
         src: "/assets/papers/HMBAViewers/gradient_surfer.webm",
@@ -25,12 +31,6 @@
         src: "/assets/papers/HMBAViewers/ATAC_Viewer.webm",
         icn: "/assets/papers/HMBAViewers/ATAC_Viewer_icon.png",
         id: "hmba-atacseq-marmoset-subcortex",
-      },
-      {
-        caption: "RNASeq MultiSpecies Basal Ganglia",
-        src: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies.webm",
-        icn: "/assets/papers/HMBAViewers/RNASeq_MultiSpecies_icon.png",
-        id: "hmba-rnaseq-multi-species-basal-ganglia",
       },
       {
         caption: "Evo Viewer",
