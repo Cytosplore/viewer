@@ -29,7 +29,7 @@ function setupNavigation() {
       if ($target.length) {
         $("html,body").animate(
           { scrollTop: $target.offset().top - navHeight },
-          1000
+          1000,
         );
         return false;
       }
@@ -52,12 +52,12 @@ function setupDownloadLinks() {
   const buttons = [
     {
       id: "download-combined",
-      version: "5.0.0",
+      version: "2026",
       label: "Cytosplore Viewer",
       macLink:
-        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0.0_mac/cytosplore_viewer_5.0.0_mac.dmg",
+        "https://github.com/ManiVaultStudio/Installer/releases/download/cytosplore_viewer_2026_offline_MacOS/cytosplore_viewer_2026.dmg",
       winLink:
-        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_5.0_offline_Windows/cytosplore_viewer_5.0_offline.exe",
+        "https://github.com/ManiVaultStudio/Installer/releases/download/cytosplore_viewer_2026_offline_Windows/cytosplore_viewer_2026_offline.exe",
       linLink: "",
       tooltip: "Download Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
@@ -81,7 +81,7 @@ function setupDownloadLinks() {
       buttonItem.macLink,
       buttonItem.winLink,
       buttonItem.linLink,
-      buttonItem.tooltip
+      buttonItem.tooltip,
     );
   });
 }
@@ -93,7 +93,7 @@ function setupDownloadLink(
   macLink,
   winLink,
   linLink,
-  tooltip
+  tooltip,
 ) {
   var element = $("#" + elementId);
   if (element.length) {
@@ -112,10 +112,10 @@ function setupDownloadLink(
     let icon = isMac
       ? '<i class="fab fa-apple" style="font-size: 1.5em; margin-right: 5px;"></i> '
       : isLinux
-      ? '<i class="fab fa-linux" style="font-size: 1.5em; margin-right: 5px;"></i> '
-      : isWindows
-      ? '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> '
-      : "";
+        ? '<i class="fab fa-linux" style="font-size: 1.5em; margin-right: 5px;"></i> '
+        : isWindows
+          ? '<i class="fab fa-windows" style="font-size: 1.5em; margin-right: 5px;"></i> '
+          : "";
 
     if (!link) {
       element
