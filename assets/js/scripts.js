@@ -55,9 +55,9 @@ function setupDownloadLinks() {
       version: "2026",
       label: "Cytosplore Viewer",
       macLink:
-        "https://github.com/ManiVaultStudio/Installer/releases/download/cytosplore_viewer_2026_offline_MacOS/cytosplore_viewer_2026.dmg",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_2026_offline_MacOS/cytosplore_viewer_2026.dmg",
       winLink:
-        "https://github.com/ManiVaultStudio/Installer/releases/download/cytosplore_viewer_2026_offline_Windows/cytosplore_viewer_2026_offline.exe",
+        "https://github.com/ManiVaultStudio/Releases/releases/download/cytosplore_viewer_2026_offline_Windows/cytosplore_viewer_2026_offline.exe",
       linLink: "",
       tooltip: "Download Cytosplore Viewer",
       container: "#get-Manivault-cytosplore-installer .download-buttons",
